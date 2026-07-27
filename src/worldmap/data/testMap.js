@@ -1,4 +1,4 @@
-import NodeTypes from "../constants/NodeTypes";
+import NodeTypes from "../constants/nodeTypes";
 
 const testMap = {
     seed: 12345,
