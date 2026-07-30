@@ -125,6 +125,7 @@ export default function ShipSelection({
             <button
                 style={{
                     width: "100%",
+                    maxWidth: "370px",
                     height: "100px",
                     borderRadius: "10px",
                     background:
