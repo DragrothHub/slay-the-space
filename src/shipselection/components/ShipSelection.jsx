@@ -114,11 +114,12 @@ export default function ShipSelection({
                 );
 
                 return (
-                        <MiniShipCard 
-                        ship={ship} 
-                        borderColor={selected ? "2px solid #fcff4c" : "2px solid transparent"}
-                        backgroundColor={selected ? null : null} 
-                        onClick={() => setOpenedShip(ship)} />
+                        <MiniShipCard
+                            key={ship.id}
+                            ship={ship} 
+                            borderColor={selected ? "2px solid #fcff4c" : "2px solid transparent"}
+                            backgroundColor={selected ? null : null} 
+                            onClick={() => setOpenedShip(ship)} />
                 );
             })}
 
