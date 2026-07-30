@@ -20,11 +20,12 @@ export function gameReducer(state, action) {
                     ships: action.ships,
 
                     credits: 0,
-                    fuel: 100,
 
                     inventory: [],
 
-                    map: generateWorldMap(1),
+                    mapState: {
+                        map: generateWorldMap(1),
+                    },
 
                     currentBattle: null,
                 },

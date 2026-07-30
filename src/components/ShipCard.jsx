@@ -6,7 +6,8 @@ import { moduleCollection } from "../data/modules";
 import ModuleCard from "./ModuleCard";
 import { debuffs } from "../engine/debuffs";
 
-function ShipCard({ ship, close, closeText, children }) {
+function ShipCard({ ship, close, closeText, children })
+{
     return (
         <div style={styles.card}>
             <div style={styles.imageWrapper}>
@@ -63,7 +64,8 @@ function ShipCard({ ship, close, closeText, children }) {
                         "repeat(auto-fit, minmax(280px, 1fr))",
                     gap: 4,
                 }}>
-                    {ship.modules.map(a => {
+                    {ship.modules.map(a =>
+                    {
                         let module = moduleCollection[a];
 
                         return (
@@ -79,7 +81,8 @@ function ShipCard({ ship, close, closeText, children }) {
                         "repeat(auto-fit, minmax(280px, 1fr))",
                     gap: 4,
                 }}>
-                    {ship.abilities.map(a => {
+                    {ship.abilities.map(a =>
+                    {
                         return (
                             <AbilityCard abilityId={a} />
                         )
@@ -98,137 +101,150 @@ function ShipCard({ ship, close, closeText, children }) {
     );
 }
 
-export function MiniShipCard({ ship, onClick }) {
+export function MiniShipCard({ ship, borderColor, backgroundColor, onClick })
+{
     return (
         <div
-            onClick={onClick}
+            key={ship.id}
+            onClick={() => setOpenedShip(ship)}
             style={{
-                background: "#111827",
-                border: "1px solid #374151",
-                borderRadius: 12,
-                overflow: "hidden",
-                color: "white",
-                display: "flex",
-                gap: 10,
-                padding: 10,
+                border: borderColor
+                    ? borderColor
+                    : "2px solid transparent",
+                borderRadius: "10px",
                 maxWidth: 390,
+                minWidth: 370,
             }}
         >
-            <img
-                src={ship.image}
-                alt={ship.name}
-                style={{
-                    width: 80,
-                    height: 60,
-                    objectFit: "contain",
-                    flexShrink: 0,
-                    margin: "auto",
-                }}
-            />
-
             <div
+                onClick={onClick}
                 style={{
-                    flex: 1,
+                    background: backgroundColor ? backgroundColor : "#111827",
+                    border: "1px solid #374151",
+                    borderRadius: 12,
+                    overflow: "hidden",
+                    color: "white",
                     display: "flex",
-                    flexDirection: "column",
-                    gap: 6,
-                    minWidth: 0,
+                    gap: 10,
+                    padding: 10,
                 }}
             >
-                <div>
-                    <div
-                        style={{
-                            fontWeight: 700,
-                            fontSize: 15,
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                        }}
-                    >
-                        {ship.name}
-                    </div>
-
-                    <div
-                        style={{
-                            fontSize: 11,
-                            color: "#9ca3af",
-                        }}
-                    >
-                        {shipClasses[ship.class].displayName} • {ship.manufacturer}
-                    </div>
-                </div>
-
-                <StatBar
-                    label="Shield"
-                    value={ship.stats.currentShield}
-                    max={ship.stats.maxShield}
-                    color="#3b82f6"
-                />
-
-                <StatBar
-                    label="Armor"
-                    value={ship.stats.currentArmor}
-                    max={ship.stats.maxArmor}
-                    color="#f59e0b"
-                />
-
-                <StatBar
-                    label="Hull"
-                    value={ship.stats.currentHull}
-                    max={ship.stats.maxHull}
-                    color="#ef4444"
+                <img
+                    src={ship.image}
+                    alt={ship.name}
+                    style={{
+                        width: 80,
+                        height: 60,
+                        objectFit: "contain",
+                        flexShrink: 0,
+                        margin: "auto",
+                    }}
                 />
 
                 <div
                     style={{
+                        flex: 1,
                         display: "flex",
-                        flexWrap: "wrap",
-                        gap: 4,
+                        flexDirection: "column",
+                        gap: 6,
+                        minWidth: 0,
                     }}
                 >
-                    {ship.modules.map(id => (
-                        <span
-                            key={crypto.randomUUID()}
+                    <div>
+                        <div
                             style={{
-                                flex: "1 1 60px",
-                                textAlign: "center",
-                                fontSize: 10,
-                                padding: "2px 6px",
-                                borderRadius: 999,
-                                background: "#1f2937",
-                                border: "1px solid #374151",
+                                fontWeight: 700,
+                                fontSize: 15,
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
                             }}
                         >
-                            {<span style={{ color: `${moduleCollection[id].color}` }}>{moduleCollection[id].displayName}</span>}
-                        </span>
-                    ))}
-                </div>
+                            {ship.name}
+                        </div>
 
-                <div
-                    style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        gap: 4,
-                    }}
-                >
-                    {ship.abilities.map(id => (
-                        <span
-                            key={id}
+                        <div
                             style={{
-                                flex: "1 1 60px",
-                                textAlign: "center",
-                                fontSize: 10,
-                                padding: "2px 6px",
-                                borderRadius: 999,
-                                background: "#1f2937",
-                                border: "1px solid #374151",
+                                fontSize: 11,
+                                color: "#9ca3af",
                             }}
                         >
-                            {abilityCollection[id].primer || abilityCollection[id].detonator ? "" : abilityCollection[id].displayName}
-                            {abilityCollection[id].primer && <span style={{ color: `${debuffs[abilityCollection[id].appliesDebuff].color}` }}>{abilityCollection[id].displayName}</span>}
-                            {abilityCollection[id].detonator && <span style={{ color: `${debuffs[abilityCollection[id].detonatesDebuff].color}` }}>{abilityCollection[id].displayName}</span>}
-                        </span>
-                    ))}
+                            {shipClasses[ship.class].displayName} • {ship.manufacturer}
+                        </div>
+                    </div>
+
+                    <StatBar
+                        label="Shield"
+                        value={ship.stats.currentShield}
+                        max={ship.stats.maxShield}
+                        color="#3b82f6"
+                    />
+
+                    <StatBar
+                        label="Armor"
+                        value={ship.stats.currentArmor}
+                        max={ship.stats.maxArmor}
+                        color="#f59e0b"
+                    />
+
+                    <StatBar
+                        label="Hull"
+                        value={ship.stats.currentHull}
+                        max={ship.stats.maxHull}
+                        color="#ef4444"
+                    />
+
+                    <div
+                        style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: 4,
+                        }}
+                    >
+                        {ship.modules.map(id => (
+                            <span
+                                key={crypto.randomUUID()}
+                                style={{
+                                    flex: "1 1 60px",
+                                    textAlign: "center",
+                                    fontSize: 10,
+                                    padding: "2px 6px",
+                                    borderRadius: 999,
+                                    background: "#1f2937",
+                                    border: "1px solid #374151",
+                                }}
+                            >
+                                {<span style={{ color: `${moduleCollection[id].color}` }}>{moduleCollection[id].displayName}</span>}
+                            </span>
+                        ))}
+                    </div>
+
+                    <div
+                        style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: 4,
+                        }}
+                    >
+                        {ship.abilities.map(id => (
+                            <span
+                                key={id}
+                                style={{
+                                    flex: "1 1 60px",
+                                    textAlign: "center",
+                                    fontSize: 10,
+                                    padding: "2px 6px",
+                                    borderRadius: 999,
+                                    background: "#1f2937",
+                                    border: "1px solid #374151",
+                                }}
+                            >
+                                {abilityCollection[id].primer || abilityCollection[id].detonator ? "" : abilityCollection[id].displayName}
+                                {abilityCollection[id].primer && <span style={{ color: `${debuffs[abilityCollection[id].appliesDebuff].color}` }}>{abilityCollection[id].displayName}</span>}
+                                {abilityCollection[id].detonator && <span style={{ color: `${debuffs[abilityCollection[id].detonatesDebuff].color}` }}>{abilityCollection[id].displayName}</span>}
+                            </span>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
@@ -240,7 +256,8 @@ function StatBar({
     value,
     max,
     color,
-}) {
+})
+{
     const percent = (value / max) * 100;
 
     if (max == 0)

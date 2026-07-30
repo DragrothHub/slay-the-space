@@ -59,6 +59,7 @@ export default function ShipSelection({
             selectedShips.length >= maxSelections;
 
         return (
+            <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
             <ShipCard
                 ship={openedShip}
                 close={() => setOpenedShip(null)}
@@ -91,9 +92,10 @@ export default function ShipSelection({
                         setOpenedShip(null);
                     }}
                 >
-                    {selected ? "Abwählen" : "Auswählen"}
+                    {selected ? "Deselect" : "Select"}
                 </button>
             </ShipCard>
+            </div>
         );
     }
 
@@ -102,7 +104,7 @@ export default function ShipSelection({
     // -------------------------
 
     return (
-        <div>
+        <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
             <div style={{textAlign: "center", fontSize: "1.5em", margin: "10px"}}>Choose {maxSelections} ships for your team</div>
 
             {ships.map(ship => {
@@ -112,18 +114,11 @@ export default function ShipSelection({
                 );
 
                 return (
-                    <div
-                        key={ship.id}
-                        onClick={() => setOpenedShip(ship)}
-                        style={{
-                            border: selected
-                                ? "2px solid #fcff4c"
-                                : "2px solid transparent",
-                            borderRadius: "10px",
-                        }}
-                    >
-                        <MiniShipCard ship={ship} />
-                    </div>
+                        <MiniShipCard 
+                        ship={ship} 
+                        borderColor={selected ? "2px solid #fcff4c" : "2px solid transparent"}
+                        backgroundColor={selected ? null : null} 
+                        onClick={() => setOpenedShip(ship)} />
                 );
             })}
 

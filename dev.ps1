@@ -4,7 +4,7 @@ $projectPath = "C:\Users\carst\Desktop\space-game\slay-the-space"
 # In Projektordner wechseln
 Set-Location $projectPath
 
-# Projektordner im Explorer Ã¶ffnen
+# Projektordner im Explorer öffnen
 Start-Process explorer.exe $projectPath
 
 # npm run dev in neuem Terminal starten
@@ -14,7 +14,7 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd `"$projectPath
 Start-Sleep -Seconds 3
 
 # Firefox mit URL starten
-Start-Process "firefox.exe" "http://localhost:5173"
+Start-Process "C:\Program Files (x86)\Mozilla Firefox\firefox.exe" "http://localhost:5173"
 
-# VS Code im Projektordner Ã¶ffnen
+# VS Code im Projektordner öffnen
 code $projectPath
