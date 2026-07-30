@@ -62,7 +62,7 @@ export default function ShipSelection({
             <ShipCard
                 ship={openedShip}
                 close={() => setOpenedShip(null)}
-                closeText="Zurück">
+                closeText="Back">
                 <button
                     style={{
                         background: "#0a1118",
@@ -147,7 +147,7 @@ export default function ShipSelection({
                 onClick={confirmSelection}
                 disabled={selectedShips.length !== maxSelections}
             >
-                Auswahl bestätigen ({selectedShips.length}/{maxSelections})
+                Confirm Selection ({selectedShips.length}/{maxSelections})
             </button>
 
         </div>
