@@ -15,8 +15,6 @@ export default function WorldMap({ startBattle }) {
     if (!gameState.run) {
         return null;
     }
-    
-    console.log(gameState);
 
     const map = gameState.run.map;
 

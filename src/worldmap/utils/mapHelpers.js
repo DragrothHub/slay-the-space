@@ -1,6 +1,6 @@
 export function getConnectedNodes(map, node) {
 
-    return node.connections.map(id => getNodeById(map, id));
+    return node.connections.map(id => map.nodeLookup[id]);
 
 }
 
