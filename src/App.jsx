@@ -4,7 +4,7 @@ import ShipCard from "./components/ShipCard";
 import WorldMap from "./worldmap/components/WorldMap";
 import BattleScreen from "./components/BattleScreen";
 import ShipSelection from "./shipselection/components/ShipSelection";
-import { useGame } from "./state/useGame";
+import { useGameState } from "./state/GameStateProvider";
 
 function App() {
 
@@ -17,17 +17,17 @@ function App() {
     startRun(ships);
   }
 
-  const { game, startRun, setScreen } = useGame();
+  const { gameState, startRun, setScreen } = useGameState();
 
   return (
     <>
-      {game.screen === "world" && (
+      {gameState.screen === "world" && (
         <WorldMap
-          startBattle={() => {setScreen("battle"); console.log(JSON.stringify(game, null, 2))}}
+          startBattle={() => {setScreen("battle"); console.log(JSON.stringify(gameState, null, 2))}}
         />
       )}
 
-      {game.screen === "shipselection" && (
+      {gameState.screen === "shipselection" && (
         <ShipSelection
           shipCount={5}
           maxSelections={2}
@@ -35,9 +35,9 @@ function App() {
         />
       )}
 
-      {game.screen === "battle" && (
+      {gameState.screen === "battle" && (
         <BattleScreen
-          teamA={game.run.ships}
+          teamA={gameState.run.ships}
           teamB={teamB}
           leaveBattle={() => setScreen("world")}
         />

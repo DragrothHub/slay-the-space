@@ -1,13 +1,32 @@
-import { useReducer, useMemo } from "react";
+import { useReducer, useMemo, createContext, useContext } from "react";
+import { gameStateReducer } from "./gameStateReducer";
 
-import { GameContext } from "./GameContext";
-import { gameReducer } from "./gameReducer";
-import { initialGameState } from "./initialState";
+const initialGameState = {
+    screen: "shipselection",
 
-export default function GameProvider({ children }) {
+    run: null,
+
+    settings: {
+        sound: true,
+        music: true,
+    },
+
+    statistics: {
+        runsPlayed: 0,
+        battlesWon: 0,
+    },
+};
+
+const GameContext = createContext(null);
+
+export function useGameState() {
+    return useContext(GameContext);
+}
+
+export default function GameStateProvider({ children }) {
 
     const [state, dispatch] = useReducer(
-        gameReducer,
+        gameStateReducer,
         initialGameState
     );
 
@@ -58,7 +77,7 @@ export default function GameProvider({ children }) {
     //--------------------
 
     const value = useMemo(() => ({
-        game: state,
+        gameState: state,
         setScreen,
         startRun,
         addCredits,

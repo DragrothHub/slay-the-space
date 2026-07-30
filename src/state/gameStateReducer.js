@@ -1,6 +1,6 @@
 import generateWorldMap from "../worldmap/generator/generateWorldMap";
 
-export function gameReducer(state, action) {
+export function gameStateReducer(state, action) {
 
     switch (action.type) {
 
