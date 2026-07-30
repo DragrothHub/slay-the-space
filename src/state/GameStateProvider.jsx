@@ -93,15 +93,8 @@ export default function GameStateProvider({ children }) {
     }
 
     const map = state.run?.map;
-    const currentNodeId = state.run?.currentNodeId;
-
-    const currentNode = useMemo(() => {
-
-        if (!map) return null;
-
-        return map.nodeLookup[currentNodeId];
-
-    }, [map]);
+    
+    const currentNode = map?.nodeLookup[state.run?.currentNodeId];
 
     const availableNodes = useMemo(() => {
 

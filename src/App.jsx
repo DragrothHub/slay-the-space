@@ -5,6 +5,7 @@ import WorldMap from "./worldmap/components/WorldMap";
 import BattleScreen from "./components/BattleScreen";
 import ShipSelection from "./shipselection/components/ShipSelection";
 import { useGameState } from "./state/GameStateProvider";
+import SeededRandom from "./worldmap/generator/seededRandom";
 
 function App() {
   
@@ -16,14 +17,14 @@ function App() {
   ];
 
   function handleSelection(ships) {
-    startRun(ships, 1);
+    startRun(ships, Math.floor(Math.random() * 1000));
   }
 
   return (
     <>
       {gameState.screen === "world" && (
         <WorldMap
-          startBattle={() => {setScreen("battle"); console.log(JSON.stringify(gameState, null, 2))}}
+          startBattle={() => setScreen("battle")}
         />
       )}
 
