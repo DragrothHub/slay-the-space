@@ -1,8 +1,10 @@
 import generateWorldMap from "../worldmap/generator/generateWorldMap";
 
-export function gameStateReducer(state, action) {
+export function gameStateReducer(state, action)
+{
 
-    switch (action.type) {
+    switch (action.type)
+    {
 
         case "SET_SCREEN":
             return {
@@ -23,9 +25,9 @@ export function gameStateReducer(state, action) {
 
                     inventory: [],
 
-                    mapState: {
-                        map: generateWorldMap(1),
-                    },
+                    map: action.map,
+
+                    currentNodeId: action.map.nodes[0].id,
 
                     currentBattle: null,
                 },
@@ -61,6 +63,34 @@ export function gameStateReducer(state, action) {
                     currentBattle: action.enemyFleet,
                 },
             };
+
+        case "MOVE_TO_NODE": {
+
+            const map = state.run.map;
+
+            const currentNode = map.nodeLookup[state.run.currentNodeId];
+
+            if (!currentNode.connections.includes(action.nodeId)) {
+                return state;
+            }
+
+            return {
+
+                ...state,
+
+                run: {
+
+                    ...state.run,
+
+                    ...map,
+
+                    currentNodeId: action.nodeId,
+
+                },
+
+            };
+
+        }
 
         default:
             return state;

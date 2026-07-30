@@ -1,4 +1,4 @@
-import useWorldMap from "../hooks/useWorldMap";
+import { useGameState } from "../../state/GameStateProvider";
 import MapConnection from "./MapConnection";
 import MapNode from "./MapNode";
 import PlayerMarker from "./PlayerMarker";
@@ -6,12 +6,19 @@ import PlayerMarker from "./PlayerMarker";
 export default function WorldMap({ startBattle }) {
 
     const {
-        map,
-        currentNodeId,
-        availableNodes,
-        nodeLookup,
+        gameState,
         moveToNode,
-    } = useWorldMap(Math.floor(Math.random() * 1000));
+        currentNode,
+        availableNodes,
+    } = useGameState();
+
+    if (!gameState.run) {
+        return null;
+    }
+    
+    console.log(gameState);
+
+    const map = gameState.run.map;
 
     return (
 
@@ -34,7 +41,7 @@ export default function WorldMap({ startBattle }) {
 
                             <MapConnection
                                 from={node}
-                                to={nodeLookup[connection]}
+                                to={map.nodeLookup[connection]}
                             />
 
                         ))
@@ -51,7 +58,7 @@ export default function WorldMap({ startBattle }) {
                         key={node.id}
                         node={node}
                         selectable={availableNodes.some(n => n.id === node.id)}
-                        current={currentNodeId === node.id}
+                        current={currentNode.id === node.id}
                         onClick={() => {
                             moveToNode(node.id);
                             startBattle();
@@ -61,7 +68,7 @@ export default function WorldMap({ startBattle }) {
                 ))}
 
             <PlayerMarker
-                node={map.nodes.find(n => n.id === currentNodeId)}
+                node={currentNode}
             />
         </div>
 

@@ -14,6 +14,8 @@ export default function generateWorldMap(seed) {
 
     const nodes = createNodes(layers);
 
+    const nodeLookup = nodes.map(node => [node.id, node]);
+
     connectNodes(nodes, random);
 
     cleanupMap(nodes);
@@ -24,10 +26,9 @@ export default function generateWorldMap(seed) {
 
         seed,
 
-        currentNodeId: nodes[0].id,
-
         nodes,
 
+        nodeLookup,
+        
     };
-
 }

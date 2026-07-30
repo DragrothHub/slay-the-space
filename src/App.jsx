@@ -7,6 +7,8 @@ import ShipSelection from "./shipselection/components/ShipSelection";
 import { useGameState } from "./state/GameStateProvider";
 
 function App() {
+  
+  const { gameState, startRun, setScreen } = useGameState();
 
   const teamB = [
     createShip(),
@@ -14,10 +16,8 @@ function App() {
   ];
 
   function handleSelection(ships) {
-    startRun(ships);
+    startRun(ships, 1);
   }
-
-  const { gameState, startRun, setScreen } = useGameState();
 
   return (
     <>
