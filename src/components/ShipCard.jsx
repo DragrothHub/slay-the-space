@@ -106,7 +106,7 @@ export function MiniShipCard({ ship, borderColor, backgroundColor, onClick })
     return (
         <div
             key={ship.id}
-            onClick={() => setOpenedShip(ship)}
+            onClick={onClick}
             style={{
                 border: borderColor
                     ? borderColor
@@ -117,7 +117,6 @@ export function MiniShipCard({ ship, borderColor, backgroundColor, onClick })
             }}
         >
             <div
-                onClick={onClick}
                 style={{
                     background: backgroundColor ? backgroundColor : "#111827",
                     border: "1px solid #374151",
