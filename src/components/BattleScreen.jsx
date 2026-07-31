@@ -25,7 +25,7 @@ export default function BattleScreen({ enemyFleet }) {
     if (!battle) return <div>Loading...</div>;
 
     return (
-        <div className="battle-screen">
+        <div>
             <BattleField/>
 
             <ActionPanel/>

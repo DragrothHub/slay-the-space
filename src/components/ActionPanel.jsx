@@ -31,8 +31,6 @@ export default function ActionPanel() {
         });
     }
 
-    const enemies = getEnemyUnits(battle, actor);
-
     return (
         <div
             style={{
