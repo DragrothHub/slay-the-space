@@ -1,14 +1,37 @@
 import { useGameState } from "../state/GameStateProvider";
 import Ship from "./Ship";
+import { selectTarget } from "../engine/turnEngine";
 
 function TeamFleet({
     team,
-    state,
-    handleSelectTarget,
     reverse = false,
 }) {
+
+    const {gameState, updateBattle } = useGameState();
     const topRow = team.slice(0, 2);
     const bottomRow = team.slice(2, 4);
+    const battle = gameState.run.battle;
+
+    function canSelectTarget(target){
+        if(target.stats.currentHull <= 0)
+                return false;
+
+        const targetIsInTeamA = battle.teams.A.some(u => u.id === target.id);
+        const sourceIsInTeamA = battle.teams.A.some(u => u.id === battle.activeUnitId);
+
+        if(targetIsInTeamA == sourceIsInTeamA)
+            return false;
+
+        return true;
+    }
+
+    function handleSelectTarget(target)
+    {
+        if (canSelectTarget(target))
+        {
+            updateBattle(s => selectTarget(s, target.id));
+        }
+    }
 
     const renderImageRow = (row, rowIndex) => (
         <div
@@ -37,9 +60,9 @@ function TeamFleet({
                 >
                     <Ship
                         unit={unit}
-                        damageEvents={state.damageEvents}
-                        isActive={state.activeUnitId === unit.id}
-                        isTargeted={state.selectedTargetId === unit.id}
+                        damageEvents={battle.damageEvents}
+                        isActive={battle.activeUnitId === unit.id}
+                        isTargeted={battle.selectedTargetId === unit.id}
                         isDead={unit.stats.currentHull <= 0}
                         mode="image"
                         reverse={reverse}
@@ -77,12 +100,12 @@ function TeamFleet({
     );
 }
 
-export default function BattleField({ handleSelectTarget }) {
+export default function BattleField() {
 
     const { gameState } = useGameState();
     if(!gameState.run?.battle) return null;
-    const teamA = gameState.run.battle.teams.A;
-    const teamB = gameState.run.battle.teams.B;
+    const playerFleet = gameState.run.battle.teams.A;
+    const enemyFleet = gameState.run.battle.teams.B;
 
     return (
         <div
@@ -94,20 +117,16 @@ export default function BattleField({ handleSelectTarget }) {
                 paddingBottom: 60,
             }}
         >
-            {/* TEAM B */}
+            {/* ENEMY FLEET */}
             <TeamFleet
-                team={teamB}
-                state={gameState.run.battle}
+                team={enemyFleet}
                 reverse={true}
-                handleSelectTarget={handleSelectTarget}
             />
 
-            {/* TEAM A */}
+            {/* PLAYER FLEET */}
             <TeamFleet
-                team={teamA}
-                state={gameState.run.battle}
+                team={playerFleet}
                 reverse={false}
-                handleSelectTarget={handleSelectTarget}
             />
         </div>
     );
