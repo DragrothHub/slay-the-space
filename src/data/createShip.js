@@ -48,6 +48,8 @@ export function createShip() {
 
     ship.stats = calculateShipStats(ship);
 
+    ship.name = (shipClasses[ship.class].displayName || "Unknown") + '_' + Math.floor(Math.random() * 1000);
+
     return ship;
 }
 
