@@ -39,8 +39,14 @@ export default function Selection({
                 );
             }
 
-            if (current.length >= maxSelections)
-            {
+            if (current.length >= maxSelections) {
+
+                // Bei Single-Selection: Auswahl ersetzen
+                if (maxSelections === 1) {
+                    return [item];
+                }
+
+                // Bei Multi-Selection: keine weitere Auswahl erlauben
                 return current;
             }
 
