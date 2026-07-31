@@ -29,7 +29,7 @@ export function gameStateReducer(state, action)
 
                     currentNodeId: action.map.nodes[0].id,
 
-                    currentBattle: null,
+                    battle: null,
                 },
 
                 statistics: {
@@ -60,7 +60,7 @@ export function gameStateReducer(state, action)
 
                 run: {
                     ...state.run,
-                    currentBattle: action.enemyFleet,
+                    battle: action.enemyFleet,
                 },
             };
 
@@ -91,6 +91,56 @@ export function gameStateReducer(state, action)
             };
 
         }
+
+        case "UPDATE_SHIPS":
+
+            return {
+                ...state,
+
+                run: {
+                    ...state.run,
+
+                    ships: action.ships,
+                },
+            };
+
+        case "START_BATTLE":
+
+            return {
+                ...state,
+
+                run: {
+                    ...state.run,
+
+                    battle: action.battle,
+                },
+            };
+
+        case "UPDATE_BATTLE":
+
+            return {
+                ...state,
+
+                run: {
+                    ...state.run,
+
+                    battle: action.battle,
+                },
+            };
+        
+        case "FINISH_BATTLE":
+
+            return {
+                ...state,
+
+                run: {
+                    ...state.run,
+
+                    ships: state.run.battle.teams.A,
+
+                    battle: null,
+                },
+            };
 
         default:
             return state;

@@ -29,3 +29,19 @@ export function getFriendlyUnits(state, actor) {
 
     return isInTeamA ? state.teams.A : state.teams.B;
 }
+
+export function canSelectTarget(state, target){
+
+    console.log(state);
+
+    if(target.stats.currentHull <= 0)
+            return false;
+
+    const targetIsInTeamA = state.teams.A.some(u => u.id === target.id);
+    const sourceIsInTeamA = state.teams.A.some(u => u.id === state.activeUnitId);
+
+    if(targetIsInTeamA == sourceIsInTeamA)
+        return false;
+
+    return true;
+}

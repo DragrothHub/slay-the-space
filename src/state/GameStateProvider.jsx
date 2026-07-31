@@ -2,6 +2,7 @@ import { useReducer, useMemo, createContext, useContext } from "react";
 import { gameStateReducer } from "./gameStateReducer";
 import generateWorldMap from "../worldmap/generator/generateWorldMap";
 import { getConnectedNodes } from "../worldmap/utils/mapHelpers";
+import { createBattleState, initBattle } from "../engine/turnEngine";
 
 const initialGameState = {
     screen: "shipselection",
@@ -80,6 +81,58 @@ export default function GameStateProvider({ children }) {
     }
 
     //--------------------
+    // Ships
+    //--------------------
+
+    function updateShips(ships){
+
+        dispatch({
+            type: "UPDATE_SHIPS",
+            ships,
+        });
+
+    }
+
+    //--------------------
+    // Battle
+    //--------------------
+
+    function startBattle(enemyFleet) {
+
+        const battle = createBattleState(
+            structuredClone(state.run.ships),
+            structuredClone(enemyFleet)
+        );
+
+        initBattle(battle);
+
+        dispatch({
+            type: "START_BATTLE",
+            battle,
+        });
+
+    }
+
+    function updateBattle(updater) {
+        const updatedBattle = structuredClone(state.run.battle);
+
+        const result = updater(updatedBattle);
+
+        dispatch({
+            type: "UPDATE_BATTLE",
+            battle: result ?? updatedBattle,
+        });
+    }
+
+    function finishBattle(){
+        
+        dispatch({
+            type: "FINISH_BATTLE",
+        });
+
+    }
+
+    //--------------------
     // Map
     //--------------------
 
@@ -115,7 +168,12 @@ export default function GameStateProvider({ children }) {
         setScreen,
         startRun,
         addCredits,
+
         startBattle,
+        updateBattle,
+        finishBattle,
+
+        updateShips,
 
         moveToNode,
         currentNode,

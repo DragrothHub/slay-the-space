@@ -13,7 +13,7 @@ function App()
 
   const { gameState, setScreen } = useGameState();
 
-  const teamB = [
+  const enemyFleet = [
     createShip(),
     createShip(),
   ];
@@ -64,8 +64,7 @@ function App()
 
       {gameState.screen === "battle" && (
         <BattleScreen
-          teamA={gameState.run.ships}
-          teamB={teamB}
+          enemyFleet={enemyFleet}
         />
       )}
     </>

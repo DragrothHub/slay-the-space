@@ -4,15 +4,18 @@ import { abilityCollection } from "../data/abilities";
 import { useState } from "react";
 import AbilityInfoDialog from "./AbilityInfoDialog";
 import AbilityCard from "./AbilityCard";
+import { useGameState } from "../state/GameStateProvider";
 
-export default function ActionPanel({ state, setState }) {
-    const actor = getActiveUnit(state);
+export default function ActionPanel() {
     const [selectedAbilityInfo, setSelectedAbilityInfo] = useState(null);
-
+    const { gameState, updateBattle } = useGameState();
+    const battle = gameState.run?.battle;
+    if (!battle) return null;
+    const actor = getActiveUnit(battle);
     if (!actor) return null;
 
     function handleSelectAbility(abilityId) {
-        setState(prev => {
+        updateBattle(prev => {
             const next = structuredClone(prev);
 
             const actor = getActiveUnit(next);
@@ -28,7 +31,7 @@ export default function ActionPanel({ state, setState }) {
         });
     }
 
-    const enemies = getEnemyUnits(state, actor);
+    const enemies = getEnemyUnits(battle, actor);
 
     return (
         <div
@@ -43,7 +46,7 @@ export default function ActionPanel({ state, setState }) {
             {/* ABILITIES */}
             {/* ========================= */}
 
-            {state.phase === "select-ability" && (
+            {battle.phase === "select-ability" && (
                 <div>
                     <h3
                         style={{
@@ -67,7 +70,7 @@ export default function ActionPanel({ state, setState }) {
                                 <AbilityCard 
                                     abilityId={a} 
                                     actor={actor} 
-                                    target={getTargetUnit(state)} 
+                                    target={getTargetUnit(battle)} 
                                     handleSelectAbility={handleSelectAbility}/>
                             );
                         })}

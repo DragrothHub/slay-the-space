@@ -36,10 +36,10 @@ export function createBattleState(teamA, teamB) {
 }
 
 // ========================================
-// START BATTLE
+// INIT BATTLE
 // ========================================
 
-export function startBattle(state) {
+export function initBattle(state) {
     state.turnOrder = calculateTurnOrder(state);
     state.turnIndex = 0;
 

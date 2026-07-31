@@ -2,72 +2,61 @@ import { useEffect, useState } from "react";
 import BattleField from "./BattleField";
 import ActionPanel from "./ActionPanel";
 import BattleLog from "./BattleLog";
-import {
-    createBattleState,
-    startBattle,
-    selectTarget,
-} from "../engine/turnEngine";
-import { getActiveUnit } from "../engine/helpers";
+import { selectTarget } from "../engine/turnEngine";
+import { getActiveUnit, canSelectTarget } from "../engine/helpers";
 import { useGameState } from "../state/GameStateProvider";
 
 
-export default function BattleScreen({ teamA, teamB }) {
-    const [state, setState] = useState(null);
+export default function BattleScreen({ enemyFleet }) {
 
-    const { setScreen } = useGameState();
+    const { gameState, setScreen, startBattle, updateBattle, finishBattle } = useGameState();
+    const battle = gameState.run?.battle;
 
-    // INIT
+    // Init battle
     useEffect(() => {
-        const initial = createBattleState(teamA, teamB);
-        const started = startBattle(initial);
-
-        setState(structuredClone(started));
-    }, [teamA, teamB]);
+        startBattle(enemyFleet);
+    }, []);
 
     useEffect(() => {
-        if (state?.winner) {
-            setScreen("map");
-        }
-    }, [state?.winner]);
+        if (!battle?.winner) return;
 
-    if (!state) return <div>Loading...</div>;
+        finishBattle();
 
-    const activeUnit = getActiveUnit(state);
+        setScreen("map");
+    }, [battle?.winner]);
 
-    function update(fn) {
-        setState(prev => {
-            const next = structuredClone(prev);
-            return fn(next);
-        });
-    }
+    if (!battle) return <div>Loading...</div>;
+
+    const activeUnit = getActiveUnit(battle);
     
     function handleSelectTarget(target) {
-        if(target.stats.currentHull <= 0)
-            return;
 
-        const targetIsInTeamA = state.teams.A.some(u => u.id === target.id);
-        const sourceIsInTeamA = state.teams.A.some(u => u.id === activeUnit.id);
+        if(canSelectTarget(battle, target))
+        {
+            updateBattle(s => selectTarget(s, target.id));
+        }
 
-        if(targetIsInTeamA == sourceIsInTeamA)
-            return;
+        // if(target.stats.currentHull <= 0)
+        //     return;
 
-        update(s => selectTarget(s, target.id));
+        // const targetIsInTeamA = battle.teams.A.some(u => u.id === target.id);
+        // const sourceIsInTeamA = battle.teams.A.some(u => u.id === activeUnit.id);
+
+        // if(targetIsInTeamA == sourceIsInTeamA)
+        //     return;
+
+        // updateBattle(s => selectTarget(s, target.id));
     }
 
     return (
         <div className="battle-screen">
             <BattleField
-                state={state}
-                activeUnit={activeUnit}
                 handleSelectTarget={handleSelectTarget}
             />
 
-            <ActionPanel
-                state={state}
-                setState={setState}
-            />
+            <ActionPanel/>
 
-            <BattleLog log={state.log} />
+            <BattleLog/>
         </div>
     );
 }

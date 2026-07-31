@@ -1,4 +1,4 @@
-// BattleField.jsx
+import { useGameState } from "../state/GameStateProvider";
 import Ship from "./Ship";
 
 function TeamFleet({
@@ -77,9 +77,12 @@ function TeamFleet({
     );
 }
 
-export default function BattleField({ state, handleSelectTarget }) {
-    const teamA = state.teams.A;
-    const teamB = state.teams.B;
+export default function BattleField({ handleSelectTarget }) {
+
+    const { gameState } = useGameState();
+    if(!gameState.run?.battle) return null;
+    const teamA = gameState.run.battle.teams.A;
+    const teamB = gameState.run.battle.teams.B;
 
     return (
         <div
@@ -94,7 +97,7 @@ export default function BattleField({ state, handleSelectTarget }) {
             {/* TEAM B */}
             <TeamFleet
                 team={teamB}
-                state={state}
+                state={gameState.run.battle}
                 reverse={true}
                 handleSelectTarget={handleSelectTarget}
             />
@@ -102,7 +105,7 @@ export default function BattleField({ state, handleSelectTarget }) {
             {/* TEAM A */}
             <TeamFleet
                 team={teamA}
-                state={state}
+                state={gameState.run.battle}
                 reverse={false}
                 handleSelectTarget={handleSelectTarget}
             />
