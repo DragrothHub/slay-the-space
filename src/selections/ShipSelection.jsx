@@ -67,15 +67,15 @@ export default function ShipSelection({ ships, maxSelections })
                                 color: "white",
                                 fontFamily: "monospace",
                                 cursor:
-                                    !selected && maxReached
+                                    maxSelections > 1 && !selected && maxReached
                                         ? "not-allowed"
                                         : "default",
                                 opacity:
-                                    !selected && maxReached
+                                    maxSelections > 1 && !selected && maxReached
                                         ? 0.5
                                         : 1,
                             }}
-                            disabled={!selected && maxReached}
+                            disabled={maxSelections > 1 && !selected && maxReached}
                             onClick={() =>
                             {
                                 toggle();
