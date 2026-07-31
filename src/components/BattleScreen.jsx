@@ -8,10 +8,13 @@ import {
     selectTarget,
 } from "../engine/turnEngine";
 import { getActiveUnit } from "../engine/helpers";
+import { useGameState } from "../state/GameStateProvider";
 
 
-export default function BattleScreen({ teamA, teamB, leaveBattle }) {
+export default function BattleScreen({ teamA, teamB }) {
     const [state, setState] = useState(null);
+
+    const { setScreen } = useGameState();
 
     // INIT
     useEffect(() => {
@@ -23,9 +26,9 @@ export default function BattleScreen({ teamA, teamB, leaveBattle }) {
 
     useEffect(() => {
         if (state?.winner) {
-            leaveBattle();
+            setScreen("map");
         }
-    }, [state?.winner, leaveBattle]);
+    }, [state?.winner]);
 
     if (!state) return <div>Loading...</div>;
 

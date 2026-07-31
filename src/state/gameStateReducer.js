@@ -16,7 +16,7 @@ export function gameStateReducer(state, action)
             return {
                 ...state,
 
-                screen: "world",
+                screen: "map",
 
                 run: {
                     ships: action.ships,

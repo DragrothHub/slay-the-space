@@ -1,38 +1,36 @@
 import { useState } from "react";
 import { createShip } from "./data/createShip";
-import ShipCard from "./components/ShipCard";
 import WorldMap from "./worldmap/components/WorldMap";
 import BattleScreen from "./components/BattleScreen";
-import ShipSelection from "./shipselection/components/ShipSelection";
+import ShipSelection from "./selections/ShipSelection";
 import { useGameState } from "./state/GameStateProvider";
-import SeededRandom from "./worldmap/generator/seededRandom";
 
-function App() {
-  
-  const { gameState, startRun, setScreen } = useGameState();
+function App()
+{
+
+  const { gameState, setScreen } = useGameState();
 
   const teamB = [
     createShip(),
     createShip(),
   ];
 
-  function handleSelection(ships) {
-    startRun(ships, Math.floor(Math.random() * 1000));
-  }
-
   return (
     <>
-      {gameState.screen === "world" && (
-        <WorldMap
-          startBattle={() => setScreen("battle")}
-        />
+      {gameState.screen === "map" && (
+        <WorldMap/>
       )}
 
       {gameState.screen === "shipselection" && (
         <ShipSelection
-          shipCount={5}
+          ships={[
+            createShip(),
+            createShip(),
+            createShip(),
+            createShip(),
+            createShip(),
+          ]}
           maxSelections={2}
-          onConfirm={handleSelection}
         />
       )}
 
@@ -40,7 +38,6 @@ function App() {
         <BattleScreen
           teamA={gameState.run.ships}
           teamB={teamB}
-          leaveBattle={() => setScreen("world")}
         />
       )}
     </>

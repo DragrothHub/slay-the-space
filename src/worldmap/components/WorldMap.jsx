@@ -7,6 +7,9 @@ export default function WorldMap({ startBattle }) {
 
     const {
         gameState,
+
+        setScreen,
+
         moveToNode,
         currentNode,
         availableNodes,
@@ -59,7 +62,7 @@ export default function WorldMap({ startBattle }) {
                         current={currentNode.id === node.id}
                         onClick={() => {
                             moveToNode(node.id);
-                            startBattle();
+                            setScreen("battle");
                         }}
                     />
 
