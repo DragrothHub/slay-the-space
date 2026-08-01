@@ -107,4 +107,6 @@ export function applyDamage(target, actor, ability, state) {
             timestamp: Date.now(),
         });
     }
+
+    return totalDamage;
 }

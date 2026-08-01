@@ -1,4 +1,5 @@
 import { applyDamage } from "./damage";
+import { applyDebuff } from "./debuffs";
 import { getFriendlyUnits } from "./helpers";
 
 // ========================================
@@ -7,6 +8,7 @@ import { getFriendlyUnits } from "./helpers";
 
 export function detonate(target, actor, ability, state) {
     const debuffId = ability.detonatesDebuff;
+    const enemies = getFriendlyUnits(state, target);
 
     // ==============================
     // 1. COUNT + REMOVE DEBUFFS
@@ -17,9 +19,11 @@ export function detonate(target, actor, ability, state) {
         d => d.id === debuffId
     );
 
-    target.stats.debuffs = target.stats.debuffs.filter(
-        d => d.id !== debuffId
-    );
+    if(ability.detonatorEffect != "spreader"){
+        target.stats.debuffs = target.stats.debuffs.filter(
+            d => d.id !== debuffId
+        );
+    }
 
     const removedCount = removedDebuffs.length;
 
@@ -34,34 +38,91 @@ export function detonate(target, actor, ability, state) {
 
     const explosionDamage = baseDamage * detonationMultiplier;
 
-    applyDamage(target, actor, {
+    const damageDone = applyDamage(target, actor, {
         ...ability,
         value: explosionDamage,
     }, state);
 
     state.log.push(
-        `${target.name} detonated ${removedCount} stack(s) of ${debuffId}`
+        `${removedCount} stack(s) of ${debuffId} detonated on ${target.name}`
     );
 
     // ==============================
-    // 3. SPLASH DAMAGE
+    // 3. DETONATION EFFECT
     // ==============================
-    const enemies = getFriendlyUnits(state, target);
 
-    const splashTargets = enemies.filter(u => u.id !== target.id);
+    switch (ability.detonatorEffect) {
+        case "bomber":
+            // ==============================
+            // SPLASH DAMAGE
+            // ==============================
+            const splashTargets = enemies.filter(u => u.id !== target.id);
 
-    const splashDamage = explosionDamage * 0.4;
+            const splashDamage = explosionDamage * 0.4;
 
-    for (const enemy of splashTargets) {
-        applyDamage(enemy, actor, {
-            ...ability,
-            value: splashDamage,
-        }, state);
+            for (const enemy of splashTargets) {
+                applyDamage(enemy, actor, {
+                    ...ability,
+                    value: splashDamage,
+                }, state);
+            }
+
+            if (splashTargets.length > 0) {
+                state.log.push(
+                    `Explosion deals splash damage to ${splashTargets.length} targets`
+                );
+            }
+            break;
+
+        case "spike":
+            // ==============================
+            // SINGLE TARGET DAMAGE
+            // ==============================
+            const spikeDamage = applyDamage(target, actor, {
+                ...ability,
+                value: explosionDamage,
+            }, state);
+
+            state.log.push(
+                `Spike deals another ${spikeDamage} damage to ${target.name}`
+            );
+
+            break;
+
+        case "vampire":
+            // ==============================
+            // HEAL FROM DAMAGE
+            // ==============================
+            actor.stats.currentShield += damageDone;
+
+            state.log.push(
+                `${actor.name} reloads shield by ${damageDone}`
+            );
+
+            break;
+    
+        case "spreader":
+            // ==============================
+            // SPREAD THE DEBUFF TO THE FLEET
+            // ==============================
+            const spreadTargets = enemies.filter(u => u.id !== target.id);
+
+            for (const enemy of spreadTargets) {
+                for(let i = 0; i < removedCount; i++){
+                    applyDebuff(enemy, debuffId);
+                }
+            }
+
+            if (spreadTargets.length > 0) {
+                state.log.push(
+                    `Spreading ${debuffId} to ${spreadTargets.length} targets`
+                );
+            }
+            break;
+
+        default:
+            break;
     }
 
-    if (splashTargets.length > 0) {
-        state.log.push(
-            `Explosion deals splash damage to ${splashTargets.length} targets`
-        );
-    }
+
 }

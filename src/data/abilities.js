@@ -119,6 +119,7 @@ export const detonatorAbilityCollection = {
         type: "kinetic",
         primer: false,
         detonator: true,
+        detonatorEffect: "bomber",
         value: detonatorBaseDamage,
         cooldown: baseCooldown,
         appliesDebuff: null,
@@ -132,6 +133,7 @@ export const detonatorAbilityCollection = {
         type: "laser",
         primer: false,
         detonator: true,
+        detonatorEffect: "bomber",
         value: detonatorBaseDamage,
         cooldown: baseCooldown,
         appliesDebuff: null,
@@ -145,6 +147,7 @@ export const detonatorAbilityCollection = {
         type: "kinetic",
         primer: false,
         detonator: true,
+        detonatorEffect: "bomber",
         value: detonatorBaseDamage,
         cooldown: baseCooldown,
         appliesDebuff: null,
@@ -158,6 +161,7 @@ export const detonatorAbilityCollection = {
         type: "laser",
         primer: false,
         detonator: true,
+        detonatorEffect: "bomber",
         value: detonatorBaseDamage,
         cooldown: baseCooldown,
         appliesDebuff: null,
@@ -171,6 +175,7 @@ export const detonatorAbilityCollection = {
         type: "kinetic",
         primer: false,
         detonator: true,
+        detonatorEffect: "bomber",
         value: detonatorBaseDamage,
         cooldown: baseCooldown,
         appliesDebuff: null,
@@ -184,6 +189,7 @@ export const detonatorAbilityCollection = {
         type: "laser",
         primer: false,
         detonator: true,
+        detonatorEffect: "bomber",
         value: detonatorBaseDamage,
         cooldown: baseCooldown,
         appliesDebuff: null,
@@ -211,18 +217,22 @@ export const abilityCollection = {
     detonator_offensive_laser_shocked: detonatorAbilityCollection.detonator_offensive_laser_shocked,
 }
 
-function randomItem(array) {
+function randomItem(array)
+{
     return array[Math.floor(Math.random() * array.length)];
 }
 
-export function getRandomNeutralAbility(){
+export function getRandomNeutralAbility()
+{
     return randomItem(Object.keys(neutralAbilityCollection));
 }
 
-export function getRandomPrimerAbility(){
+export function getRandomPrimerAbility()
+{
     return randomItem(Object.keys(primerAbilityCollection));
 }
 
-export function getRandomDetonatorAbility(){
+export function getRandomDetonatorAbility()
+{
     return randomItem(Object.keys(detonatorAbilityCollection));
 }
