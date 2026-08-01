@@ -79,6 +79,18 @@ export default function Ship({
                         color="#ef4444"
                     />
 
+                    <div style={{
+                        transition: "width 0.2s, left 0.2s, top 0.2s, font-size 0.4s",
+                        width: isTargeted || isActive ? 60 : 30,
+                        marginTop: 0,
+                        color: isTargeted ? "red" : isActive ? "cyan" : "black",
+                        position: "relative",
+                        left: isTargeted || isActive ? 60 : 30,
+                        top: isTargeted || isActive ? 45 : 30,
+                        zIndex: 1,
+                        fontSize: isTargeted || isActive ? "1em" : "0.0em",
+                    }}>{unit.name}</div>
+
                     {damageFlash && (
                         <div
                             style={{
@@ -187,33 +199,36 @@ export default function Ship({
                         <div
                             style={{
                                 position: "absolute",
-                                bottom: isTargeted || isActive ? -10 : -4,
+                                bottom: isTargeted || isActive ? -10 : -20,
                                 display: "flex",
                                 gap: 4,
-                                padding: "2px 6px",
                                 borderRadius: 999,
-                                background: "rgba(0,0,0,0.55)",
-                                backdropFilter: "blur(2px)",
                             }}
                         >
                             {activeDebuffs.map((debuff, index) => (
                                 <div
                                     key={`${debuff.id}-${index}`}
-                                    title={`${debuff.id} (${debuffs[debuff.id].duration})`}
+                                    title={`${debuff.id} (${debuff.duration})`}
                                     style={{
                                         width: isTargeted || isActive ? 10 : 8,
                                         height: isTargeted || isActive ? 10 : 8,
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        fontSize: "0.8em",
                                         borderRadius: "50%",
-                                        background:
-                                            debuffs[debuff.id].color ?? "#ffffff",
+                                        color: "#b4b4b4",
                                         boxShadow: `
                                             0 0 6px ${
                                                 debuffs[debuff.id].color ?? "#fff"
                                             }
                                         `,
-                                        border: "1px solid rgba(255,255,255,0.4)",
+                                        background: "conic-gradient(transparent 0deg " + 120 * (3 - debuff.duration) + "deg, " + debuffs[debuff.id].color + " 0deg 360deg)",
+                                        border: "1px solid" + debuffs[debuff.id].color,
                                     }}
-                                />
+                                >
+                                    <div style={{ position: "relative", top: "12px", left: "0px" }}>{debuff.duration}</div>
+                                </div>
                             ))}
                         </div>
                     )}
