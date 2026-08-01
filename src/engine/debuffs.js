@@ -46,7 +46,7 @@ export function applyDebuff(target, debuffId) {
 
     target.stats.debuffs.push({
         id: debuffId,
-        duration: 2,
+        duration: 3,
     });
 }
 
