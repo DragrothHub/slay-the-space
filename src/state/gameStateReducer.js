@@ -105,7 +105,7 @@ export function gameStateReducer(state, action)
             };
 
         case "START_BATTLE":
-
+            
             return {
                 ...state,
 
@@ -129,6 +129,11 @@ export function gameStateReducer(state, action)
             };
         
         case "FINISH_BATTLE":
+            
+            // Reset cds
+            state.run.battle.teams.A.forEach(ship => {
+                ship.stats.cooldowns = [];
+            });
 
             return {
                 ...state,
