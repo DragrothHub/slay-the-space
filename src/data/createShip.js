@@ -17,10 +17,10 @@ import { baseValue } from "./constants";
 // SHIP FACTORY
 // ========================================
 
-export function createShip() {
+export function createShip(numberOfModules = 2, numberOfAttributePoints = 360) {
     const shipClass = getRandomShipClass();
 
-    const attributes = distributePoints(shipClassAttributeDistributions[shipClass]);
+    const attributes = distributePoints(shipClassAttributeDistributions[shipClass], numberOfAttributePoints);
 
     const ship = {
         id: crypto.randomUUID(),
@@ -30,10 +30,7 @@ export function createShip() {
         color: "",
         image: randomItem(shipImages),
 
-        modules: [
-            getRandomModule(),
-            getRandomModule(),
-        ],
+        modules: [],
 
         abilities: [
             getRandomNeutralAbility(),
@@ -45,6 +42,10 @@ export function createShip() {
 
         manufacturer: determineManufacturer(attributes),
     };
+
+    for(let i = 0; i < numberOfModules; i++){
+        ship.modules.push(getRandomModule());
+    }
 
     ship.stats = calculateShipStats(ship);
 
