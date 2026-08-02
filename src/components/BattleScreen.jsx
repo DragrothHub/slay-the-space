@@ -3,14 +3,50 @@ import BattleField from "./BattleField";
 import ActionPanel from "./ActionPanel";
 import BattleLog from "./BattleLog";
 import { useGameState } from "../state/GameStateProvider";
+import { createShip } from "../data/createShip";
 
-export default function BattleScreen({ enemyFleet }) {
+export default function BattleScreen() {
 
     const { gameState, setScreen, startBattle, finishBattle } = useGameState();
     const battle = gameState.run?.battle;
 
+    function getEnemyFleetByNode(node){
+
+        let enemyFleet = [];
+
+        switch (gameState.run.map.nodeLookup[gameState.run.currentNodeId].type) {
+            case "combat":
+                for(let i = 1; i <= Math.min(gameState.run.map.nodeLookup[gameState.run.currentNodeId].layer, 4); i++){
+                    enemyFleet.push(createShip(0));
+                }
+                break;
+
+            case "elite":
+                for(let i = 1; i <= Math.min(gameState.run.map.nodeLookup[gameState.run.currentNodeId].layer, 4); i++){
+                    enemyFleet.push(createShip(1));
+                }
+                break;
+
+            case "boss":
+                enemyFleet.push(createShip(0));
+                enemyFleet.push(createShip(6));
+                enemyFleet.push(createShip(0));
+                break;
+
+            case "repair":
+                
+        
+            default:
+                setScreen("map");
+                break;
+        }
+
+        return enemyFleet;
+    }
+
     // Init battle
     useEffect(() => {
+        let enemyFleet = getEnemyFleetByNode(gameState.run.map.nodeLookup[gameState.run.currentNodeId]);
         startBattle(enemyFleet);
     }, []);
 

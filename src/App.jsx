@@ -13,11 +13,6 @@ function App()
 
   const { gameState, setScreen } = useGameState();
 
-  const enemyFleet = [
-    createShip(),
-    createShip(),
-  ];
-
   return (
     <>
       {gameState.screen === "map" && (
@@ -63,9 +58,7 @@ function App()
       )}
 
       {gameState.screen === "battle" && (
-        <BattleScreen
-          enemyFleet={enemyFleet}
-        />
+        <BattleScreen/>
       )}
     </>
   );
