@@ -1,12 +1,12 @@
 const NodeTypes = Object.freeze({
-    START: "start",
-    COMBAT: "combat",
-    ELITE: "elite",
-    EVENT: "event",
-    SHOP: "shop",
-    TREASURE: "treasure",
-    REPAIR: "repair",
-    BOSS: "boss",
+    START: "start",         //"#00ff99"
+    COMBAT: "combat",       //"#66ccff"
+    ELITE: "elite",         //"#ff4444"
+    EVENT: "event",         //"#ffcc00"
+    SHOP: "shop",           //"#bb88ff"
+    TREASURE: "treasure",   //"#ffaa33"
+    REPAIR: "repair",       //"#44ff44"
+    BOSS: "boss",           //"#ffffff"
 });
 
 export default NodeTypes;
