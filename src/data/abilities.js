@@ -1,221 +1,304 @@
 import { neutralBaseDamage, primerBaseDamage, detonatorBaseDamage, baseCooldown } from "./constants";
 import { debuffs } from "../engine/debuffs";
 
-export const neutralAbilityCollection = {
-    neutral_offensive_kinetic: {
+const neutralTemplates = [
+    {
         id: "neutral_offensive_kinetic",
         displayName: "Neutral_1",
-        category: "offensive",
         type: "kinetic",
-        primer: false,
-        detonator: false,
-        value: neutralBaseDamage,
-        cooldown: 0,
-        appliesDebuff: null,
-        detonatesDebuff: null,
-        remainingCooldown: 0,
     },
-    neutral_offensive_laser: {
+    {
         id: "neutral_offensive_laser",
         displayName: "Neutral_1",
-        category: "offensive",
         type: "laser",
+    }
+]
+
+const primerTemplates = [
+    {
+        id: "primer_offensive_laser_weakenedShields",
+        displayName: "Primer_1",
+        type: "laser",
+        appliesDebuff: debuffs.weakened_shields.id,
+    },
+    {
+        id: "primer_offensive_kinetic_weakenedArmor",
+        displayName: "Primer_2",
+        type: "kinetic",
+        appliesDebuff: debuffs.weakened_armor.id,
+    },
+    {
+        id: "primer_offensive_kinetic_weakened",
+        displayName: "Primer_3.1",
+        type: "kinetic",
+        appliesDebuff: debuffs.weakened.id,
+    },
+    {
+        id: "primer_offensive_laser_weakened",
+        displayName: "Primer_3.2",
+        type: "laser",
+        appliesDebuff: debuffs.weakened.id,
+    },
+    {
+        id: "primer_offensive_kinetic_stunned",
+        displayName: "Primer_4",
+        type: "kinetic",
+        appliesDebuff: debuffs.stunned.id,
+    },
+    {
+        id: "primer_offensive_laser_shocked",
+        displayName: "Primer_5",
+        type: "laser",
+        appliesDebuff: debuffs.shocked.id,
+    },
+]
+
+const detonatorTemplates = [
+    // VAMPIRE
+    {
+        id: "detonator_offensive_kinetic_weakenedShields_vampire",
+        displayName: "Detonator_1_vampire",
+        type: "kinetic",
+        detonatorEffect: "vampire",
+        detonatesDebuff: debuffs.weakened_shields.id,
+    },
+    {
+        id: "detonator_offensive_laser_weakenedArmor_vampire",
+        displayName: "Detonator_2_vampire",
+        type: "laser",
+        detonatorEffect: "vampire",
+        detonatesDebuff: debuffs.weakened_armor.id,
+    },
+    {
+        id: "detonator_offensive_kinetic_weakened_vampire",
+        displayName: "Detonator_3.1_vampire",
+        type: "kinetic",
+        detonatorEffect: "vampire",
+        detonatesDebuff: debuffs.weakened.id,
+    },
+    {
+        id: "detonator_offensive_laser_weakened_vampire",
+        displayName: "Detonator_3.2_vampire",
+        type: "laser",
+        detonatorEffect: "vampire",
+        detonatesDebuff: debuffs.weakened.id,
+    },
+    {
+        id: "detonator_offensive_kinetic_stunned_vampire",
+        displayName: "Detonator_4_vampire",
+        type: "kinetic",
+        detonatorEffect: "vampire",
+        detonatesDebuff: debuffs.stunned.id,
+    },
+    {
+        id: "detonator_offensive_laser_shocked_vampire",
+        displayName: "Detonator_5_vampire",
+        type: "laser",
+        detonatorEffect: "vampire",
+        detonatesDebuff: debuffs.shocked.id,
+    },
+    // BOMBER
+    {
+        id: "detonator_offensive_kinetic_weakenedShields_bomber",
+        displayName: "Detonator_1_bomber",
+        type: "kinetic",
+        detonatorEffect: "bomber",
+        detonatesDebuff: debuffs.weakened_shields.id,
+    },
+    {
+        id: "detonator_offensive_laser_weakenedArmor_bomber",
+        displayName: "Detonator_2_bomber",
+        type: "laser",
+        detonatorEffect: "bomber",
+        detonatesDebuff: debuffs.weakened_armor.id,
+    },
+    {
+        id: "detonator_offensive_kinetic_weakened_bomber",
+        displayName: "Detonator_3.1_bomber",
+        type: "kinetic",
+        detonatorEffect: "bomber",
+        detonatesDebuff: debuffs.weakened.id,
+    },
+    {
+        id: "detonator_offensive_laser_weakened_bomber",
+        displayName: "Detonator_3.2_bomber",
+        type: "laser",
+        detonatorEffect: "bomber",
+        detonatesDebuff: debuffs.weakened.id,
+    },
+    {
+        id: "detonator_offensive_kinetic_stunned_bomber",
+        displayName: "Detonator_4_bomber",
+        type: "kinetic",
+        detonatorEffect: "bomber",
+        detonatesDebuff: debuffs.stunned.id,
+    },
+    {
+        id: "detonator_offensive_laser_shocked_bomber",
+        displayName: "Detonator_5_bomber",
+        type: "laser",
+        detonatorEffect: "bomber",
+        detonatesDebuff: debuffs.shocked.id,
+    },
+    // SPIKE
+    {
+        id: "detonator_offensive_kinetic_weakenedShields_spike",
+        displayName: "Detonator_1_spike",
+        type: "kinetic",
+        detonatorEffect: "spike",
+        detonatesDebuff: debuffs.weakened_shields.id,
+    },
+    {
+        id: "detonator_offensive_laser_weakenedArmor_spike",
+        displayName: "Detonator_2_spike",
+        type: "laser",
+        detonatorEffect: "spike",
+        detonatesDebuff: debuffs.weakened_armor.id,
+    },
+    {
+        id: "detonator_offensive_kinetic_weakened_spike",
+        displayName: "Detonator_3.1_spike",
+        type: "kinetic",
+        detonatorEffect: "spike",
+        detonatesDebuff: debuffs.weakened.id,
+    },
+    {
+        id: "detonator_offensive_laser_weakened_spike",
+        displayName: "Detonator_3.2_spike",
+        type: "laser",
+        detonatorEffect: "spike",
+        detonatesDebuff: debuffs.weakened.id,
+    },
+    {
+        id: "detonator_offensive_kinetic_stunned_spike",
+        displayName: "Detonator_4_spike",
+        type: "kinetic",
+        detonatorEffect: "spike",
+        detonatesDebuff: debuffs.stunned.id,
+    },
+    {
+        id: "detonator_offensive_laser_shocked_spike",
+        displayName: "Detonator_5_spike",
+        type: "laser",
+        detonatorEffect: "spike",
+        detonatesDebuff: debuffs.shocked.id,
+    },
+    // SPREADER
+    {
+        id: "detonator_offensive_kinetic_weakenedShields_spreader",
+        displayName: "Detonator_1_spreader",
+        type: "kinetic",
+        detonatorEffect: "spreader",
+        detonatesDebuff: debuffs.weakened_shields.id,
+    },
+    {
+        id: "detonator_offensive_laser_weakenedArmor_spreader",
+        displayName: "Detonator_2_spreader",
+        type: "laser",
+        detonatorEffect: "spreader",
+        detonatesDebuff: debuffs.weakened_armor.id,
+    },
+    {
+        id: "detonator_offensive_kinetic_weakened_spreader",
+        displayName: "Detonator_3.1_spreader",
+        type: "kinetic",
+        detonatorEffect: "spreader",
+        detonatesDebuff: debuffs.weakened.id,
+    },
+    {
+        id: "detonator_offensive_laser_weakened_spreader",
+        displayName: "Detonator_3.2_spreader",
+        type: "laser",
+        detonatorEffect: "spreader",
+        detonatesDebuff: debuffs.weakened.id,
+    },
+    {
+        id: "detonator_offensive_kinetic_stunned_spreader",
+        displayName: "Detonator_4_spreader",
+        type: "kinetic",
+        detonatorEffect: "spreader",
+        detonatesDebuff: debuffs.stunned.id,
+    },
+    {
+        id: "detonator_offensive_laser_shocked_spreader",
+        displayName: "Detonator_5_spreader",
+        type: "laser",
+        detonatorEffect: "spreader",
+        detonatesDebuff: debuffs.shocked.id,
+    },
+]
+
+function buildNeutral(template) {
+    return {
+        id: template.id,
+        displayName: template.displayName,
+        type: template.type,
+
+        category: "offensive",
         primer: false,
         detonator: false,
         value: neutralBaseDamage,
         cooldown: 0,
+        remainingCooldown: 0,
         appliesDebuff: null,
         detonatesDebuff: null,
-        remainingCooldown: 0,
-    },
+    };
 }
 
-export const primerAbilityCollection = {
-    primer_offensive_laser_weakenedShields: {
-        id: "primer_offensive_laser_weakenedShields",
-        displayName: "Primer_1",
+function buildPrimer(template) {
+    return {
+        id: template.id,
+        displayName: template.displayName,
+        type: template.type,
+        appliesDebuff: template.appliesDebuff,
+
         category: "offensive",
-        type: "laser",
         primer: true,
         detonator: false,
         value: primerBaseDamage,
         cooldown: baseCooldown,
-        appliesDebuff: debuffs.weakened_shields.id,
-        detonatesDebuff: null,
         remainingCooldown: 0,
-    },
-    primer_offensive_kinetic_weakenedArmor: {
-        id: "primer_offensive_kinetic_weakenedArmor",
-        displayName: "Primer_2",
-        category: "offensive",
-        type: "kinetic",
-        primer: true,
-        detonator: false,
-        value: primerBaseDamage,
-        cooldown: baseCooldown,
-        appliesDebuff: debuffs.weakened_armor.id,
         detonatesDebuff: null,
-        remainingCooldown: 0,
-    },
-    primer_offensive_kinetic_weakened: {
-        id: "primer_offensive_kinetic_weakened",
-        displayName: "Primer_3.1",
-        category: "offensive",
-        type: "kinetic",
-        primer: true,
-        detonator: false,
-        value: primerBaseDamage,
-        cooldown: baseCooldown,
-        appliesDebuff: debuffs.weakened.id,
-        detonatesDebuff: null,
-        remainingCooldown: 0,
-    },
-    primer_offensive_laser_weakened: {
-        id: "primer_offensive_laser_weakened",
-        displayName: "Primer_3.2",
-        category: "offensive",
-        type: "laser",
-        primer: true,
-        detonator: false,
-        value: primerBaseDamage,
-        cooldown: baseCooldown,
-        appliesDebuff: debuffs.weakened.id,
-        detonatesDebuff: null,
-        remainingCooldown: 0,
-    },
-    primer_offensive_kinetic_stunned: {
-        id: "primer_offensive_kinetic_stunned",
-        displayName: "Primer_4",
-        category: "offensive",
-        type: "kinetic",
-        primer: true,
-        detonator: false,
-        value: primerBaseDamage,
-        cooldown: baseCooldown,
-        appliesDebuff: debuffs.stunned.id,
-        detonatesDebuff: null,
-        remainingCooldown: 0,
-    },
-    primer_offensive_laser_shocked: {
-        id: "primer_offensive_laser_shocked",
-        displayName: "Primer_5",
-        category: "offensive",
-        type: "laser",
-        primer: true,
-        detonator: false,
-        value: primerBaseDamage,
-        cooldown: baseCooldown,
-        appliesDebuff: debuffs.shocked.id,
-        detonatesDebuff: null,
-        remainingCooldown: 0,
-    },
+    };
 }
 
-export const detonatorAbilityCollection = {
-    detonator_offensive_kinetic_weakenedShields: {
-        id: "detonator_offensive_kinetic_weakenedShields",
-        displayName: "Detonator_1",
+function buildDetonator(template) {
+    return {
+        id: template.id,
+        displayName: template.displayName,
+        type: template.type,
+        detonatorEffect: template.detonatorEffect,
+        detonatesDebuff: template.detonatesDebuff,
+
         category: "offensive",
-        type: "kinetic",
         primer: false,
         detonator: true,
-        detonatorEffect: "bomber",
         value: detonatorBaseDamage,
         cooldown: baseCooldown,
-        appliesDebuff: null,
-        detonatesDebuff: debuffs.weakened_shields.id,
         remainingCooldown: 0,
-    },
-    detonator_offensive_laser_weakenedArmor: {
-        id: "detonator_offensive_laser_weakenedArmor",
-        displayName: "Detonator_2",
-        category: "offensive",
-        type: "laser",
-        primer: false,
-        detonator: true,
-        detonatorEffect: "bomber",
-        value: detonatorBaseDamage,
-        cooldown: baseCooldown,
         appliesDebuff: null,
-        detonatesDebuff: debuffs.weakened_armor.id,
-        remainingCooldown: 0,
-    },
-    detonator_offensive_kinetic_weakened: {
-        id: "detonator_offensive_kinetic_weakened",
-        displayName: "Detonator_3.1",
-        category: "offensive",
-        type: "kinetic",
-        primer: false,
-        detonator: true,
-        detonatorEffect: "bomber",
-        value: detonatorBaseDamage,
-        cooldown: baseCooldown,
-        appliesDebuff: null,
-        detonatesDebuff: debuffs.weakened.id,
-        remainingCooldown: 0,
-    },
-    detonator_offensive_laser_weakened: {
-        id: "detonator_offensive_laser_weakened",
-        displayName: "Detonator_3.2",
-        category: "offensive",
-        type: "laser",
-        primer: false,
-        detonator: true,
-        detonatorEffect: "bomber",
-        value: detonatorBaseDamage,
-        cooldown: baseCooldown,
-        appliesDebuff: null,
-        detonatesDebuff: debuffs.weakened.id,
-        remainingCooldown: 0,
-    },
-    detonator_offensive_kinetic_stunned: {
-        id: "detonator_offensive_kinetic_stunned",
-        displayName: "Detonator_4",
-        category: "offensive",
-        type: "kinetic",
-        primer: false,
-        detonator: true,
-        detonatorEffect: "bomber",
-        value: detonatorBaseDamage,
-        cooldown: baseCooldown,
-        appliesDebuff: null,
-        detonatesDebuff: debuffs.stunned.id,
-        remainingCooldown: 0,
-    },
-    detonator_offensive_laser_shocked: {
-        id: "detonator_offensive_laser_shocked",
-        displayName: "Detonator_5",
-        category: "offensive",
-        type: "laser",
-        primer: false,
-        detonator: true,
-        detonatorEffect: "bomber",
-        value: detonatorBaseDamage,
-        cooldown: baseCooldown,
-        appliesDebuff: null,
-        detonatesDebuff: debuffs.shocked.id,
-        remainingCooldown: 0,
-    },
+    };
 }
 
-export const abilityCollection = {
-    neutral_offensive_kinetic: neutralAbilityCollection.neutral_offensive_kinetic,
-    neutral_offensive_laser: neutralAbilityCollection.neutral_offensive_laser,
+export const abilityCollection = {};
+export const neutralAbilityCollection = {};
+export const primerAbilityCollection = {};
+export const detonatorAbilityCollection = {};
 
-    primer_offensive_laser_weakenedShields: primerAbilityCollection.primer_offensive_laser_weakenedShields,
-    primer_offensive_kinetic_weakenedArmor: primerAbilityCollection.primer_offensive_kinetic_weakenedArmor,
-    primer_offensive_kinetic_weakened: primerAbilityCollection.primer_offensive_kinetic_weakened,
-    primer_offensive_laser_weakened: primerAbilityCollection.primer_offensive_laser_weakened,
-    primer_offensive_kinetic_stunned: primerAbilityCollection.primer_offensive_kinetic_stunned,
-    primer_offensive_laser_shocked: primerAbilityCollection.primer_offensive_laser_shocked,
+neutralTemplates.forEach(template => {
+    abilityCollection[template.id] = buildNeutral(template);
+    neutralAbilityCollection[template.id] = abilityCollection[template.id];
+});
 
-    detonator_offensive_kinetic_weakenedShields: detonatorAbilityCollection.detonator_offensive_kinetic_weakenedShields,
-    detonator_offensive_laser_weakenedArmor: detonatorAbilityCollection.detonator_offensive_laser_weakenedArmor,
-    detonator_offensive_kinetic_weakened: detonatorAbilityCollection.detonator_offensive_kinetic_weakened,
-    detonator_offensive_laser_weakened: detonatorAbilityCollection.detonator_offensive_laser_weakened,
-    detonator_offensive_kinetic_stunned: detonatorAbilityCollection.detonator_offensive_kinetic_stunned,
-    detonator_offensive_laser_shocked: detonatorAbilityCollection.detonator_offensive_laser_shocked,
-}
+primerTemplates.forEach(template => {
+    abilityCollection[template.id] = buildPrimer(template);
+    primerAbilityCollection[template.id] = abilityCollection[template.id];
+});
+
+detonatorTemplates.forEach(template => {
+    abilityCollection[template.id] = buildDetonator(template);
+    detonatorAbilityCollection[template.id] = abilityCollection[template.id];
+});
 
 function randomItem(array)
 {
