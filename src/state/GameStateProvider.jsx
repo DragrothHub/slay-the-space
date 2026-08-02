@@ -71,15 +71,6 @@ export default function GameStateProvider({ children }) {
 
     }
 
-    function startBattle(enemyFleet) {
-
-        dispatch({
-            type: "SET_CURRENT_BATTLE",
-            enemyFleet,
-        });
-
-    }
-
     //--------------------
     // Ships
     //--------------------
