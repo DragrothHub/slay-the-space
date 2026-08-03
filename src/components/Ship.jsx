@@ -61,21 +61,30 @@ export default function Ship({
                     <StatBarSmall
                         bigger={isTargeted || isActive}
                         value={unit.stats?.currentShield ?? 0}
-                        max={unit.stats?.maxShield ?? 0}
+                        max={Math.max(
+                                unit.stats?.maxShield ?? 0,
+                                unit.stats?.currentShield ?? 0
+                            )}
                         color="#3b82f6"
                     />
 
                     <StatBarSmall
                         bigger={isTargeted || isActive}
                         value={unit.stats?.currentArmor ?? 0}
-                        max={unit.stats?.maxArmor ?? 0}
+                        max={Math.max(
+                                unit.stats?.maxArmor ?? 0,
+                                unit.stats?.currentArmor ?? 0
+                            )}
                         color="#f59e0b"
                     />
 
                     <StatBarSmall
                         bigger={isTargeted || isActive}
                         value={unit.stats?.currentHull ?? 0}
-                        max={unit.stats?.maxHull ?? 0}
+                        max={Math.max(
+                                unit.stats?.maxHull ?? 0,
+                                unit.stats?.currentHull ?? 0
+                            )}
                         color="#ef4444"
                     />
 
