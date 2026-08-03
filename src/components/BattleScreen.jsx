@@ -7,22 +7,22 @@ import { createShip } from "../data/createShip";
 
 export default function BattleScreen() {
 
-    const { gameState, setScreen, startBattle, finishBattle } = useGameState();
+    const { gameState, currentNode, setScreen, startBattle, finishBattle } = useGameState();
     const battle = gameState.run?.battle;
 
     function getEnemyFleetByNode(node){
 
         let enemyFleet = [];
 
-        switch (gameState.run.map.nodeLookup[gameState.run.currentNodeId].type) {
+        switch (currentNode.type) {
             case "combat":
-                for(let i = 1; i <= Math.min(gameState.run.map.nodeLookup[gameState.run.currentNodeId].layer, 4); i++){
+                for(let i = 1; i <= Math.min(currentNode.layer, 4); i++){
                     enemyFleet.push(createShip(0));
                 }
                 break;
 
             case "elite":
-                for(let i = 1; i <= Math.min(gameState.run.map.nodeLookup[gameState.run.currentNodeId].layer, 4); i++){
+                for(let i = 1; i <= Math.min(currentNode.layer, 4); i++){
                     enemyFleet.push(createShip(1));
                 }
                 break;
@@ -46,7 +46,7 @@ export default function BattleScreen() {
 
     // Init battle
     useEffect(() => {
-        let enemyFleet = getEnemyFleetByNode(gameState.run.map.nodeLookup[gameState.run.currentNodeId]);
+        let enemyFleet = getEnemyFleetByNode(currentNode);
         startBattle(enemyFleet);
     }, []);
 
