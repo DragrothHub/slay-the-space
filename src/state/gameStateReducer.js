@@ -51,24 +51,9 @@ export function gameStateReducer(state, action)
                 },
             };
 
-        case "SET_CURRENT_BATTLE":
-
-            return {
-                ...state,
-
-                screen: "battle",
-
-                run: {
-                    ...state.run,
-                    battle: action.enemyFleet,
-                },
-            };
-
         case "MOVE_TO_NODE": {
 
-            const map = state.run.map;
-
-            const currentNode = map.nodeLookup[state.run.currentNodeId];
+            const currentNode = state.run.map.nodeLookup[state.run.currentNodeId];
 
             if (!currentNode.connections.includes(action.nodeId)) {
                 return state;
@@ -79,13 +64,9 @@ export function gameStateReducer(state, action)
                 ...state,
 
                 run: {
-
                     ...state.run,
 
-                    ...map,
-
                     currentNodeId: action.nodeId,
-
                 },
 
             };
@@ -131,9 +112,13 @@ export function gameStateReducer(state, action)
         case "FINISH_BATTLE":
             
             // Reset cds
-            state.run.battle.teams.A.forEach(ship => {
-                ship.stats.cooldowns = [];
-            });
+            const ships = state.run.battle.teams.A.map(ship => ({
+                ...ship,
+                stats: {
+                    ...ship.stats,
+                    cooldowns: [],
+                },
+            }));
 
             return {
                 ...state,
@@ -141,7 +126,7 @@ export function gameStateReducer(state, action)
                 run: {
                     ...state.run,
 
-                    ships: state.run.battle.teams.A,
+                    ships: ships,
 
                     battle: null,
                 },
