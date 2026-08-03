@@ -3,7 +3,7 @@ const NodeTypes = Object.freeze({
     COMBAT: "combat",       //"#66ccff"
     ELITE: "elite",         //"#ff4444"
     EVENT: "event",         //"#ffcc00"
-    SHOP: "shop",           //"#bb88ff"
+    DOCK: "dock",           //"#bb88ff"
     TREASURE: "treasure",   //"#ffaa33"
     REPAIR: "repair",       //"#44ff44"
     BOSS: "boss",           //"#ffffff"

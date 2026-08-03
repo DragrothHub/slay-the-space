@@ -8,6 +8,7 @@ export default function assignNodeTypes(nodes, random) {
 
         if (!node.reachable) return;
 
+        // start on zero layer
         if (node.layer === 0) {
 
             node.type = NodeTypes.START;
@@ -15,6 +16,7 @@ export default function assignNodeTypes(nodes, random) {
 
         }
 
+        // boss on last layer
         if (node.layer === maxLayer) {
 
             node.type = NodeTypes.BOSS;
@@ -22,7 +24,7 @@ export default function assignNodeTypes(nodes, random) {
 
         }
 
-        // elite on half
+        // elite on half run
         if (node.layer === 7) {
 
             node.type = NodeTypes.ELITE;
@@ -42,7 +44,7 @@ export default function assignNodeTypes(nodes, random) {
 
         } else if (roll < 0.87) {
 
-            node.type = NodeTypes.SHOP;
+            node.type = NodeTypes.DOCK;
 
         } else if (roll < 0.95) {
 

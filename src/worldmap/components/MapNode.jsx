@@ -9,7 +9,7 @@ const colors = {
 
     [NodeTypes.EVENT]: "#ffcc00",
 
-    [NodeTypes.SHOP]: "#bb88ff",
+    [NodeTypes.DOCK]: "#bb88ff",
 
     [NodeTypes.TREASURE]: "#ffaa33",
 
@@ -26,8 +26,62 @@ export default function MapNode({ node }) {
     const { setScreen, moveToNode, currentNode, availableNodes } = useGameState();
 
     function handleClick(){
+
         moveToNode(node.id);
-        setScreen("battle");
+
+        switch (node.type) {
+            case NodeTypes.COMBAT:
+                console.log(NodeTypes.COMBAT);
+
+                setScreen("battle");
+                break;
+        
+            case NodeTypes.ELITE:
+                console.log(NodeTypes.ELITE);
+
+                setScreen("battle");
+                break;
+
+            case NodeTypes.BOSS:
+                console.log(NodeTypes.BOSS);
+
+                setScreen("battle");
+                break;
+
+            case NodeTypes.DOCK:
+                console.log(NodeTypes.DOCK);
+
+            
+                // setScreen("dock");
+                break;
+
+            case NodeTypes.TREASURE:
+                console.log(NodeTypes.TREASURE);
+
+                // setScreen("treasure");
+                break;
+
+            case NodeTypes.EVENT:
+                console.log(NodeTypes.EVENT);
+
+                // setScreen("event");
+                break;
+
+            case NodeTypes.REPAIR:
+                console.log(NodeTypes.REPAIR);
+
+                // setScreen("repair");
+                break;
+
+            case NodeTypes.START:
+                console.log(NodeTypes.START);
+
+                setScreen("map");
+                break;
+
+            default:
+                break;
+        }
     }
 
     const selectable = availableNodes.some(n => n.id === node.id);

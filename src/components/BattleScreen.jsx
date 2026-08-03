@@ -32,10 +32,7 @@ export default function BattleScreen() {
                 enemyFleet.push(createShip(6));
                 enemyFleet.push(createShip(0));
                 break;
-
-            case "repair":
                 
-        
             default:
                 setScreen("map");
                 break;
