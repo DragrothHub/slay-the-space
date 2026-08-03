@@ -66,6 +66,7 @@ export default function ActionPanel() {
                         {actor.abilities.map(a => {
                             return (
                                 <AbilityCard 
+                                    key={a}
                                     abilityId={a} 
                                     actor={actor} 
                                     target={getTargetUnit(battle)} 

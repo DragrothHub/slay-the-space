@@ -41,6 +41,7 @@ export default function WorldMap({ startBattle }) {
                         node.connections.map(connection => (
 
                             <MapConnection
+                                key={node.id + "_" + map.nodeLookup[connection].id}
                                 from={node}
                                 to={map.nodeLookup[connection]}
                             />
@@ -58,12 +59,6 @@ export default function WorldMap({ startBattle }) {
                     <MapNode
                         key={node.id}
                         node={node}
-                        selectable={availableNodes.some(n => n.id === node.id)}
-                        current={currentNode.id === node.id}
-                        onClick={() => {
-                            moveToNode(node.id);
-                            setScreen("battle");
-                        }}
                     />
 
                 ))}

@@ -64,12 +64,13 @@ function ShipCard({ ship, close, closeText, children })
                         "repeat(auto-fit, minmax(280px, 1fr))",
                     gap: 4,
                 }}>
-                    {ship.modules.map(a =>
+                    {ship.modules.map((moduleId, index) =>
                     {
-                        let module = moduleCollection[a];
-
+                        let module = moduleCollection[moduleId];
                         return (
-                            <ModuleCard module={module} />
+                            <ModuleCard
+                                key={module.id + "_" + index}
+                                module={module} />
                         )
                     })}
                 </div>
@@ -81,10 +82,12 @@ function ShipCard({ ship, close, closeText, children })
                         "repeat(auto-fit, minmax(280px, 1fr))",
                     gap: 4,
                 }}>
-                    {ship.abilities.map(a =>
+                    {ship.abilities.map(abilityId =>
                     {
                         return (
-                            <AbilityCard abilityId={a} />
+                            <AbilityCard
+                                key={abilityId}
+                                abilityId={abilityId} />
                         )
                     })}
                 </div>

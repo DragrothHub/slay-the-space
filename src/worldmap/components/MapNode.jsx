@@ -1,4 +1,5 @@
 import NodeTypes from "../constants/nodeTypes";
+import { useGameState } from "../../state/GameStateProvider";
 
 const colors = {
 
@@ -20,23 +21,22 @@ const colors = {
 
 };
 
-export default function MapNode({
+export default function MapNode({ node }) {
 
-    node,
+    const { setScreen, moveToNode, currentNode, availableNodes } = useGameState();
 
-    selectable,
+    function handleClick(){
+        moveToNode(node.id);
+        setScreen("battle");
+    }
 
-    current,
-
-    onClick,
-
-}) {
+    const selectable = availableNodes.some(n => n.id === node.id);
 
     return (
 
         <button
 
-            onClick={onClick}
+            onClick={handleClick}
 
             disabled={!selectable}
 
@@ -54,7 +54,7 @@ export default function MapNode({
 
                 borderRadius: "50%",
 
-                border: current
+                border: currentNode.id === node.id
                     ? "3px solid white"
                     : "2px solid #222",
 
@@ -62,7 +62,7 @@ export default function MapNode({
 
                 cursor: selectable ? "pointer" : "default",
 
-                opacity: selectable || current ? 1 : 0.4,
+                opacity: selectable || currentNode.id === node.id ? 1 : 0.4,
 
             }}
 
