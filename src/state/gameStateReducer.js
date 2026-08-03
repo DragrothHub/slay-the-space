@@ -117,6 +117,7 @@ export function gameStateReducer(state, action)
                 stats: {
                     ...ship.stats,
                     cooldowns: [],
+                    debuffs: [],
                 },
             }));
 
