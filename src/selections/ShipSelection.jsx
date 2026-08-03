@@ -1,20 +1,9 @@
-import { useMemo, useState } from "react";
 import { MiniShipCard } from "../components/ShipCard";
-import { createShip } from "../data/createShip";
 import ShipCard from "../components/ShipCard";
-import { useGameState } from "../state/GameStateProvider";
 import Selection from "./Selection";
 
-export default function ShipSelection({ ships, maxSelections })
+export default function ShipSelection({ ships, maxSelections, onConfirm })
 {
-
-    const { startRun } = useGameState();
-
-    function handleSelect(selectedShips)
-    {
-        startRun(selectedShips, Math.floor(Math.random() * 1000));
-    }
-
     return (
         <Selection
             items={ships}
@@ -88,7 +77,7 @@ export default function ShipSelection({ ships, maxSelections })
                 </div>
             )}
 
-            onConfirm={handleSelect}
+            onConfirm={onConfirm}
         />
     );
 }

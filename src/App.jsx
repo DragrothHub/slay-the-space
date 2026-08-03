@@ -11,7 +11,7 @@ import Selection from "./selections/Selection";
 function App()
 {
 
-  const { gameState, setScreen } = useGameState();
+  const { gameState, setScreen, startRun, updateShips } = useGameState();
 
   return (
     <>
@@ -19,7 +19,7 @@ function App()
         <WorldMap/>
       )}
 
-      {gameState.screen === "shipselection" && (
+      {gameState.screen === "initialshipselection" && (
         <ShipSelection
           ships={[
             createShip(),
@@ -29,6 +29,24 @@ function App()
             createShip(),
           ]}
           maxSelections={2}
+          onConfirm={(selectedShips) => startRun(selectedShips, Math.floor(Math.random() * 1000))}
+        />
+      )}
+
+      {gameState.screen === "dock" && (
+        <ShipSelection
+          ships={[
+            createShip(),
+            createShip(),
+            createShip(),
+          ]}
+          maxSelections={1}
+          onConfirm={(selectedShip) => {
+            let ships = [...gameState.run.ships, selectedShip[0]];
+            console.log(ships);
+            updateShips(ships);
+            setScreen("map");
+          }}
         />
       )}
 

@@ -52,7 +52,7 @@ export default function MapNode({ node }) {
                 console.log(NodeTypes.DOCK);
 
             
-                // setScreen("dock");
+                setScreen("dock");
                 break;
 
             case NodeTypes.TREASURE:
