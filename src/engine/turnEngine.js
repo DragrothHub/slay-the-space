@@ -188,6 +188,8 @@ export function confirmAction(state) {
     state.selectedAbilityId = null;
     state.phase = "select-ability";
 
+    resolveDeaths(state);
+
     checkVictory(state);
 
     if (!state.winner) {
@@ -265,4 +267,25 @@ function checkVictory(state) {
 
     if (!aliveA) state.winner = "B";
     if (!aliveB) state.winner = "A";
+}
+
+// ========================================
+// RESOLVE DEATHS
+// ========================================
+
+function resolveDeaths(state) {
+
+    getAllUnits(state).forEach(unit => {
+
+        if (unit.stats.currentHull > 0) return;
+        if (unit.destroyed) return;
+
+        unit.destroyed = true;
+
+        unit.stats.debuffs = [];
+
+        state.log.push(`${unit.name} was destroyed.`);
+    });
+
+    checkVictory(state);
 }

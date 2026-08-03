@@ -1,3 +1,4 @@
+import { use } from "react";
 import { applyDamage } from "./damage";
 import { applyDebuff } from "./debuffs";
 import { getFriendlyUnits } from "./helpers";
@@ -56,7 +57,7 @@ export function detonate(target, actor, ability, state) {
             // ==============================
             // SPLASH DAMAGE
             // ==============================
-            const splashTargets = enemies.filter(u => u.id !== target.id);
+            const splashTargets = enemies.filter(enemy => enemy.id !== target.id && enemy.stats.currentHull > 0);
 
             const splashDamage = explosionDamage * 0.4;
 
@@ -105,7 +106,7 @@ export function detonate(target, actor, ability, state) {
             // ==============================
             // SPREAD THE DEBUFF TO THE FLEET
             // ==============================
-            const spreadTargets = enemies.filter(u => u.id !== target.id);
+            const spreadTargets = enemies.filter(enemy => enemy.id !== target.id && enemy.stats.currentHull > 0);
 
             for (const enemy of spreadTargets) {
                 for(let i = 0; i < removedCount; i++){
