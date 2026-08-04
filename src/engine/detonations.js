@@ -121,6 +121,52 @@ export function detonate(target, actor, ability, state) {
             }
             break;
 
+        case "cascade":
+            // ==============================
+            // CASCADE EXPLOSIONS
+            // ==============================
+            let cascadeDamage = explosionDamage;
+
+            let cascadeTarget = target;
+
+            while (cascadeDamage > 1) {
+
+                // Explosion like bomber but only factor 0.3
+                cascadeDamage *= 0.3;
+
+                const splashTargets = enemies.filter(enemy => enemy.id !== cascadeTarget.id && enemy.stats.currentHull > 0);
+
+                for (const enemy of splashTargets) {
+                    applyDamage(enemy, actor, {
+                        ...ability,
+                        value: cascadeDamage,
+                    }, state);
+                }
+
+                if (splashTargets.length > 0) {
+                    state.log.push(
+                        `Cascade explosion deals splash damage to ${splashTargets.length} targets`
+                    );
+                }
+
+                // Find next enemy with same debuff
+                cascadeTarget = enemies.find(enemy =>
+                    enemy.stats.currentHull > 0 &&
+                    enemy.stats.debuffs.some(d => d.id === debuffId)
+                );
+
+                if (!cascadeTarget) break;
+
+                // Remove debuff
+                const removed = cascadeTarget.stats.debuffs.filter(d => d.id === debuffId);
+                cascadeTarget.stats.debuffs = cascadeTarget.stats.debuffs.filter(d => d.id !== debuffId);
+
+                cascadeDamage = cascadeDamage * (1 + removed.length * 0.75)
+            }
+
+            break;
+        
+
         default:
             break;
     }

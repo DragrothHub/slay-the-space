@@ -226,6 +226,49 @@ const detonatorTemplates = [
         detonatorEffect: "spreader",
         detonatesDebuff: debuffs.shocked.id,
     },
+    // CASCADE
+    {
+        id: "detonator_offensive_kinetic_weakenedShields_cascade",
+        displayName: "Detonator_1_cascade",
+        type: "kinetic",
+        detonatorEffect: "cascade",
+        detonatesDebuff: debuffs.weakened_shields.id,
+    },
+    {
+        id: "detonator_offensive_laser_weakenedArmor_cascade",
+        displayName: "Detonator_2_cascade",
+        type: "laser",
+        detonatorEffect: "cascade",
+        detonatesDebuff: debuffs.weakened_armor.id,
+    },
+    {
+        id: "detonator_offensive_kinetic_weakened_cascade",
+        displayName: "Detonator_3.1_cascade",
+        type: "kinetic",
+        detonatorEffect: "cascade",
+        detonatesDebuff: debuffs.weakened.id,
+    },
+    {
+        id: "detonator_offensive_laser_weakened_cascade",
+        displayName: "Detonator_3.2_cascade",
+        type: "laser",
+        detonatorEffect: "cascade",
+        detonatesDebuff: debuffs.weakened.id,
+    },
+    {
+        id: "detonator_offensive_kinetic_stunned_cascade",
+        displayName: "Detonator_4_cascade",
+        type: "kinetic",
+        detonatorEffect: "cascade",
+        detonatesDebuff: debuffs.stunned.id,
+    },
+    {
+        id: "detonator_offensive_laser_shocked_cascade",
+        displayName: "Detonator_5_cascade",
+        type: "laser",
+        detonatorEffect: "cascade",
+        detonatesDebuff: debuffs.shocked.id,
+    },
 ]
 
 function buildNeutral(template) {
