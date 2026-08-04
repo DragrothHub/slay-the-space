@@ -113,8 +113,8 @@ export default function BattleField() {
                 display: "flex",
                 flexDirection: "column",
                 gap: "100px",
-                paddingTop: 60,
-                paddingBottom: 60,
+                paddingTop: 20,
+                paddingBottom: 0,
             }}
         >
             {/* ENEMY FLEET */}
