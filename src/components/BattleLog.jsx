@@ -8,9 +8,9 @@ export default function BattleLog() {
 
     return (
         <div style={{ marginTop: 20 }}>
-            <h3>Log</h3>
-            {gameState.run.battle.log.slice(-5).map((entry, i) => (
-                <div key={i}>{entry}</div>
+            <h3 style={{ color: "rgb(158, 203, 255)" }}>Log</h3>
+            {gameState.run.battle.log.slice(-20).reverse().map((entry, i) => (
+                <div key={i} style={{ fontSize: "0.8em" }}>{entry}</div>
             ))}
         </div>
     );
