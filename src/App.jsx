@@ -21,7 +21,8 @@ function App()
 
       {gameState.screen === "initialshipselection" && (
         <ShipSelection
-          ships={[
+          title="Choose 2 ships"
+          selectableShips={[
             createShip(),
             createShip(),
             createShip(),
@@ -35,11 +36,13 @@ function App()
 
       {gameState.screen === "dock" && (
         <ShipSelection
-          ships={[
+          title="Choose one ship"
+          selectableShips={[
             createShip(),
             createShip(),
             createShip(),
           ]}
+          currentShips={gameState.run.ships}
           maxSelections={1}
           onConfirm={(selectedShip) => {
             let ships = [...gameState.run.ships, selectedShip[0]];

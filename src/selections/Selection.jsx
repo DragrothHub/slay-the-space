@@ -1,65 +1,154 @@
 import { useState } from "react";
 
 export default function Selection({
-    items,
-    maxSelections = 1,
+    sections,
     title,
     getId = item => item.id,
     renderMini,
     renderDetail,
     renderConfirm,
     onConfirm,
-})
-{
+}) {
 
-    const [selectedItems, setSelectedItems] = useState([]);
+    const [selectedItems, setSelectedItems] = useState(() =>
+        sections
+            .filter(section => section.initialSelected)
+            .flatMap(section => section.items ?? [])
+    );
+
     const [openedItem, setOpenedItem] = useState(null);
 
-    function isSelected(item)
-    {
+
+    function isSelected(item) {
+
         return selectedItems.some(
             i => getId(i) === getId(item)
         );
     }
 
-    function toggleItem(item)
-    {
 
-        setSelectedItems(current =>
-        {
+    function getSectionOfItem(item) {
+
+        return sections.find(section =>
+            (section.items ?? []).some(
+                i => getId(i) === getId(item)
+            )
+        );
+    }
+
+
+    function getSelectedInSection(
+        section,
+        selection = selectedItems
+    ) {
+
+        return selection.filter(selected =>
+            (section.items ?? []).some(
+                item => getId(item) === getId(selected)
+            )
+        );
+    }
+
+
+    function canToggleItem(item) {
+
+        const section = getSectionOfItem(item);
+
+        if (!section) {
+            return false;
+        }
+
+
+        const selected = isSelected(item);
+
+        const sectionSelected =
+            getSelectedInSection(section);
+
+
+        // -------------------------
+        // Abwählen
+        // -------------------------
+
+        if (selected) {
+
+            const minSelections =
+                section.minSelections ?? 0;
+
+
+            return sectionSelected.length > minSelections;
+        }
+
+
+        // -------------------------
+        // Auswählen
+        // -------------------------
+
+        const maxSelections =
+            section.maxSelections ??
+            (section.items ?? []).length;
+
+
+        return sectionSelected.length < maxSelections;
+    }
+
+
+    function toggleItem(item) {
+
+        if (!canToggleItem(item)) {
+            return;
+        }
+
+
+        setSelectedItems(current => {
 
             const selected = current.some(
                 i => getId(i) === getId(item)
             );
 
-            if (selected)
-            {
+
+            if (selected) {
+
                 return current.filter(
                     i => getId(i) !== getId(item)
                 );
             }
 
-            if (current.length >= maxSelections) {
 
-                // Bei Single-Selection: Auswahl ersetzen
-                if (maxSelections === 1) {
-                    return [item];
-                }
-
-                // Bei Multi-Selection: keine weitere Auswahl erlauben
-                return current;
-            }
-
-            return [...current, item];
+            return [
+                ...current,
+                item
+            ];
         });
     }
+
+
+    function canConfirm() {
+
+        return sections.every(section => {
+
+            const count =
+                getSelectedInSection(section).length;
+
+
+            const min =
+                section.minSelections ?? 0;
+
+
+            const max =
+                section.maxSelections ??
+                (section.items ?? []).length;
+
+
+            return count >= min && count <= max;
+        });
+    }
+
 
     // ---------------------
     // Detail
     // ---------------------
 
-    if (openedItem && renderDetail)
-    {
+    if (openedItem && renderDetail) {
 
         return renderDetail({
 
@@ -67,16 +156,16 @@ export default function Selection({
 
             selected: isSelected(openedItem),
 
-            maxReached:
-                selectedItems.length >= maxSelections,
+            toggle: () =>
+                toggleItem(openedItem),
 
-            toggle: () => toggleItem(openedItem),
-
-            close: () => setOpenedItem(null),
+            close: () =>
+                setOpenedItem(null),
 
             selectedItems,
         });
     }
+
 
     // ---------------------
     // Übersicht
@@ -90,39 +179,94 @@ export default function Selection({
                 alignItems: "center",
             }}
         >
-            {title && <div>{title}</div>}
 
-            {items.map(item =>
-                renderMini({
+            {title &&
+                <div
+                    style={{
+                        fontSize: "1.5em",
+                    }}
+                >
+                    {title}
+                </div>
+            }
 
-                    key: getId(item),
 
-                    item,
+            {sections.map((section, index) => (
 
-                    selected: isSelected(item),
+                <div
+                    key={section.title ?? index}
+                    style={{
+                        width: "100%",
+                    }}
+                >
 
-                    open: renderDetail
-                        ? () => setOpenedItem(item)
-                        : undefined,
+                    {section.title &&
+                        <div
+                            style={{
+                                fontSize: "1.2em",
+                                marginTop: 15,
+                                marginBottom: 5,
+                            }}
+                        >
+                            {section.title}
+                        </div>
+                    }
 
-                    toggle: () => toggleItem(item),
 
-                    maxReached:
-                        selectedItems.length >= maxSelections,
-                })
-            )}
+                    {(section.items ?? []).map(item => (
+
+                        <div
+                            key={getId(item)}
+                        >
+
+                            {renderMini({
+
+                                item,
+
+                                selected:
+                                    isSelected(item),
+
+                                open:
+                                    renderDetail
+                                        ? () =>
+                                            setOpenedItem(item)
+                                        : () =>
+                                            toggleItem(item),
+
+                                toggle:
+                                    () =>
+                                        toggleItem(item),
+
+                                disabled:
+                                    !canToggleItem(item),
+
+                            })}
+
+                        </div>
+
+                    ))}
+
+                </div>
+
+            ))}
+
+
 
             {renderConfirm
+
                 ? renderConfirm({
 
                     selectedItems,
 
-                    maxSelections,
+                    canConfirm:
+                        canConfirm(),
 
                     confirm: () =>
                         onConfirm?.(selectedItems),
 
                 })
+
+
                 : (
 
                     <button
@@ -132,27 +276,28 @@ export default function Selection({
                             height: "100px",
                             borderRadius: "10px",
                             background:
-                                selectedItems.length !== maxSelections
-                                    ? "#2a2b2e"
-                                    : "linear-gradient(175deg,rgba(10, 17, 24, 1) 50%, rgba(252, 255, 76, 0.2) 100%)",
-                            border: "1px solid #374151",
+                                canConfirm()
+                                    ? "linear-gradient(175deg,rgba(10,17,24,1) 50%, rgba(252,255,76,.2) 100%)"
+                                    : "#2a2b2e",
+                            border:
+                                "1px solid #374151",
                             color:
-                                selectedItems.length !== maxSelections
-                                    ? "#fff"
-                                    : "#fcff4c",
+                                canConfirm()
+                                    ? "#fcff4c"
+                                    : "#fff",
                             marginTop: "10px",
                             fontFamily: "monospace",
                         }}
-                        disabled={
-                            selectedItems.length !== maxSelections
-                        }
+                        disabled={!canConfirm()}
                         onClick={() =>
                             onConfirm?.(selectedItems)
                         }
                     >
-                        Confirm ({selectedItems.length}/{maxSelections})
+                        Confirm ({selectedItems.length})
                     </button>
+
                 )}
+
         </div>
     );
 }

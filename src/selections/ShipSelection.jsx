@@ -2,13 +2,44 @@ import { MiniShipCard } from "../components/ShipCard";
 import ShipCard from "../components/ShipCard";
 import Selection from "./Selection";
 
-export default function ShipSelection({ ships, maxSelections, onConfirm })
+export default function ShipSelection({ currentShips, selectableShips, title, maxSelections, onConfirm })
 {
+    const sections = currentShips ? 
+        [
+            {
+                title: "Selectable Ships",
+                items: selectableShips,
+
+                minSelections: currentShips?.length == 4 ? 0 : maxSelections,
+                maxSelections: maxSelections,
+            },
+            {
+                title: "Current Ships",
+                items: currentShips,
+                initialSelected: true,
+                
+                minSelections: currentShips.length == 4 ? currentShips.length - 1 : currentShips.length,
+                maxSelections: currentShips.length,
+            },
+        ]
+            :
+        [
+            {
+                title: "Selectable Ships",
+                items: selectableShips,
+
+                minSelections: currentShips?.length == 4 ? 0 : maxSelections,
+                maxSelections: maxSelections,
+            },
+        ];
+
     return (
         <Selection
-            items={ships}
-            maxSelections={maxSelections}
-            title="Choose 2 ships"
+            sections={sections}
+
+            initialSelection={currentShips ?? []}
+            
+            title={title}
 
             renderMini={({
                 key,
