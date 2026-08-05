@@ -109,7 +109,7 @@ export function setNextActor(state) {
 
 function aiTurn(state, actor){
 
-    const enemies = getEnemyUnits(state, actor);
+    const enemies = getEnemyUnits(state, actor).filter(enemy => enemy.stats.currentHull > 0);
 
     state.selectedTargetId = enemies[Math.floor(Math.random() * enemies.length)].id;
 
