@@ -43,8 +43,26 @@ function App()
           maxSelections={1}
           onConfirm={(selectedShip) => {
             let ships = [...gameState.run.ships, selectedShip[0]];
-            console.log(ships);
             updateShips(ships);
+
+            if(ships.length > 4)
+            {
+              setScreen("toomuchships");
+            }
+            else
+            {
+              setScreen("map");
+            }
+          }}
+        />
+      )}
+
+      {gameState.screen === "toomuchships" && (
+        <ShipSelection
+          ships={gameState.run.ships}
+          maxSelections={4}
+          onConfirm={(selectedShips) => {
+            updateShips(selectedShips);
             setScreen("map");
           }}
         />
