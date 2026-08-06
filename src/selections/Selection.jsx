@@ -90,7 +90,7 @@ export default function Selection({
                 alignItems: "center",
             }}
         >
-            {title && <div>{title}</div>}
+            {title && <div style={{fontSize: "1.5em"}}>{title}</div>}
 
             {items.map(item =>
                 renderMini({

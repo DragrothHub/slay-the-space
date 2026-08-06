@@ -28,6 +28,7 @@ function App()
             createShip(),
             createShip(),
           ]}
+          title="Choose 2 ships"
           maxSelections={2}
           onConfirm={(selectedShips) => startRun(selectedShips, Math.floor(Math.random() * 1000))}
         />
@@ -40,6 +41,7 @@ function App()
             createShip(),
             createShip(),
           ]}
+          title="Choose one ship"
           maxSelections={1}
           onConfirm={(selectedShip) => {
             let ships = [...gameState.run.ships, selectedShip[0]];
@@ -60,6 +62,7 @@ function App()
       {gameState.screen === "toomuchships" && (
         <ShipSelection
           ships={gameState.run.ships}
+          title="Your team can only have 4 ships"
           maxSelections={4}
           onConfirm={(selectedShips) => {
             updateShips(selectedShips);

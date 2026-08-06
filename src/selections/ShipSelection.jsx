@@ -2,13 +2,13 @@ import { MiniShipCard } from "../components/ShipCard";
 import ShipCard from "../components/ShipCard";
 import Selection from "./Selection";
 
-export default function ShipSelection({ ships, maxSelections, onConfirm })
+export default function ShipSelection({ ships, maxSelections, onConfirm, title })
 {
     return (
         <Selection
             items={ships}
             maxSelections={maxSelections}
-            title="Choose 2 ships"
+            title={title}
 
             renderMini={({
                 key,
