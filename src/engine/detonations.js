@@ -45,7 +45,7 @@ export function detonate(target, actor, ability, state) {
     }, state);
 
     state.log.push(
-        `${removedCount} stack(s) of ${debuffId} detonated on ${target.name}`
+        `${removedCount} stack(s) of ${debuffId} detonated on ${target.name} for ${damageDone} damage`
     );
 
     // ==============================
@@ -70,7 +70,7 @@ export function detonate(target, actor, ability, state) {
 
             if (splashTargets.length > 0) {
                 state.log.push(
-                    `Explosion deals splash damage to ${splashTargets.length} targets`
+                    `Explosion deals ${splashDamage} splash damage to ${splashTargets.length} targets`
                 );
             }
             break;
@@ -97,7 +97,7 @@ export function detonate(target, actor, ability, state) {
             actor.stats.currentShield += damageDone;
 
             state.log.push(
-                `${actor.name} reloads shield by ${damageDone}`
+                `${actor.name} overloads shields by ${damageDone}`
             );
 
             break;
@@ -145,7 +145,7 @@ export function detonate(target, actor, ability, state) {
 
                 if (splashTargets.length > 0) {
                     state.log.push(
-                        `Cascade explosion deals splash damage to ${splashTargets.length} targets`
+                        `Cascade explosion deals ${cascadeDamage} splash damage to ${splashTargets.length} targets`
                     );
                 }
 
