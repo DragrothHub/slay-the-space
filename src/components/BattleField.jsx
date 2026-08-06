@@ -27,7 +27,7 @@ function TeamFleet({
 
     function handleSelectTarget(target)
     {
-        if (canSelectTarget(target))
+        if (canSelectTarget(target) && !battle.winner)
         {
             updateBattle(s => selectTarget(s, target.id));
         }

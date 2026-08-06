@@ -15,6 +15,8 @@ export default function ActionPanel() {
     if (!actor) return null;
 
     function handleSelectAbility(abilityId) {
+        if(battle.winner) return;
+
         updateBattle(prev => {
             const next = structuredClone(prev);
 
