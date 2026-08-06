@@ -34,7 +34,7 @@ export const debuffs = {
     shocked: {
         id: "shocked",
         displayName: "Shocked",
-        description: "Takes damage over time. Detonating this target chains damage to another enemy.",
+        description: "Takes damage over time.",
         color: "#22c55e",
     },
 };

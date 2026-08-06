@@ -52,7 +52,7 @@ export function applyDamage(target, actor, ability, state) {
     };
 
     if (hasDebuff(target, "weakened")) {
-        damage *= 1.25;
+        damage *= 1.10;
     }
 
     const layers = [
