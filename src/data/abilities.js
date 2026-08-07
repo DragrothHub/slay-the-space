@@ -39,12 +39,12 @@ const primerTemplates = [
         type: "laser",
         appliesDebuff: debuffs.weakened.id,
     },
-    {
-        id: "primer_offensive_kinetic_stunned",
-        displayName: "Primer_4",
-        type: "kinetic",
-        appliesDebuff: debuffs.stunned.id,
-    },
+    // {
+    //     id: "primer_offensive_kinetic_stunned",
+    //     displayName: "Primer_4",
+    //     type: "kinetic",
+    //     appliesDebuff: debuffs.stunned.id,
+    // },
     {
         id: "primer_offensive_laser_shocked",
         displayName: "Primer_5",
@@ -83,13 +83,13 @@ const detonatorTemplates = [
         detonatorEffect: "vampire",
         detonatesDebuff: debuffs.weakened.id,
     },
-    {
-        id: "detonator_offensive_kinetic_stunned_vampire",
-        displayName: "Detonator_4_vampire",
-        type: "kinetic",
-        detonatorEffect: "vampire",
-        detonatesDebuff: debuffs.stunned.id,
-    },
+    // {
+    //     id: "detonator_offensive_kinetic_stunned_vampire",
+    //     displayName: "Detonator_4_vampire",
+    //     type: "kinetic",
+    //     detonatorEffect: "vampire",
+    //     detonatesDebuff: debuffs.stunned.id,
+    // },
     {
         id: "detonator_offensive_laser_shocked_vampire",
         displayName: "Detonator_5_vampire",
@@ -126,13 +126,13 @@ const detonatorTemplates = [
         detonatorEffect: "bomber",
         detonatesDebuff: debuffs.weakened.id,
     },
-    {
-        id: "detonator_offensive_kinetic_stunned_bomber",
-        displayName: "Detonator_4_bomber",
-        type: "kinetic",
-        detonatorEffect: "bomber",
-        detonatesDebuff: debuffs.stunned.id,
-    },
+    // {
+    //     id: "detonator_offensive_kinetic_stunned_bomber",
+    //     displayName: "Detonator_4_bomber",
+    //     type: "kinetic",
+    //     detonatorEffect: "bomber",
+    //     detonatesDebuff: debuffs.stunned.id,
+    // },
     {
         id: "detonator_offensive_laser_shocked_bomber",
         displayName: "Detonator_5_bomber",
@@ -169,13 +169,13 @@ const detonatorTemplates = [
         detonatorEffect: "spike",
         detonatesDebuff: debuffs.weakened.id,
     },
-    {
-        id: "detonator_offensive_kinetic_stunned_spike",
-        displayName: "Detonator_4_spike",
-        type: "kinetic",
-        detonatorEffect: "spike",
-        detonatesDebuff: debuffs.stunned.id,
-    },
+    // {
+    //     id: "detonator_offensive_kinetic_stunned_spike",
+    //     displayName: "Detonator_4_spike",
+    //     type: "kinetic",
+    //     detonatorEffect: "spike",
+    //     detonatesDebuff: debuffs.stunned.id,
+    // },
     {
         id: "detonator_offensive_laser_shocked_spike",
         displayName: "Detonator_5_spike",
@@ -212,13 +212,13 @@ const detonatorTemplates = [
         detonatorEffect: "spreader",
         detonatesDebuff: debuffs.weakened.id,
     },
-    {
-        id: "detonator_offensive_kinetic_stunned_spreader",
-        displayName: "Detonator_4_spreader",
-        type: "kinetic",
-        detonatorEffect: "spreader",
-        detonatesDebuff: debuffs.stunned.id,
-    },
+    // {
+    //     id: "detonator_offensive_kinetic_stunned_spreader",
+    //     displayName: "Detonator_4_spreader",
+    //     type: "kinetic",
+    //     detonatorEffect: "spreader",
+    //     detonatesDebuff: debuffs.stunned.id,
+    // },
     {
         id: "detonator_offensive_laser_shocked_spreader",
         displayName: "Detonator_5_spreader",
@@ -255,13 +255,13 @@ const detonatorTemplates = [
         detonatorEffect: "cascade",
         detonatesDebuff: debuffs.weakened.id,
     },
-    {
-        id: "detonator_offensive_kinetic_stunned_cascade",
-        displayName: "Detonator_4_cascade",
-        type: "kinetic",
-        detonatorEffect: "cascade",
-        detonatesDebuff: debuffs.stunned.id,
-    },
+    // {
+    //     id: "detonator_offensive_kinetic_stunned_cascade",
+    //     displayName: "Detonator_4_cascade",
+    //     type: "kinetic",
+    //     detonatorEffect: "cascade",
+    //     detonatesDebuff: debuffs.stunned.id,
+    // },
     {
         id: "detonator_offensive_laser_shocked_cascade",
         displayName: "Detonator_5_cascade",
