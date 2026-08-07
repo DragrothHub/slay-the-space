@@ -123,6 +123,14 @@ export default function GameStateProvider({ children }) {
 
     }
 
+    function aiConfirm(){
+
+        dispatch({ 
+            type: "AI_CONFIRM",
+        });
+
+    }
+
     //--------------------
     // Map
     //--------------------
@@ -163,6 +171,7 @@ export default function GameStateProvider({ children }) {
         startBattle,
         updateBattle,
         finishBattle,
+        aiConfirm,
 
         updateShips,
 

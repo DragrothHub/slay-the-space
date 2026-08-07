@@ -119,7 +119,8 @@ function aiTurn(state, actor){
 
     state.selectedAbilityId = usableAbilities[Math.floor(Math.random() * usableAbilities.length)];
 
-    confirmAction(state);
+    // hier wird im battle screen ein timeout ausgelöst
+    state.phase = "enemy-confirm";
 
     return state;
 }
@@ -249,7 +250,7 @@ function advanceTurn(state) {
 function calculateTurnOrder(state) {
     return getAllUnits(state)
         .filter(u => u.stats.currentHull > 0)
-        .sort((a, b) => (b.initiative ?? 0) - (a.initiative ?? 0));
+        .sort((a, b) => (b.stats.initiative ?? 0) - (a.stats.initiative ?? 0));
 }
 
 // ========================================

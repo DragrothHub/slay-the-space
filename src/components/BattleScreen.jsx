@@ -4,11 +4,12 @@ import ActionPanel from "./ActionPanel";
 import BattleLog from "./BattleLog";
 import { useGameState } from "../state/GameStateProvider";
 import { createShip } from "../data/createShip";
+import TurnOrder from "./TurnOrder";
 
 export default function BattleScreen()
 {
 
-    const { gameState, currentNode, setScreen, startBattle, finishBattle } = useGameState();
+    const { gameState, currentNode, setScreen, startBattle, finishBattle, aiConfirm } = useGameState();
     const battle = gameState.run?.battle;
     const [gameOver, setGameOver] = useState(false);
 
@@ -69,6 +70,16 @@ export default function BattleScreen()
         }
     }, [battle?.winner]);
 
+    useEffect(() => {
+        if (battle?.phase !== "enemy-confirm") return;
+
+        const timer = setTimeout(() => {
+            aiConfirm();
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [battle?.phase, battle?.activeUnitId]);
+
     if (!battle) return <div>Loading...</div>;
 
     return (
@@ -78,6 +89,8 @@ export default function BattleScreen()
             <ActionPanel />
 
             <BattleLog />
+
+            <TurnOrder />
 
             {gameOver &&
                 <div

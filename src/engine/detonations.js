@@ -171,7 +171,7 @@ export function detonate(target, actor, ability, state) {
             applyDebuff(target, debuffs.stunned.id, removedCount);
 
             state.log.push(
-                `Stunned ${target.id} for ${removedCount} rounds`
+                `Stunned ${target.name} for ${removedCount} rounds`
             );
 
             break;

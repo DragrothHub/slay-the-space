@@ -1,3 +1,4 @@
+import { confirmAction } from "../engine/turnEngine";
 import generateWorldMap from "../worldmap/generator/generateWorldMap";
 
 export function gameStateReducer(state, action)
@@ -130,6 +131,20 @@ export function gameStateReducer(state, action)
                     ships: ships,
 
                     battle: null,
+                },
+            };
+
+        case "AI_CONFIRM":
+
+            return {
+                ...state,
+
+                run: {
+                    ...state.run,
+
+                    battle: confirmAction(
+                        structuredClone(state.run.battle)
+                    ),
                 },
             };
 
