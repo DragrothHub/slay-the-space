@@ -1,6 +1,6 @@
 import { use } from "react";
 import { applyDamage } from "./damage";
-import { applyDebuff } from "./debuffs";
+import { applyDebuff, debuffs } from "./debuffs";
 import { getFriendlyUnits } from "./helpers";
 
 // ========================================
@@ -166,6 +166,15 @@ export function detonate(target, actor, ability, state) {
 
             break;
         
+        case "stunner":
+
+            applyDebuff(target, debuffs.stunned.id, removedCount);
+
+            state.log.push(
+                `Stunned ${target.id} for ${removedCount} rounds`
+            );
+
+            break;
 
         default:
             break;

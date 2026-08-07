@@ -269,6 +269,49 @@ const detonatorTemplates = [
         detonatorEffect: "cascade",
         detonatesDebuff: debuffs.shocked.id,
     },
+    // STUNNER
+    {
+        id: "detonator_offensive_kinetic_weakenedShields_stunner",
+        displayName: "Detonator_1_stunner",
+        type: "kinetic",
+        detonatorEffect: "stunner",
+        detonatesDebuff: debuffs.weakened_shields.id,
+    },
+    {
+        id: "detonator_offensive_laser_weakenedArmor_stunner",
+        displayName: "Detonator_2_stunner",
+        type: "laser",
+        detonatorEffect: "stunner",
+        detonatesDebuff: debuffs.weakened_armor.id,
+    },
+    {
+        id: "detonator_offensive_kinetic_weakened_stunner",
+        displayName: "Detonator_3.1_stunner",
+        type: "kinetic",
+        detonatorEffect: "stunner",
+        detonatesDebuff: debuffs.weakened.id,
+    },
+    {
+        id: "detonator_offensive_laser_weakened_stunner",
+        displayName: "Detonator_3.2_stunner",
+        type: "laser",
+        detonatorEffect: "stunner",
+        detonatesDebuff: debuffs.weakened.id,
+    },
+    // {
+    //     id: "detonator_offensive_kinetic_stunned_stunner",
+    //     displayName: "Detonator_4_stunner",
+    //     type: "kinetic",
+    //     detonatorEffect: "stunner",
+    //     detonatesDebuff: debuffs.stunned.id,
+    // },
+    {
+        id: "detonator_offensive_laser_shocked_stunner",
+        displayName: "Detonator_5_stunner",
+        type: "laser",
+        detonatorEffect: "stunner",
+        detonatesDebuff: debuffs.shocked.id,
+    },
 ]
 
 function buildNeutral(template) {

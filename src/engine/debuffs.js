@@ -39,14 +39,14 @@ export const debuffs = {
     },
 };
 
-export function applyDebuff(target, debuffId) {
+export function applyDebuff(target, debuffId, duration = 3) {
     if (!target.stats.debuffs) {
         target.stats.debuffs = [];
     }
 
     target.stats.debuffs.push({
         id: debuffId,
-        duration: 3,
+        duration: duration,
     });
 }
 
