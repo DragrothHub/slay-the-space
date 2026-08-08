@@ -36,10 +36,10 @@ export default function ActionPanel() {
     return (
         <div
             style={{
-                marginTop: 20,
                 display: "flex",
                 flexDirection: "column",
                 gap: 24,
+                minHeight: 340,
             }}
         >
             {/* ========================= */}
