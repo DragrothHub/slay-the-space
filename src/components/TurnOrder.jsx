@@ -4,15 +4,17 @@ import interceptor from "../images/interceptor.png";
 import corvette from "../images/corvette.png";
 import frigate from "../images/frigate.png";
 import dreadnaught from "../images/dreadnaught.png";
+import { selectTarget } from "../engine/turnEngine";
 
 export default function TurnOrder() {
 
-    const { gameState } = useGameState();
+    const { gameState, updateBattle } = useGameState();
 
     if (!gameState?.run?.battle) return null;
+    const battle = gameState.run.battle;
 
-    const turnOrder = gameState.run.battle.turnOrder;
-    const turnIndex = gameState.run.battle.turnIndex;
+    const turnOrder = battle.turnOrder;
+    const turnIndex = battle.turnIndex;
 
     const shipIcons = {
         interceptor,
@@ -21,21 +23,43 @@ export default function TurnOrder() {
         dreadnaught,
     };
 
+    function canSelectTarget(target){
+        if(target.stats.currentHull <= 0)
+                return false;
+
+        const targetIsInTeamA = battle.teams.A.some(u => u.id === target.id);
+        const sourceIsInTeamA = battle.teams.A.some(u => u.id === battle.activeUnitId);
+
+        if(targetIsInTeamA == sourceIsInTeamA)
+            return false;
+
+        return true;
+    }
+
+    function handleSelectTarget(target)
+    {
+        if (canSelectTarget(target) && !battle.winner)
+        {
+            updateBattle(s => selectTarget(s, target.id));
+        }
+    }
+
     return (
         <div
             style={{
                 position: "absolute",
                 top: "2px",
-                left: "50%",
-                transform: "translateX(-50%)",
+                left: "2px",
+                padding: "5px",
 
-                maxWidth: "calc(100% - 24px)",
+                maxHeight: "340px",
 
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
                 gap: "6px",
 
-                overflowX: "auto",
+                overflowY: "auto",
                 scrollbarWidth: "none",
 
                 zIndex: 10,
@@ -43,8 +67,9 @@ export default function TurnOrder() {
         >
             {turnOrder.map((ship, i) => {
 
-                const isPlayerShip =
-                    gameState.run.ships.some(s => s.id === ship.id);
+                const isPlayerShip = gameState.run.ships.some(s => s.id === ship.id);
+
+                const isSelectedTarget = battle.selectedTargetId === ship.id;
 
                 const isActive = i === turnIndex;
 
@@ -53,6 +78,7 @@ export default function TurnOrder() {
                 return (
                     <div
                         key={ship.id}
+                        onClick={() => handleSelectTarget(ship)}
                         style={{
                             flex: "0 0 auto",
 
@@ -66,12 +92,21 @@ export default function TurnOrder() {
                             borderRadius: "8px",
 
                             border: isActive
-                                ? `2px solid ${isPlayerShip ? "#4ade80" : "#f87171"}`
+                                ? `1px solid ${isPlayerShip ? "#4ade80" : "#f87171"}`
                                 : `1px solid ${
-                                    isPlayerShip
-                                        ? "rgba(74,222,128,0.5)"
-                                        : "rgba(248,113,113,0.5)"
-                                }`,
+                                        isPlayerShip
+                                            ? "rgba(74,222,128,0.5)"
+                                            : "rgba(248,113,113,0.5)"
+                                    }`,
+
+                            outlineOffset: "2px",
+                            outline: isActive
+                                ? `2px solid ${isPlayerShip ? "#4ade80" : "#f87171"}`
+                                : isSelectedTarget ? `2px solid ${
+                                        isPlayerShip
+                                            ? "#ded74a"
+                                            : "#ded74a"
+                                    }` : "none",
 
                             background: isPlayerShip
                                 ? "rgba(30, 80, 50, 0.35)"
