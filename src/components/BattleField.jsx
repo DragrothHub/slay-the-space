@@ -112,8 +112,8 @@ export default function BattleField() {
             style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "100px",
-                paddingTop: 20,
+                gap: "30px",
+                paddingTop: 0,
                 paddingBottom: 0,
             }}
         >
