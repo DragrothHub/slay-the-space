@@ -140,7 +140,7 @@ export default function Ship({
                                 borderTop: "2px solid transparent",
                                 borderBottom: "2px solid transparent",
                                 animation: `rotateTargetReverse 10s linear infinite`,
-                                inset: 8,
+                                inset: 30,
                                 opacity: 0.6,
                                 pointerEvents: `none`,
                                 borderRadius: `50%`,
@@ -152,7 +152,7 @@ export default function Ship({
                         <div
                             style={{
                                 position: "absolute",
-                                inset: -12,
+                                inset: 22,
 
                                 border: `2px solid ${borderColor}`,
                                 borderRadius: "50%",
