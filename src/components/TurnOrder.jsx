@@ -75,6 +75,8 @@ export default function TurnOrder() {
 
                 const icon = shipIcons[ship.class];
 
+                if(ship.stats.currentHull < 1) return;
+
                 return (
                     <div
                         key={ship.id}
@@ -91,22 +93,16 @@ export default function TurnOrder() {
 
                             borderRadius: "8px",
 
-                            border: isActive
-                                ? `1px solid ${isPlayerShip ? "#4ade80" : "#f87171"}`
-                                : `1px solid ${
+                            border: `1px solid ${
                                         isPlayerShip
-                                            ? "rgba(74,222,128,0.5)"
-                                            : "rgba(248,113,113,0.5)"
+                                            ? "#9ecbff"
+                                            : "#ef4444"
                                     }`,
 
                             outlineOffset: "2px",
                             outline: isActive
-                                ? `2px solid ${isPlayerShip ? "#4ade80" : "#f87171"}`
-                                : isSelectedTarget ? `2px solid ${
-                                        isPlayerShip
-                                            ? "#ded74a"
-                                            : "#ded74a"
-                                    }` : "none",
+                                ? `2px solid ${isPlayerShip ? "#9ecbff" : "#ef4444"}`
+                                : isSelectedTarget ? `2px solid #fcff4c` : "none",
 
                             background: isPlayerShip
                                 ? "rgba(30, 80, 50, 0.35)"

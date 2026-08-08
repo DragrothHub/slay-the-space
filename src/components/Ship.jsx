@@ -35,9 +35,9 @@ export default function Ship({
     const borderColor = isDead
         ? "darkred"
         : isActive
-            ? "cyan"
+            ? "#9ecbff"
             : isTargeted
-                ? "red"
+                ? "#ef4444"
                 : "transparent";
 
     const activeDebuffs = unit.stats?.debuffs ?? [];
@@ -92,7 +92,7 @@ export default function Ship({
                         transition: "width 0.2s, left 0.2s, top 0.2s, font-size 0.4s",
                         width: isTargeted || isActive ? 60 : 30,
                         marginTop: 0,
-                        color: isTargeted ? "red" : isActive ? "cyan" : "black",
+                        color: isTargeted ? "#ef4444" : isActive ? "rgb(158, 203, 255)" : "black",
                         position: "relative",
                         left: isTargeted || isActive ? 60 : 30,
                         top: isTargeted || isActive ? 45 : 30,
@@ -105,7 +105,7 @@ export default function Ship({
                             style={{
                                 position: "absolute",
                                 top: 40,
-                                color: "red",
+                                color: "#ef4444",
                                 fontWeight: "bold",
                                 fontSize: 18,
                                 animation: "floatUp 2.5s ease-out",
