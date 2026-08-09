@@ -16,16 +16,16 @@ const neutralTemplates = [
 
 const primerTemplates = [
     {
-        id: "primer_offensive_laser_weakenedShields",
+        id: "primer_offensive_laser_exhausted",
         displayName: "Primer_1",
         type: "laser",
-        appliesDebuff: debuffs.weakened_shields.id,
+        appliesDebuff: debuffs.exhausted.id,
     },
     {
-        id: "primer_offensive_kinetic_weakenedArmor",
+        id: "primer_offensive_kinetic_marked",
         displayName: "Primer_2",
         type: "kinetic",
-        appliesDebuff: debuffs.weakened_armor.id,
+        appliesDebuff: debuffs.marked.id,
     },
     {
         id: "primer_offensive_kinetic_weakened",
@@ -56,18 +56,18 @@ const primerTemplates = [
 const detonatorTemplates = [
     // VAMPIRE
     {
-        id: "detonator_offensive_kinetic_weakenedShields_vampire",
+        id: "detonator_offensive_kinetic_exhausted_vampire",
         displayName: "Detonator_1_vampire",
         type: "kinetic",
         detonatorEffect: "vampire",
-        detonatesDebuff: debuffs.weakened_shields.id,
+        detonatesDebuff: debuffs.exhausted.id,
     },
     {
-        id: "detonator_offensive_laser_weakenedArmor_vampire",
+        id: "detonator_offensive_laser_marked_vampire",
         displayName: "Detonator_2_vampire",
         type: "laser",
         detonatorEffect: "vampire",
-        detonatesDebuff: debuffs.weakened_armor.id,
+        detonatesDebuff: debuffs.marked.id,
     },
     {
         id: "detonator_offensive_kinetic_weakened_vampire",
@@ -99,18 +99,18 @@ const detonatorTemplates = [
     },
     // BOMBER
     {
-        id: "detonator_offensive_kinetic_weakenedShields_bomber",
+        id: "detonator_offensive_kinetic_exhausted_bomber",
         displayName: "Detonator_1_bomber",
         type: "kinetic",
         detonatorEffect: "bomber",
-        detonatesDebuff: debuffs.weakened_shields.id,
+        detonatesDebuff: debuffs.exhausted.id,
     },
     {
-        id: "detonator_offensive_laser_weakenedArmor_bomber",
+        id: "detonator_offensive_laser_marked_bomber",
         displayName: "Detonator_2_bomber",
         type: "laser",
         detonatorEffect: "bomber",
-        detonatesDebuff: debuffs.weakened_armor.id,
+        detonatesDebuff: debuffs.marked.id,
     },
     {
         id: "detonator_offensive_kinetic_weakened_bomber",
@@ -142,18 +142,18 @@ const detonatorTemplates = [
     },
     // SPIKE
     {
-        id: "detonator_offensive_kinetic_weakenedShields_spike",
+        id: "detonator_offensive_kinetic_exhausted_spike",
         displayName: "Detonator_1_spike",
         type: "kinetic",
         detonatorEffect: "spike",
-        detonatesDebuff: debuffs.weakened_shields.id,
+        detonatesDebuff: debuffs.exhausted.id,
     },
     {
-        id: "detonator_offensive_laser_weakenedArmor_spike",
+        id: "detonator_offensive_laser_marked_spike",
         displayName: "Detonator_2_spike",
         type: "laser",
         detonatorEffect: "spike",
-        detonatesDebuff: debuffs.weakened_armor.id,
+        detonatesDebuff: debuffs.marked.id,
     },
     {
         id: "detonator_offensive_kinetic_weakened_spike",
@@ -185,18 +185,18 @@ const detonatorTemplates = [
     },
     // SPREADER
     {
-        id: "detonator_offensive_kinetic_weakenedShields_spreader",
+        id: "detonator_offensive_kinetic_exhausted_spreader",
         displayName: "Detonator_1_spreader",
         type: "kinetic",
         detonatorEffect: "spreader",
-        detonatesDebuff: debuffs.weakened_shields.id,
+        detonatesDebuff: debuffs.exhausted.id,
     },
     {
-        id: "detonator_offensive_laser_weakenedArmor_spreader",
+        id: "detonator_offensive_laser_marked_spreader",
         displayName: "Detonator_2_spreader",
         type: "laser",
         detonatorEffect: "spreader",
-        detonatesDebuff: debuffs.weakened_armor.id,
+        detonatesDebuff: debuffs.marked.id,
     },
     {
         id: "detonator_offensive_kinetic_weakened_spreader",
@@ -228,18 +228,18 @@ const detonatorTemplates = [
     },
     // CASCADE
     {
-        id: "detonator_offensive_kinetic_weakenedShields_cascade",
+        id: "detonator_offensive_kinetic_exhausted_cascade",
         displayName: "Detonator_1_cascade",
         type: "kinetic",
         detonatorEffect: "cascade",
-        detonatesDebuff: debuffs.weakened_shields.id,
+        detonatesDebuff: debuffs.exhausted.id,
     },
     {
-        id: "detonator_offensive_laser_weakenedArmor_cascade",
+        id: "detonator_offensive_laser_marked_cascade",
         displayName: "Detonator_2_cascade",
         type: "laser",
         detonatorEffect: "cascade",
-        detonatesDebuff: debuffs.weakened_armor.id,
+        detonatesDebuff: debuffs.marked.id,
     },
     {
         id: "detonator_offensive_kinetic_weakened_cascade",
@@ -271,18 +271,18 @@ const detonatorTemplates = [
     },
     // STUNNER
     {
-        id: "detonator_offensive_kinetic_weakenedShields_stunner",
+        id: "detonator_offensive_kinetic_exhausted_stunner",
         displayName: "Detonator_1_stunner",
         type: "kinetic",
         detonatorEffect: "stunner",
-        detonatesDebuff: debuffs.weakened_shields.id,
+        detonatesDebuff: debuffs.exhausted.id,
     },
     {
-        id: "detonator_offensive_laser_weakenedArmor_stunner",
+        id: "detonator_offensive_laser_marked_stunner",
         displayName: "Detonator_2_stunner",
         type: "laser",
         detonatorEffect: "stunner",
-        detonatesDebuff: debuffs.weakened_armor.id,
+        detonatesDebuff: debuffs.marked.id,
     },
     {
         id: "detonator_offensive_kinetic_weakened_stunner",

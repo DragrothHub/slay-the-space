@@ -184,6 +184,10 @@ export function confirmAction(state) {
 
     if (!actor || !abilityId || !target) return state;
 
+    if (hasDebuff(target, "marked")) {
+        reduceCooldowns(actor);
+    }
+
     resolveAction(actor, abilityId, target, state);
 
     state.selectedAbilityId = null;

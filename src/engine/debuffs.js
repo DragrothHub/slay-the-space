@@ -3,25 +3,25 @@
 // ========================================
 
 export const debuffs = {
-    weakened_shields: {
-        id: "weakened_shields",
-        displayName: "Weakened: Shields",
-        description: "Attacks deal increased damage to shields.",
-        color: "#3b82f6",
-    },
-
-    weakened_armor: {
-        id: "weakened_armor",
-        displayName: "Weakened: Armor",
-        description: "Attacks deal increased damage to armor.",
-        color: "#f59e0b",
-    },
-
     weakened: {
         id: "weakened",
         displayName: "Weakened",
         description: "Takes increased damage from all sources.",
         color: "#ef4444",
+    },
+
+    exhausted: {
+        id: "exhausted",
+        displayName: "Exhausted",
+        description: "Deals reduced damage.",
+        color: "#f59e0b",
+    },
+
+    marked: {
+        id: "marked",
+        displayName: "Marked",
+        description: "Attacking marked targets reduces all cooldowns.",
+        color: "#22c55e",
     },
 
     stunned: {
@@ -35,7 +35,7 @@ export const debuffs = {
         id: "shocked",
         displayName: "Shocked",
         description: "Takes damage over time.",
-        color: "#22c55e",
+        color: "#3b82f6",
     },
 };
 

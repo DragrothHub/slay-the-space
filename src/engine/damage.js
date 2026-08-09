@@ -55,6 +55,10 @@ export function applyDamage(target, actor, ability, state) {
         damage *= 1.10;
     }
 
+    if (hasDebuff(actor, "exhausted")) {
+        damage *= 0.90;
+    }
+
     const layers = [
         { key: "currentShield", type: "shield" },
         { key: "currentArmor", type: "armor" },
