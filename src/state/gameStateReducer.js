@@ -1,4 +1,4 @@
-import { confirmAction } from "../engine/turnEngine";
+import { confirmAction, resolveAction } from "../engine/turnEngine";
 import generateWorldMap from "../worldmap/generator/generateWorldMap";
 
 export function gameStateReducer(state, action)
@@ -134,17 +134,25 @@ export function gameStateReducer(state, action)
                 },
             };
 
-        case "AI_CONFIRM":
+
+        case "CONFIRM_ACTION":
 
             return {
                 ...state,
-
                 run: {
                     ...state.run,
+                    battle: confirmAction(structuredClone(state.run.battle)),
+                },
+            };
 
-                    battle: confirmAction(
-                        structuredClone(state.run.battle)
-                    ),
+
+        case "RESOLVE_ACTION": 
+
+            return {
+                ...state,
+                run: {
+                    ...state.run,
+                    battle: resolveAction(structuredClone(state.run.battle)),
                 },
             };
 

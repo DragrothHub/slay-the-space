@@ -9,7 +9,7 @@ import TurnOrder from "./TurnOrder";
 export default function BattleScreen()
 {
 
-    const { gameState, currentNode, setScreen, startBattle, finishBattle, aiConfirm } = useGameState();
+    const { gameState, currentNode, setScreen, startBattle, finishBattle, confirmAction, resolveAction } = useGameState();
     const battle = gameState.run?.battle;
     const [gameOver, setGameOver] = useState(false);
 
@@ -74,11 +74,23 @@ export default function BattleScreen()
         if (battle?.phase !== "enemy-confirm") return;
 
         const timer = setTimeout(() => {
-            aiConfirm();
+            confirmAction();
         }, 500);
 
         return () => clearTimeout(timer);
     }, [battle?.phase, battle?.activeUnitId]);
+
+    useEffect(() => {
+        if (battle?.phase !== "ability-animation") return;
+
+        console.log("animation phase");
+
+        const timer = setTimeout(() => {
+            resolveAction();
+        }, 0);
+
+        return () => clearTimeout(timer);
+    }, [battle?.phase, battle?.activeUnitId, battle?.selectedAbilityId]);
 
     if (!battle) return <div>Loading...</div>;
 

@@ -172,9 +172,8 @@ export function selectAbility(state, ability) {
 // ========================================
 
 export function confirmAction(state) {
-    const actor = getActiveUnit(state);
 
-    state.phase = "ready";
+    const actor = getActiveUnit(state);
 
     const abilityId = state.selectedAbilityId;
 
@@ -182,15 +181,38 @@ export function confirmAction(state) {
         u => u.id === state.selectedTargetId
     );
 
-    if (!actor || !abilityId || !target) return state;
+    if (!actor || !abilityId || !target) {
+        return state;
+    }
+
+    state.phase = "ability-animation";
+
+    return state;
+}
+
+export function resolveAction(state) {
+
+    const actor = getActiveUnit(state);
+
+    const abilityId = state.selectedAbilityId;
+
+    const target = getAllUnits(state).find(
+        u => u.id === state.selectedTargetId
+    );
+
+    if (!actor || !abilityId || !target) {
+        return state;
+    }
 
     if (hasDebuff(target, "marked")) {
         reduceCooldowns(actor);
     }
 
-    resolveAction(actor, abilityId, target, state);
+    resolveAbility(actor, abilityId, target, state);
 
     state.selectedAbilityId = null;
+    state.selectedTargetId = null;
+
     state.phase = "select-ability";
 
     resolveDeaths(state);
@@ -205,11 +227,49 @@ export function confirmAction(state) {
     return state;
 }
 
+// export function confirmAction(state) {
+//     const actor = getActiveUnit(state);
+
+//     state.phase = "ready";
+
+//     const abilityId = state.selectedAbilityId;
+
+//     const target = getAllUnits(state).find(
+//         u => u.id === state.selectedTargetId
+//     );
+
+//     if (!actor || !abilityId || !target) return state;
+
+
+//     // trennung
+
+
+//     if (hasDebuff(target, "marked")) {
+//         reduceCooldowns(actor);
+//     }
+
+//     resolveAbility(actor, abilityId, target, state);
+
+//     state.selectedAbilityId = null;
+//     state.phase = "select-ability";
+
+//     resolveDeaths(state);
+
+//     checkVictory(state);
+
+//     if (!state.winner) {
+//         advanceTurn(state);
+//         setNextActor(state);
+//     }
+
+//     return state;
+// }
+
 // ========================================
-// ACTION RESOLUTION
+// ABILITY RESOLUTION
 // ========================================
 
-function resolveAction(actor, abilityId, target, state) {
+function resolveAbility(actor, abilityId, target, state) {
     let ability = abilityCollection[abilityId];
     applyDamage(target, actor, ability, state);
 

@@ -123,10 +123,18 @@ export default function GameStateProvider({ children }) {
 
     }
 
-    function aiConfirm(){
+    function confirmAction(){
 
         dispatch({ 
-            type: "AI_CONFIRM",
+            type: "CONFIRM_ACTION",
+        });
+
+    }
+
+    function resolveAction(){
+
+        dispatch({ 
+            type: "RESOLVE_ACTION",
         });
 
     }
@@ -171,7 +179,8 @@ export default function GameStateProvider({ children }) {
         startBattle,
         updateBattle,
         finishBattle,
-        aiConfirm,
+        confirmAction,
+        resolveAction,
 
         updateShips,
 
