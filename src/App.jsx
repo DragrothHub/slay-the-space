@@ -73,7 +73,7 @@ function App()
         />
       )}
 
-      {gameState.screen === "moduleselection" && (
+      {gameState.screen === "moduleselection" && gameState.rewards?.rewardType === "module" && (
         <Selection
           items={[moduleCollection["module_defensive_armor"], moduleCollection["module_defensive_shield"]]}
           maxSelections={1}
@@ -94,11 +94,14 @@ function App()
             </div>
           )}
 
-          onConfirm={selectedModule => console.log(selectedModule)}
+          onConfirm={selectedModule => { 
+            console.log(selectedModule); 
+            setScreen("map");
+          }}
         />
       )}
 
-      {gameState.screen === "abilityselection" && (
+      {gameState.screen === "collectReward" && gameState.rewards?.rewardType === "ability" && (
         <Selection
           items={Object.values(detonatorAbilityCollection)}
           maxSelections={1}
@@ -119,7 +122,10 @@ function App()
             </div>
           )}
 
-          onConfirm={selectedAbility => console.log(selectedAbility[0].id)}
+          onConfirm={selectedAbility => {
+            console.log(selectedAbility[0].id);
+            setScreen("map");
+          }}
         />
       )}
 

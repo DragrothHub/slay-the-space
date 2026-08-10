@@ -5,11 +5,12 @@ import BattleLog from "./BattleLog";
 import { useGameState } from "../state/GameStateProvider";
 import { createShip } from "../data/createShip";
 import TurnOrder from "./TurnOrder";
+import { detonatorAbilityCollection } from "../data/abilities";
 
 export default function BattleScreen()
 {
 
-    const { gameState, currentNode, setScreen, startBattle, finishBattle, confirmAction, resolveAction } = useGameState();
+    const { gameState, currentNode, setScreen, startBattle, finishBattle, collectReward, confirmAction, resolveAction } = useGameState();
     const battle = gameState.run?.battle;
     const [gameOver, setGameOver] = useState(false);
 
@@ -66,7 +67,9 @@ export default function BattleScreen()
         else
         {
             finishBattle();
-            setScreen("map");
+            // setScreen("map");
+            // setScreen("abilityselection");
+            collectReward({possibleRewards: Object.values(detonatorAbilityCollection), maxSelection: 1, rewardType: "ability"});
         }
     }, [battle?.winner]);
 

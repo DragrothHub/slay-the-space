@@ -139,6 +139,20 @@ export default function GameStateProvider({ children }) {
 
     }
 
+    function collectReward({possibleRewards, maxSelection, rewardType}){
+
+        dispatch({ 
+            type: "COLLECT_REWARD",
+
+            possibleRewards,
+            maxSelection,
+            rewardType, // ability, module, ship
+
+            screen: "collectReward",
+        });
+
+    }
+
     //--------------------
     // Map
     //--------------------
@@ -181,6 +195,8 @@ export default function GameStateProvider({ children }) {
         finishBattle,
         confirmAction,
         resolveAction,
+
+        collectReward,
 
         updateShips,
 

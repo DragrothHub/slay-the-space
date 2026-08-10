@@ -156,6 +156,24 @@ export function gameStateReducer(state, action)
                 },
             };
 
+
+        case "COLLECT_REWARD":
+
+            return {
+                ...state,
+                
+                screen: action.screen,
+
+                rewards: {
+                    ...state.rewards,
+
+                    possibleRewards: action.possibleRewards,
+                    maxSelection: action.maxSelection,
+                    rewardType: action.rewardType,
+                },
+                
+            };
+
         default:
             return state;
     }
