@@ -64,6 +64,7 @@ function TeamFleet({
                         isActive={battle.activeUnitId === unit.id}
                         isTargeted={battle.selectedTargetId === unit.id}
                         isDead={unit.stats.currentHull <= 0}
+                        // animation={battle.selectedTargetId === unit.id && battle.selectedAbilityId && battle.phase === "ability-animation" ? "animationDetonator" : null}
                         mode="image"
                         reverse={reverse}
                         onClick={() => handleSelectTarget(unit)}

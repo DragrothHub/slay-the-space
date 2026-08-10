@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { debuffs } from "../engine/debuffs";
 import "./Ship.css";
+import AnimationDetonator from "../animations/AnimationDetonator";
 
 export default function Ship({
     unit,
@@ -9,6 +10,7 @@ export default function Ship({
     isTargeted,
     isDead,
     onClick,
+    animation,
     mode = "image",
     reverse = false,
 }) {
@@ -242,6 +244,9 @@ export default function Ship({
                         </div>
                     )}
                 </div>
+
+                {animation === "animationDetonator" && <AnimationDetonator/>}
+
             </div>
         );
     }

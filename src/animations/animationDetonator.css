@@ -1,0 +1,388 @@
+.shield-break {
+    position: absolute;
+    inset: -25%;
+    pointer-events: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 20;
+
+    animation: shield-break-fade 800ms ease-out forwards;
+}
+
+
+/* ========================================
+   SHIELD
+======================================== */
+
+.shield-break__shield {
+    position: absolute;
+
+    width: 90%;
+    height: 90%;
+
+    border-radius: 50%;
+
+    border: 3px solid rgba(120, 220, 255, 0.95);
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            rgba(100, 210, 255, 0.18),
+            rgba(40, 130, 255, 0.08) 45%,
+            rgba(0, 100, 255, 0.02) 70%,
+            transparent 75%
+        );
+
+    box-shadow:
+        0 0 8px rgba(100, 220, 255, 0.9),
+        0 0 20px rgba(60, 180, 255, 0.8),
+        0 0 45px rgba(50, 150, 255, 0.6);
+
+    animation:
+        shield-impact 800ms ease-out forwards;
+}
+
+
+/* zusätzliche Leuchtschicht */
+
+.shield-break__glow {
+    position: absolute;
+    inset: -10%;
+
+    border-radius: 50%;
+
+    background: transparent;
+
+    box-shadow:
+        0 0 20px rgba(100, 220, 255, 0.8),
+        0 0 50px rgba(80, 180, 255, 0.5);
+
+    opacity: 0;
+
+    animation: shield-glow 800ms ease-out forwards;
+}
+
+
+/* ========================================
+   CRACKS
+======================================== */
+
+.shield-break__crack {
+    position: absolute;
+
+    width: 2px;
+    height: 45%;
+
+    left: 50%;
+    top: 50%;
+
+    transform-origin: 50% 0;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,1),
+        rgba(120,220,255,0.9),
+        transparent
+    );
+
+    opacity: 0;
+
+    filter:
+        drop-shadow(0 0 4px rgba(120,220,255,1))
+        drop-shadow(0 0 8px rgba(80,180,255,0.8));
+
+    animation: crack-appear 800ms ease-out forwards;
+}
+
+.crack-1 {
+    transform: rotate(10deg);
+}
+
+.crack-2 {
+    transform: rotate(70deg);
+}
+
+.crack-3 {
+    transform: rotate(130deg);
+}
+
+.crack-4 {
+    transform: rotate(190deg);
+}
+
+.crack-5 {
+    transform: rotate(250deg);
+}
+
+.crack-6 {
+    transform: rotate(310deg);
+}
+
+
+/* ========================================
+   IMPACT
+======================================== */
+
+.shield-break__impact {
+    position: absolute;
+
+    width: 10%;
+    height: 10%;
+
+    border-radius: 50%;
+
+    background: white;
+
+    box-shadow:
+        0 0 10px white,
+        0 0 25px rgba(120,220,255,1),
+        0 0 50px rgba(80,180,255,0.9);
+
+    animation: impact 450ms ease-out forwards;
+}
+
+
+/* ========================================
+   SHARDS
+======================================== */
+
+.shield-break__shard {
+    position: absolute;
+
+    width: 18px;
+    height: 8px;
+
+    background: rgba(150,230,255,0.9);
+
+    clip-path: polygon(
+        0 50%,
+        30% 0,
+        100% 40%,
+        70% 100%
+    );
+
+    filter:
+        drop-shadow(0 0 5px rgba(100,220,255,1));
+
+    opacity: 0;
+
+    left: 50%;
+    top: 50%;
+
+    animation-duration: 700ms;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+}
+
+
+.shard-1 {
+    animation-name: shard-1;
+}
+
+.shard-2 {
+    animation-name: shard-2;
+}
+
+.shard-3 {
+    animation-name: shard-3;
+}
+
+.shard-4 {
+    animation-name: shard-4;
+}
+
+.shard-5 {
+    animation-name: shard-5;
+}
+
+.shard-6 {
+    animation-name: shard-6;
+}
+
+.shard-7 {
+    animation-name: shard-7;
+}
+
+.shard-8 {
+    animation-name: shard-8;
+}
+
+
+/* ========================================
+   KEYFRAMES
+======================================== */
+
+@keyframes shield-impact {
+
+    0% {
+        transform: scale(0.85);
+        opacity: 0.2;
+    }
+
+    15% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+
+    30% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.02);
+        opacity: 0.9;
+    }
+
+    75% {
+        transform: scale(1.15);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(1.35);
+        opacity: 0;
+    }
+}
+
+
+@keyframes shield-glow {
+
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    20% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    45% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1.4);
+    }
+}
+
+
+@keyframes crack-appear {
+
+    0% {
+        opacity: 0;
+        transform-origin: 50% 0;
+        transform: scaleY(0) rotate(var(--rotation));
+    }
+
+    25% {
+        opacity: 1;
+        transform: scaleY(0.4) rotate(var(--rotation));
+    }
+
+    45% {
+        opacity: 1;
+        transform: scaleY(1) rotate(var(--rotation));
+    }
+
+    70% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+@keyframes impact {
+
+    0% {
+        transform: scale(0.2);
+        opacity: 1;
+    }
+
+    30% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(7);
+        opacity: 0;
+    }
+}
+
+
+/* ========================================
+   SHARD ANIMATIONS
+======================================== */
+
+@keyframes shard-1 {
+    0% { transform: translate(0, 0) rotate(0); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translate(-100px, -60px) rotate(120deg); opacity: 0; }
+}
+
+@keyframes shard-2 {
+    0% { transform: translate(0, 0) rotate(0); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translate(80px, -90px) rotate(-140deg); opacity: 0; }
+}
+
+@keyframes shard-3 {
+    0% { transform: translate(0, 0) rotate(0); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translate(120px, -10px) rotate(90deg); opacity: 0; }
+}
+
+@keyframes shard-4 {
+    0% { transform: translate(0, 0) rotate(0); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translate(70px, 70px) rotate(180deg); opacity: 0; }
+}
+
+@keyframes shard-5 {
+    0% { transform: translate(0, 0) rotate(0); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translate(-80px, 90px) rotate(-100deg); opacity: 0; }
+}
+
+@keyframes shard-6 {
+    0% { transform: translate(0, 0) rotate(0); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translate(-130px, 30px) rotate(160deg); opacity: 0; }
+}
+
+@keyframes shard-7 {
+    0% { transform: translate(0, 0) rotate(0); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translate(-50px, -110px) rotate(70deg); opacity: 0; }
+}
+
+@keyframes shard-8 {
+    0% { transform: translate(0, 0) rotate(0); opacity: 0; }
+    30% { opacity: 1; }
+    100% { transform: translate(110px, 100px) rotate(-170deg); opacity: 0; }
+}
+
+
+@keyframes shield-break-fade {
+
+    0% {
+        opacity: 1;
+    }
+
+    75% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

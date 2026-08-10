@@ -7,6 +7,8 @@ import { useGameState } from "./state/GameStateProvider";
 import { moduleCollection } from "./data/modules";
 import ModuleCard from "./components/ModuleCard";
 import Selection from "./selections/Selection";
+import AbilityCard from "./components/AbilityCard";
+import { detonatorAbilityCollection } from "./data/abilities";
 
 function App()
 {
@@ -93,6 +95,31 @@ function App()
           )}
 
           onConfirm={selectedModule => console.log(selectedModule)}
+        />
+      )}
+
+      {gameState.screen === "abilityselection" && (
+        <Selection
+          items={Object.values(detonatorAbilityCollection)}
+          maxSelections={1}
+          title="Choose an ability"
+
+          renderMini={({ item, toggle, selected }) => (
+            <div
+              onClick={toggle}
+              style={{
+                border: selected
+                  ? "2px solid #fcff4c"
+                  : "2px solid transparent",
+                borderRadius: "10px",
+                width: "370px",
+              }}
+            >
+              <AbilityCard abilityId={item.id} />
+            </div>
+          )}
+
+          onConfirm={selectedAbility => console.log(selectedAbility[0].id)}
         />
       )}
 

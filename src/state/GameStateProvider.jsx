@@ -5,7 +5,7 @@ import { getConnectedNodes } from "../worldmap/utils/mapHelpers";
 import { createBattleState, initBattle } from "../engine/turnEngine";
 
 const initialGameState = {
-    screen: "initialshipselection",
+    screen: "initialshipselection", // "abilityselection",
 
     run: null,
 
