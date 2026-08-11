@@ -25,7 +25,7 @@ export default function ShipSelection({ ships, markedShips, preselectedShips, ma
                     borderColor={
                         selected
                             ? "2px solid #fcff4c"
-                            : marked ? "2px solid cyan" : "2px solid transparent"
+                            : marked ? "2px solid #9ecbff" : "2px solid transparent"
                     }
                     onClick={open}
                 />
