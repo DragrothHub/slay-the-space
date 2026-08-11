@@ -2,11 +2,13 @@ import { MiniShipCard } from "../components/ShipCard";
 import ShipCard from "../components/ShipCard";
 import Selection from "./Selection";
 
-export default function ShipSelection({ ships, maxSelections, onConfirm, title })
+export default function ShipSelection({ ships, markedShips, preselectedShips, maxSelections, onConfirm, title })
 {
     return (
         <Selection
             items={ships}
+            markedItems={markedShips ?? []}
+            preselectedItems={preselectedShips ?? []}
             maxSelections={maxSelections}
             title={title}
 
@@ -14,6 +16,7 @@ export default function ShipSelection({ ships, maxSelections, onConfirm, title }
                 key,
                 item,
                 selected,
+                marked,
                 open,
             }) => (
                 <MiniShipCard
@@ -22,7 +25,7 @@ export default function ShipSelection({ ships, maxSelections, onConfirm, title }
                     borderColor={
                         selected
                             ? "2px solid #fcff4c"
-                            : "2px solid transparent"
+                            : marked ? "2px solid cyan" : "2px solid transparent"
                     }
                     onClick={open}
                 />

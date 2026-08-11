@@ -15,6 +15,14 @@ function App()
 
   const { gameState, setScreen, startRun, updateShips } = useGameState();
 
+  const ships = [
+            createShip(),
+            createShip(),
+            createShip(),
+            createShip(),
+            createShip(),
+          ];
+
   return (
     <>
       {gameState.screen === "map" && (
@@ -23,13 +31,7 @@ function App()
 
       {gameState.screen === "initialshipselection" && (
         <ShipSelection
-          ships={[
-            createShip(),
-            createShip(),
-            createShip(),
-            createShip(),
-            createShip(),
-          ]}
+          ships={ships}
           title="Choose 2 ships"
           maxSelections={2}
           onConfirm={(selectedShips) => startRun(selectedShips, Math.floor(Math.random() * 1000))}
@@ -64,6 +66,7 @@ function App()
       {gameState.screen === "toomuchships" && (
         <ShipSelection
           ships={gameState.run.ships}
+          preselectedShips={gameState?.run?.ships?.slice(0, 4)}
           title="Your team can only have 4 ships"
           maxSelections={4}
           onConfirm={(selectedShips) => {

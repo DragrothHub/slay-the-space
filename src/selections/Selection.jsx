@@ -2,6 +2,8 @@ import { useState } from "react";
 
 export default function Selection({
     items,
+    markedItems,
+    preselectedItems,
     maxSelections = 1,
     title,
     getId = item => item.id,
@@ -12,12 +14,19 @@ export default function Selection({
 })
 {
 
-    const [selectedItems, setSelectedItems] = useState([]);
+    const [selectedItems, setSelectedItems] = useState(preselectedItems ?? []);
     const [openedItem, setOpenedItem] = useState(null);
 
     function isSelected(item)
     {
         return selectedItems.some(
+            i => getId(i) === getId(item)
+        );
+    }
+
+    function isMarked(item)
+    {
+        return Array.from(markedItems)?.some(
             i => getId(i) === getId(item)
         );
     }
@@ -100,6 +109,8 @@ export default function Selection({
                     item,
 
                     selected: isSelected(item),
+
+                    marked: isMarked(item),
 
                     open: renderDetail
                         ? () => setOpenedItem(item)
