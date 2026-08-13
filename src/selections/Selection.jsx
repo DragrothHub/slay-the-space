@@ -26,17 +26,15 @@ export default function Selection({
 
     function isMarked(item)
     {
-        return Array.from(markedItems)?.some(
+        return Array.from(markedItems ?? []).some(
             i => getId(i) === getId(item)
         );
     }
 
     function toggleItem(item)
     {
-
         setSelectedItems(current =>
         {
-
             const selected = current.some(
                 i => getId(i) === getId(item)
             );
@@ -48,10 +46,11 @@ export default function Selection({
                 );
             }
 
-            if (current.length >= maxSelections) {
-
+            if (current.length >= maxSelections)
+            {
                 // Bei Single-Selection: Auswahl ersetzen
-                if (maxSelections === 1) {
+                if (maxSelections === 1)
+                {
                     return [item];
                 }
 
@@ -63,33 +62,14 @@ export default function Selection({
         });
     }
 
-    // ---------------------
-    // Detail
-    // ---------------------
-
-    if (openedItem && renderDetail)
+    function openItem(item)
     {
-
-        return renderDetail({
-
-            item: openedItem,
-
-            selected: isSelected(openedItem),
-
-            maxReached:
-                selectedItems.length >= maxSelections,
-
-            toggle: () => toggleItem(openedItem),
-
-            close: () => setOpenedItem(null),
-
-            selectedItems,
-        });
+        setOpenedItem(current =>
+            current && getId(current) === getId(item)
+                ? null
+                : item
+        );
     }
-
-    // ---------------------
-    // Übersicht
-    // ---------------------
 
     return (
         <div
@@ -97,32 +77,108 @@ export default function Selection({
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                width: "100%",
             }}
         >
-            {title && <div style={{fontSize: "1.5em"}}>{title}</div>}
 
-            {items.map(item =>
-                renderMini({
-
-                    key: getId(item),
-
-                    item,
-
-                    selected: isSelected(item),
-
-                    marked: isMarked(item),
-
-                    open: renderDetail
-                        ? () => setOpenedItem(item)
-                        : undefined,
-
-                    toggle: () => toggleItem(item),
-
-                    maxReached:
-                        selectedItems.length >= maxSelections,
-                })
+            {title && (
+                <div
+                    style={{
+                        fontSize: "1.5em",
+                        marginBottom: "10px",
+                    }}
+                >
+                    {title}
+                </div>
             )}
 
+            <div
+                style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
+            >
+
+                {items.map(item =>
+                {
+                    const id = getId(item);
+                    const isOpen =
+                        openedItem &&
+                        getId(openedItem) === id;
+
+                    return (
+                        <div
+                            key={id}
+                            style={{
+                                width: "100%",
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                            }}
+                        >
+
+                            {/* Mini Ansicht */}
+                            {!isOpen && renderMini({
+
+                                item,
+
+                                selected: isSelected(item),
+
+                                marked: isMarked(item),
+
+                                open: renderDetail
+                                    ? () => openItem(item)
+                                    : undefined,
+
+                                toggle: () => toggleItem(item),
+
+                                maxReached:
+                                    selectedItems.length >= maxSelections,
+
+                            })}
+
+                            {/* Detail Ansicht */}
+                            {isOpen && renderDetail && (
+                                <div
+                                    style={{
+                                        width: "100%",
+                                        overflow: "hidden",
+                                    }}
+                                >
+                                    {renderDetail({
+
+                                        item: openedItem,
+
+                                        selected:
+                                            isSelected(openedItem),
+
+                                        maxReached:
+                                            selectedItems.length >=
+                                            maxSelections,
+
+                                        toggle:
+                                            () =>
+                                                toggleItem(openedItem),
+
+                                        close:
+                                            () =>
+                                                setOpenedItem(null),
+
+                                        selectedItems,
+
+                                    })}
+                                </div>
+                            )}
+
+                        </div>
+                    );
+                })}
+
+            </div>
+
+            {/* Confirm */}
             {renderConfirm
                 ? renderConfirm({
 
@@ -164,6 +220,7 @@ export default function Selection({
                         Confirm ({selectedItems.length}/{maxSelections})
                     </button>
                 )}
+
         </div>
     );
 }
