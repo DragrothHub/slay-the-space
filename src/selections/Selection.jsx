@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function Selection({
     items,
@@ -14,8 +14,15 @@ export default function Selection({
 })
 {
 
-    const [selectedItems, setSelectedItems] = useState(preselectedItems ?? []);
+    const [selectedItems, setSelectedItems] = useState(
+        preselectedItems ?? []
+    );
+
     const [openedItem, setOpenedItem] = useState(null);
+
+    // Referenzen auf die einzelnen Item-Container
+    const itemRefs = useRef({});
+
 
     function isSelected(item)
     {
@@ -24,12 +31,14 @@ export default function Selection({
         );
     }
 
+
     function isMarked(item)
     {
         return Array.from(markedItems ?? []).some(
             i => getId(i) === getId(item)
         );
     }
+
 
     function toggleItem(item)
     {
@@ -62,14 +71,54 @@ export default function Selection({
         });
     }
 
+
+    // ---------------------
+    // Scroll
+    // ---------------------
+
+    function scrollToItem(item)
+    {
+        const id = getId(item);
+
+        // Warten, bis React das neue geöffnete
+        // Item gerendert und das Layout aktualisiert hat.
+        requestAnimationFrame(() =>
+        {
+            requestAnimationFrame(() =>
+            {
+                itemRefs.current[id]?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+            });
+        });
+    }
+
+
+    // ---------------------
+    // Detail öffnen
+    // ---------------------
+
     function openItem(item)
     {
-        setOpenedItem(current =>
-            current && getId(current) === getId(item)
-                ? null
-                : item
-        );
+        const isSameItem =
+            openedItem &&
+            getId(openedItem) === getId(item);
+
+        // Bereits geöffnetes Item schließen
+        if (isSameItem)
+        {
+            setOpenedItem(null);
+            return;
+        }
+
+        // Neues Item öffnen
+        setOpenedItem(item);
+
+        // Nach dem Rendern zu diesem Item scrollen
+        scrollToItem(item);
     }
+
 
     return (
         <div
@@ -92,6 +141,7 @@ export default function Selection({
                 </div>
             )}
 
+
             <div
                 style={{
                     width: "100%",
@@ -104,42 +154,66 @@ export default function Selection({
                 {items.map(item =>
                 {
                     const id = getId(item);
+
                     const isOpen =
                         openedItem &&
                         getId(openedItem) === id;
 
+
                     return (
                         <div
                             key={id}
+
+                            ref={element =>
+                            {
+                                itemRefs.current[id] = element;
+                            }}
+
                             style={{
                                 width: "100%",
                                 display: "flex",
                                 flexDirection: "column",
                                 alignItems: "center",
+
+                                // Kleiner Abstand zum oberen
+                                // Bildschirmrand beim Scrollen
+                                scrollMarginTop: "10px",
                             }}
                         >
 
+                            {/* --------------------- */}
                             {/* Mini Ansicht */}
+                            {/* --------------------- */}
+
                             {!isOpen && renderMini({
 
                                 item,
 
-                                selected: isSelected(item),
+                                selected:
+                                    isSelected(item),
 
-                                marked: isMarked(item),
+                                marked:
+                                    isMarked(item),
 
-                                open: renderDetail
-                                    ? () => openItem(item)
-                                    : undefined,
+                                open:
+                                    renderDetail
+                                        ? () => openItem(item)
+                                        : undefined,
 
-                                toggle: () => toggleItem(item),
+                                toggle:
+                                    () => toggleItem(item),
 
                                 maxReached:
-                                    selectedItems.length >= maxSelections,
+                                    selectedItems.length >=
+                                    maxSelections,
 
                             })}
 
+
+                            {/* --------------------- */}
                             {/* Detail Ansicht */}
+                            {/* --------------------- */}
+
                             {isOpen && renderDetail && (
                                 <div
                                     style={{
@@ -160,7 +234,9 @@ export default function Selection({
 
                                         toggle:
                                             () =>
-                                                toggleItem(openedItem),
+                                                toggleItem(
+                                                    openedItem
+                                                ),
 
                                         close:
                                             () =>
@@ -178,7 +254,11 @@ export default function Selection({
 
             </div>
 
+
+            {/* --------------------- */}
             {/* Confirm */}
+            {/* --------------------- */}
+
             {renderConfirm
                 ? renderConfirm({
 
@@ -186,8 +266,9 @@ export default function Selection({
 
                     maxSelections,
 
-                    confirm: () =>
-                        onConfirm?.(selectedItems),
+                    confirm:
+                        () =>
+                            onConfirm?.(selectedItems),
 
                 })
                 : (
@@ -198,26 +279,40 @@ export default function Selection({
                             maxWidth: "370px",
                             height: "100px",
                             borderRadius: "10px",
+
                             background:
-                                selectedItems.length !== maxSelections
+                                selectedItems.length !==
+                                maxSelections
                                     ? "#2a2b2e"
                                     : "linear-gradient(175deg,rgba(10, 17, 24, 1) 50%, rgba(252, 255, 76, 0.2) 100%)",
-                            border: "1px solid #374151",
+
+                            border:
+                                "1px solid #374151",
+
                             color:
-                                selectedItems.length !== maxSelections
+                                selectedItems.length !==
+                                maxSelections
                                     ? "#fff"
                                     : "#fcff4c",
+
                             marginTop: "10px",
+
                             fontFamily: "monospace",
                         }}
+
                         disabled={
-                            selectedItems.length !== maxSelections
+                            selectedItems.length !==
+                            maxSelections
                         }
+
                         onClick={() =>
                             onConfirm?.(selectedItems)
                         }
                     >
-                        Confirm ({selectedItems.length}/{maxSelections})
+                        Confirm (
+                        {selectedItems.length}/
+                        {maxSelections}
+                        )
                     </button>
                 )}
 
