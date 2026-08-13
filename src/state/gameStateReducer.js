@@ -157,7 +157,24 @@ export function gameStateReducer(state, action)
             };
 
 
-        case "COLLECT_REWARD":
+        case "SELECT_REWARDS":
+
+            return {
+                ...state,
+                
+                screen: "selectRewards",
+
+                rewards: {
+                    ...state.rewards,
+
+                    possibleRewards: action.possibleRewards,
+                    maxSelection: action.maxSelection,
+                    rewardType: action.rewardType,
+                },
+                
+            };
+
+        case "COLLECT_REWARDS":
 
             return {
                 ...state,
@@ -167,9 +184,12 @@ export function gameStateReducer(state, action)
                 rewards: {
                     ...state.rewards,
 
-                    possibleRewards: action.possibleRewards,
-                    maxSelection: action.maxSelection,
-                    rewardType: action.rewardType,
+                    possibleRewards: [],
+                    maxSelection: 1,
+                    rewardType: "",
+
+                    modules: action.rewardType == "module" ? [...state.rewards.modules ?? [], ...action.selectedRewards] : state.rewards.modules ?? [],
+                    abilities: action.rewardType == "ability" ? [...state.rewards.abilities ?? [], ...action.selectedRewards] : state.rewards.abilities ?? [],
                 },
                 
             };

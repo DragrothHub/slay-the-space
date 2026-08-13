@@ -6,11 +6,12 @@ import { useGameState } from "../state/GameStateProvider";
 import { createShip } from "../data/createShip";
 import TurnOrder from "./TurnOrder";
 import { detonatorAbilityCollection } from "../data/abilities";
+import { moduleCollection } from "../data/modules";
 
 export default function BattleScreen()
 {
 
-    const { gameState, currentNode, setScreen, startBattle, finishBattle, collectReward, confirmAction, resolveAction } = useGameState();
+    const { gameState, currentNode, setScreen, startBattle, finishBattle, selectRewards, confirmAction, resolveAction } = useGameState();
     const battle = gameState.run?.battle;
     const [gameOver, setGameOver] = useState(false);
 
@@ -67,9 +68,13 @@ export default function BattleScreen()
         else
         {
             finishBattle();
-            // setScreen("map");
-            // setScreen("abilityselection");
-            collectReward({possibleRewards: Object.values(detonatorAbilityCollection), maxSelection: 1, rewardType: "ability"});
+            
+            if(Math.random() > 0.5){
+                selectRewards({possibleRewards: Object.values(detonatorAbilityCollection), maxSelection: 2, rewardType: "ability"});
+            }
+            else{
+                selectRewards({possibleRewards: Object.values(moduleCollection), maxSelection: 1, rewardType: "module"});
+            }
         }
     }, [battle?.winner]);
 

@@ -139,16 +139,29 @@ export default function GameStateProvider({ children }) {
 
     }
 
-    function collectReward({possibleRewards, maxSelection, rewardType}){
+    function selectRewards({possibleRewards, maxSelection, rewardType}){
 
         dispatch({ 
-            type: "COLLECT_REWARD",
+            type: "SELECT_REWARDS",
 
             possibleRewards,
             maxSelection,
             rewardType, // ability, module, ship
 
-            screen: "collectReward",
+            screen: "selectRewards",
+        });
+
+    }
+
+    function collectRewards({selectedRewards, rewardType, screen}){
+
+        dispatch({ 
+            type: "COLLECT_REWARDS",
+
+            selectedRewards,
+            rewardType, // ability, module, ship
+
+            screen,
         });
 
     }
@@ -196,7 +209,8 @@ export default function GameStateProvider({ children }) {
         confirmAction,
         resolveAction,
 
-        collectReward,
+        selectRewards,
+        collectRewards,
 
         updateShips,
 

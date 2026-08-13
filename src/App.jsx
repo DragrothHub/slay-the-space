@@ -13,7 +13,7 @@ import { detonatorAbilityCollection } from "./data/abilities";
 function App()
 {
 
-  const { gameState, setScreen, startRun, updateShips } = useGameState();
+  const { gameState, setScreen, startRun, updateShips, collectRewards } = useGameState();
 
   const ships = [
             createShip(),
@@ -76,11 +76,11 @@ function App()
         />
       )}
 
-      {gameState.screen === "moduleselection" && gameState.rewards?.rewardType === "module" && (
+      {gameState.screen === "selectRewards" && (
         <Selection
-          items={[moduleCollection["module_defensive_armor"], moduleCollection["module_defensive_shield"]]}
-          maxSelections={1}
-          title="Choose a module"
+          items={gameState.rewards.possibleRewards}
+          maxSelections={gameState.rewards.maxSelections}
+          title={`Choose an ${gameState.rewards.rewardType}`}
 
           renderMini={({ item, toggle, selected }) => (
             <div
@@ -93,41 +93,13 @@ function App()
                 width: "370px",
               }}
             >
-              <ModuleCard module={item} />
+              {gameState.rewards?.rewardType === "ability" && <AbilityCard abilityId={item.id} />}
+              {gameState.rewards?.rewardType === "module" && <ModuleCard module={item} />}
             </div>
           )}
 
-          onConfirm={selectedModule => { 
-            console.log(selectedModule); 
-            setScreen("map");
-          }}
-        />
-      )}
-
-      {gameState.screen === "collectReward" && gameState.rewards?.rewardType === "ability" && (
-        <Selection
-          items={Object.values(detonatorAbilityCollection)}
-          maxSelections={1}
-          title="Choose an ability"
-
-          renderMini={({ item, toggle, selected }) => (
-            <div
-              onClick={toggle}
-              style={{
-                border: selected
-                  ? "2px solid #fcff4c"
-                  : "2px solid transparent",
-                borderRadius: "10px",
-                width: "370px",
-              }}
-            >
-              <AbilityCard abilityId={item.id} />
-            </div>
-          )}
-
-          onConfirm={selectedAbility => {
-            console.log(selectedAbility[0].id);
-            setScreen("map");
+          onConfirm={selectedRewards => {
+            collectRewards({screen: "map", rewardType: gameState.rewards.rewardType, selectedRewards: selectedRewards});
           }}
         />
       )}
