@@ -218,7 +218,7 @@ export default function Selection({
                                 <div
                                     style={{
                                         width: "100%",
-                                        overflow: "hidden",
+                                        overflow: "visible",
                                     }}
                                 >
                                     {renderDetail({

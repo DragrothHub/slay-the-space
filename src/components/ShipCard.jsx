@@ -1,13 +1,61 @@
 import { RadarChart } from "./RadarChart";
 import { shipClasses } from "../data/shipClasses";
 import AbilityCard from "./AbilityCard";
-import { abilityCollection } from "../data/abilities";
+import { abilityCollection, detonatorAbilityCollection, neutralAbilityCollection, primerAbilityCollection } from "../data/abilities";
 import { moduleCollection } from "../data/modules";
 import ModuleCard from "./ModuleCard";
 import { debuffs } from "../engine/debuffs";
+import Selection from "../selections/Selection";
+import ComboBox from "../selections/ComboBox";
+import { useGameState } from "../state/GameStateProvider";
 
-function ShipCard({ ship, close, closeText, children })
-{
+
+function ShipCard({
+    ship,
+    close,
+    closeText,
+    children,
+    onModuleChange,
+    onAbilityChange,
+}) {
+
+    const { gameState, updateShips } = useGameState();
+
+    onModuleChange = (index, newModuleId) => {
+        console.log(index, newModuleId);
+
+        ship.modules[index] = newModuleId;
+
+        // updateShips(gameState.run.ships);
+
+            // const updatedShips = gameState.run?.ships?.map(currentShip =>
+            // {
+            //     if (currentShip.id !== ship.id)
+            //         return currentShip;
+
+            //     return {
+            //         ...currentShip,
+
+            //         modules: currentShip.modules.map(
+            //             (moduleId, moduleIndex) =>
+            //                 moduleIndex === index
+            //                     ? newModuleId
+            //                     : moduleId
+            //         ),
+            //     };
+            // });
+
+            // updateShips(updatedShips);
+    }
+
+    onAbilityChange = (index, newAbilityId) => {
+        console.log(index, newAbilityId);
+
+        ship.abilities[index] = newAbilityId;
+
+        // updateShips(gameState.run.ships);
+    }
+
     return (
         <div style={styles.card}>
             <div style={styles.imageWrapper}>
@@ -19,15 +67,19 @@ function ShipCard({ ship, close, closeText, children })
             </div>
 
             <div style={styles.content}>
+
                 <div style={styles.header}>
                     <h2 style={styles.name}>
                         {ship.name || "Unnamed Ship"}
                     </h2>
 
                     <span style={styles.class}>
-                        {shipClasses[ship.class].displayName || "Unknown"} Class • {ship.manufacturer}
+                        {shipClasses[ship.class].displayName ||
+                            "Unknown"}{" "}
+                        Class • {ship.manufacturer}
                     </span>
                 </div>
+
 
                 <div style={styles.stats}>
                     <StatBar
@@ -52,60 +104,139 @@ function ShipCard({ ship, close, closeText, children })
                     />
                 </div>
 
+
                 <div style={styles.radarChart}>
-                    <RadarChart attributes={ship.attributes} />
+                    <RadarChart
+                        attributes={ship.attributes}
+                    />
                 </div>
 
 
-                <span style={{ margin: "10px auto 4px auto" }}>Modules</span>
-                <div style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                        "repeat(auto-fit, minmax(280px, 1fr))",
-                    gap: 4,
-                }}>
-                    {ship.modules.map((moduleId, index) =>
-                    {
-                        let module = moduleCollection[moduleId];
+                <span
+                    style={{
+                        margin: "10px auto 4px auto",
+                    }}
+                >
+                    Modules
+                </span>
+
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                            "repeat(auto-fit, minmax(280px, 1fr))",
+                        gap: 4,
+                    }}
+                >
+                    {ship.modules.map((moduleId, index) => {
+                        const module =
+                            moduleCollection[moduleId];
+
                         return (
-                            <ModuleCard
+                            <ComboBox
                                 key={module.id + "_" + index}
-                                module={module} />
-                        )
+
+                                items={
+                                    Object.values(moduleCollection)
+                                }
+
+                                value={module.id}
+
+                                onChange={newModule =>
+                                    onModuleChange?.(
+                                        index,
+                                        newModule.id
+                                    )
+                                }
+
+                                renderItem={module => (
+                                    <ModuleCard
+                                        module={module}
+                                    />
+                                )}
+                            />
+                        );
                     })}
                 </div>
 
-                <span style={{ margin: "10px auto 4px auto" }}>Abilities</span>
-                <div style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                        "repeat(auto-fit, minmax(280px, 1fr))",
-                    gap: 4,
-                }}>
-                    {ship.abilities.map(abilityId =>
-                    {
+
+                <span
+                    style={{
+                        margin: "10px auto 4px auto",
+                    }}
+                >
+                    Abilities
+                </span>
+
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                            "repeat(auto-fit, minmax(280px, 1fr))",
+                        gap: 4,
+                    }}
+                >
+                    {/* {ship.abilities.map(abilityId => {
                         return (
                             <AbilityCard
                                 key={abilityId}
-                                abilityId={abilityId} />
-                        )
+                                abilityId={abilityId}
+                            />
+                        );
+                    })} */}
+
+                    {ship.abilities.map((abilityId, index) => {
+                        const ability =
+                            abilityCollection[abilityId];
+
+                        const possibleAbilities = index == 0 ? Object.values(neutralAbilityCollection) : index == 1 ? Object.values(primerAbilityCollection) : Object.values(detonatorAbilityCollection);
+
+                        return (
+                            <ComboBox
+                                key={ability.id + "_" + index}
+
+                                items={
+                                    possibleAbilities
+                                }
+
+                                value={ability.id}
+
+                                onChange={newAbility =>
+                                    onAbilityChange?.(
+                                        index,
+                                        newAbility.id
+                                    )
+                                }
+
+                                renderItem={ability => (
+                                    <AbilityCard
+                                        key={ability.id}
+                                        abilityId={ability.id}
+                                    />
+                                )}
+                            />
+                        );
                     })}
                 </div>
+
 
                 <div style={styles.buttonContainer}>
                     {children}
 
-                    <div style={styles.backButton} onClick={() => close()}>
+                    <div
+                        style={styles.backButton}
+                        onClick={() => close()}
+                    >
                         {closeText}
                     </div>
                 </div>
+
             </div>
         </div>
     );
 }
 
-export function MiniShipCard({ ship, borderColor, backgroundColor, onClick })
-{
+export function MiniShipCard({ ship, borderColor, backgroundColor, onClick }) {
     return (
         <div
             key={ship.id}
@@ -258,8 +389,7 @@ function StatBar({
     value,
     max,
     color,
-})
-{
+}) {
     const percent = (value / max) * 100;
 
     if (max == 0)
@@ -300,7 +430,7 @@ const styles = {
         width: 370,
         background: "#111827",
         borderRadius: 16,
-        overflow: "hidden",
+        overflow: "visible",
         color: "white",
         border: "1px solid #374151",
         // fontFamily: "Arial",
