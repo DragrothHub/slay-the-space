@@ -166,6 +166,28 @@ export default function GameStateProvider({ children }) {
 
     }
 
+    function changeModule({ship, index, newModuleId}){
+
+        dispatch({
+            type: "CHANGE_MODULE",
+            ship: ship,
+            index: index,
+            newModuleId: newModuleId,
+        });
+
+    }
+
+    function changeAbility({ship, index, newAbilityId}){
+
+        dispatch({
+            type: "CHANGE_ABILITY",
+            ship: ship,
+            index: index,
+            newAbilityId: newAbilityId,
+        });
+
+    }
+
     //--------------------
     // Map
     //--------------------
@@ -211,6 +233,9 @@ export default function GameStateProvider({ children }) {
 
         selectRewards,
         collectRewards,
+
+        changeModule,
+        changeAbility,
 
         updateShips,
 

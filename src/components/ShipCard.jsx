@@ -15,45 +15,18 @@ function ShipCard({
     close,
     closeText,
     children,
-    onModuleChange,
-    onAbilityChange,
+    allowModuleChange,
+    allowAbilityChange,
 }) {
 
-    const { gameState, updateShips } = useGameState();
+    const { gameState, updateShips, changeModule, changeAbility } = useGameState();
 
-    onModuleChange = (index, newModuleId) => {
-        console.log(index, newModuleId);
-
-        ship.modules[index] = newModuleId;
-
-        // updateShips(gameState.run.ships);
-
-            // const updatedShips = gameState.run?.ships?.map(currentShip =>
-            // {
-            //     if (currentShip.id !== ship.id)
-            //         return currentShip;
-
-            //     return {
-            //         ...currentShip,
-
-            //         modules: currentShip.modules.map(
-            //             (moduleId, moduleIndex) =>
-            //                 moduleIndex === index
-            //                     ? newModuleId
-            //                     : moduleId
-            //         ),
-            //     };
-            // });
-
-            // updateShips(updatedShips);
+    function onModuleChange(index, newModuleId){
+        changeModule({ship: ship, index: index, newModuleId: newModuleId});
     }
 
-    onAbilityChange = (index, newAbilityId) => {
-        console.log(index, newAbilityId);
-
-        ship.abilities[index] = newAbilityId;
-
-        // updateShips(gameState.run.ships);
+    function onAbilityChange(index, newAbilityId){
+        changeAbility({ship: ship, index: index, newAbilityId: newAbilityId});
     }
 
     return (
@@ -129,16 +102,31 @@ function ShipCard({
                     }}
                 >
                     {ship.modules.map((moduleId, index) => {
-                        const module =
-                            moduleCollection[moduleId];
+                        const module = moduleCollection[moduleId];
+
+                        const availableModules = gameState.inventory?.modules ?? [];
+
+                        const possibleModules = [
+                            ...availableModules,
+                            moduleId
+                        ].map(id => moduleCollection[id]);
+
+                        const canChange = availableModules.length > 0;
+
+                        if (!allowModuleChange || !canChange) {
+                            return (
+                                <ModuleCard
+                                    key={index + moduleId}
+                                    module={module}
+                                />
+                            );
+                        }
 
                         return (
                             <ComboBox
                                 key={module.id + "_" + index}
 
-                                items={
-                                    Object.values(moduleCollection)
-                                }
+                                items={possibleModules}
 
                                 value={module.id}
 
@@ -176,28 +164,37 @@ function ShipCard({
                         gap: 4,
                     }}
                 >
-                    {/* {ship.abilities.map(abilityId => {
-                        return (
-                            <AbilityCard
-                                key={abilityId}
-                                abilityId={abilityId}
-                            />
-                        );
-                    })} */}
-
                     {ship.abilities.map((abilityId, index) => {
-                        const ability =
-                            abilityCollection[abilityId];
+                        const ability = abilityCollection[abilityId];
 
-                        const possibleAbilities = index == 0 ? Object.values(neutralAbilityCollection) : index == 1 ? Object.values(primerAbilityCollection) : Object.values(detonatorAbilityCollection);
+                        const availableAbilities =
+                            index === 0
+                                ? gameState?.inventory?.neutralAbilities ?? []
+                                : index === 1
+                                    ? gameState?.inventory?.primerAbilities ?? []
+                                    : gameState?.inventory?.detonatorAbilities ?? [];
+
+                        const possibleAbilities = [
+                            ...availableAbilities,
+                            abilityId
+                        ].map(id => abilityCollection[id]);
+
+                        const canChange = availableAbilities.length > 0;
+
+                        if (!allowAbilityChange || !canChange) {
+                            return (
+                                <AbilityCard
+                                    key={ability.id + "_" + index}
+                                    abilityId={ability.id}
+                                />
+                            );
+                        }
 
                         return (
                             <ComboBox
                                 key={ability.id + "_" + index}
 
-                                items={
-                                    possibleAbilities
-                                }
+                                items={possibleAbilities}
 
                                 value={ability.id}
 
@@ -210,7 +207,6 @@ function ShipCard({
 
                                 renderItem={ability => (
                                     <AbilityCard
-                                        key={ability.id}
                                         abilityId={ability.id}
                                     />
                                 )}
