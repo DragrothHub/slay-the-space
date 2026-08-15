@@ -11,55 +11,47 @@ export default function Selection({
     renderDetail,
     renderConfirm,
     onConfirm,
-})
-{
+}) {
 
     const [selectedItems, setSelectedItems] = useState(
         preselectedItems ?? []
     );
 
-    const [openedItem, setOpenedItem] = useState(null);
+    const [openedItemId, setOpenedItemId] = useState(null);
 
     // Referenzen auf die einzelnen Item-Container
     const itemRefs = useRef({});
 
 
-    function isSelected(item)
-    {
+    function isSelected(item) {
         return selectedItems.some(
             i => getId(i) === getId(item)
         );
     }
 
 
-    function isMarked(item)
-    {
+    function isMarked(item) {
         return Array.from(markedItems ?? []).some(
             i => getId(i) === getId(item)
         );
     }
 
 
-    function toggleItem(item)
-    {
-        setSelectedItems(current =>
-        {
+    function toggleItem(item) {
+        setSelectedItems(current => {
             const selected = current.some(
                 i => getId(i) === getId(item)
             );
 
-            if (selected)
-            {
+            if (selected) {
                 return current.filter(
                     i => getId(i) !== getId(item)
                 );
             }
 
-            if (current.length >= maxSelections)
-            {
+            if (current.length >= maxSelections) {
                 // Bei Single-Selection: Auswahl ersetzen
-                if (maxSelections === 1)
-                {
+                if (maxSelections === 1) {
                     return [item];
                 }
 
@@ -76,16 +68,13 @@ export default function Selection({
     // Scroll
     // ---------------------
 
-    function scrollToItem(item)
-    {
+    function scrollToItem(item) {
         const id = getId(item);
 
         // Warten, bis React das neue geöffnete
         // Item gerendert und das Layout aktualisiert hat.
-        requestAnimationFrame(() =>
-        {
-            requestAnimationFrame(() =>
-            {
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
                 itemRefs.current[id]?.scrollIntoView({
                     behavior: "smooth",
                     block: "start",
@@ -99,23 +88,16 @@ export default function Selection({
     // Detail öffnen
     // ---------------------
 
-    function openItem(item)
-    {
-        const isSameItem =
-            openedItem &&
-            getId(openedItem) === getId(item);
+    function openItem(item) {
+        const id = getId(item);
 
-        // Bereits geöffnetes Item schließen
-        if (isSameItem)
-        {
-            setOpenedItem(null);
+        if (openedItemId === id) {
+            setOpenedItemId(null);
             return;
         }
 
-        // Neues Item öffnen
-        setOpenedItem(item);
+        setOpenedItemId(id);
 
-        // Nach dem Rendern zu diesem Item scrollen
         scrollToItem(item);
     }
 
@@ -151,68 +133,43 @@ export default function Selection({
                 }}
             >
 
-                {items.map(item =>
-                {
+                {items.map(item => {
                     const id = getId(item);
 
-                    const isOpen =
-                        openedItem &&
-                        getId(openedItem) === id;
-
+                    const isOpen = openedItemId === id;
 
                     return (
                         <div
                             key={id}
-
-                            ref={element =>
-                            {
+                            ref={element => {
                                 itemRefs.current[id] = element;
                             }}
-
                             style={{
                                 width: "100%",
                                 display: "flex",
                                 flexDirection: "column",
                                 alignItems: "center",
-
-                                // Kleiner Abstand zum oberen
-                                // Bildschirmrand beim Scrollen
                                 scrollMarginTop: "10px",
                             }}
                         >
 
-                            {/* --------------------- */}
-                            {/* Mini Ansicht */}
-                            {/* --------------------- */}
-
                             {!isOpen && renderMini({
-
                                 item,
 
-                                selected:
-                                    isSelected(item),
+                                selected: isSelected(item),
 
-                                marked:
-                                    isMarked(item),
+                                marked: isMarked(item),
 
-                                open:
-                                    renderDetail
-                                        ? () => openItem(item)
-                                        : undefined,
+                                open: renderDetail
+                                    ? () => openItem(item)
+                                    : undefined,
 
-                                toggle:
-                                    () => toggleItem(item),
+                                toggle: () => toggleItem(item),
 
                                 maxReached:
-                                    selectedItems.length >=
-                                    maxSelections,
-
+                                    selectedItems.length >= maxSelections,
                             })}
 
-
-                            {/* --------------------- */}
-                            {/* Detail Ansicht */}
-                            {/* --------------------- */}
 
                             {isOpen && renderDetail && (
                                 <div
@@ -222,28 +179,20 @@ export default function Selection({
                                     }}
                                 >
                                     {renderDetail({
+                                        item,
 
-                                        item: openedItem,
-
-                                        selected:
-                                            isSelected(openedItem),
+                                        selected: isSelected(item),
 
                                         maxReached:
-                                            selectedItems.length >=
-                                            maxSelections,
+                                            selectedItems.length >= maxSelections,
 
-                                        toggle:
-                                            () =>
-                                                toggleItem(
-                                                    openedItem
-                                                ),
+                                        toggle: () =>
+                                            toggleItem(item),
 
-                                        close:
-                                            () =>
-                                                setOpenedItem(null),
+                                        close: () =>
+                                            setOpenedItemId(null),
 
                                         selectedItems,
-
                                     })}
                                 </div>
                             )}
@@ -282,7 +231,7 @@ export default function Selection({
 
                             background:
                                 selectedItems.length !==
-                                maxSelections
+                                    maxSelections
                                     ? "#2a2b2e"
                                     : "linear-gradient(175deg,rgba(10, 17, 24, 1) 50%, rgba(252, 255, 76, 0.2) 100%)",
 
@@ -291,7 +240,7 @@ export default function Selection({
 
                             color:
                                 selectedItems.length !==
-                                maxSelections
+                                    maxSelections
                                     ? "#fff"
                                     : "#fcff4c",
 

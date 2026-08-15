@@ -330,9 +330,9 @@ export function MiniShipCard({ ship, borderColor, backgroundColor, onClick }) {
                             gap: 4,
                         }}
                     >
-                        {ship.modules.map(id => (
+                        {ship.modules.map((id, index) => (
                             <span
-                                key={crypto.randomUUID()}
+                                key={id + "_" + index}
                                 style={{
                                     flex: "1 1 60px",
                                     textAlign: "center",
