@@ -153,7 +153,7 @@ export default function Selection({
                             }}
                         >
 
-                            {!isOpen && renderMini({
+                            {!openedItemId && renderMini({
                                 item,
 
                                 selected: isSelected(item),
