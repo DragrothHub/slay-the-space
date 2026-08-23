@@ -109,6 +109,7 @@ export default function Selection({
                 flexDirection: "column",
                 alignItems: "center",
                 width: "100%",
+                paddingBottom: "90px",
             }}
         >
 
@@ -224,19 +225,23 @@ export default function Selection({
 
                     <button
                         style={{
+                            position: "fixed",
+                            bottom: "10px",
                             width: "100%",
                             maxWidth: "370px",
-                            height: "100px",
+                            height: "70px",
                             borderRadius: "10px",
 
                             background:
                                 selectedItems.length !==
                                     maxSelections
                                     ? "#2a2b2e"
-                                    : "linear-gradient(175deg,rgba(10, 17, 24, 1) 50%, rgba(252, 255, 76, 0.2) 100%)",
+                                    : "linear-gradient(175deg,rgba(10, 17, 24, 1) 50%, rgb(94, 95, 27) 100%)",
 
                             border:
-                                "1px solid #374151",
+                                selectedItems.length !==
+                                    maxSelections ?
+                                    "1px solid #374151" : "1px solid #fcff4c",
 
                             color:
                                 selectedItems.length !==
