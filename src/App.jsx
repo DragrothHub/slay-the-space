@@ -128,6 +128,23 @@ function App()
         <BattleScreen />
       )}
 
+      {gameState.screen === "repair" &&(
+        <div         
+          onClick={() => setScreen("map")}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            fontSize: "16px",
+            height: "100%",
+        }}>
+          <div>
+            All ships repaired
+          </div>
+        </div>
+      )}
+
       {/* Ship-Management Button */}
       {gameState?.run && <button
         onClick={() => {setShowShipModal(!showShipModal); console.log(gameState);}}

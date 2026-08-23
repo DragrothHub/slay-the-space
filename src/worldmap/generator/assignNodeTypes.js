@@ -40,7 +40,7 @@ export default function assignNodeTypes(nodes, random) {
 
         } else if (roll < 0.75) {
 
-            node.type = NodeTypes.EVENT;
+            node.type = NodeTypes.REPAIR;
 
         } else if (roll < 0.87) {
 
