@@ -109,7 +109,7 @@ export default function Selection({
                 flexDirection: "column",
                 alignItems: "center",
                 width: "100%",
-                paddingBottom: "90px",
+                paddingBottom: !openedItemId ? "60px" : "0px",
             }}
         >
 
@@ -221,27 +221,29 @@ export default function Selection({
                             onConfirm?.(selectedItems),
 
                 })
-                : (
-
+                : !openedItemId && 
                     <button
                         style={{
-                            position: "fixed",
+                            position: selectedItems.length == maxSelections ? "fixed" : "initial",
                             bottom: "10px",
                             width: "100%",
                             maxWidth: "370px",
-                            height: "70px",
+                            height: "50px",
                             borderRadius: "10px",
+                            fontSize: "14px",
+
+                            boxShadow: "0 0 20px black",
 
                             background:
                                 selectedItems.length !==
                                     maxSelections
                                     ? "#2a2b2e"
-                                    : "linear-gradient(175deg,rgba(10, 17, 24, 1) 50%, rgb(94, 95, 27) 100%)",
+                                    : "#0a1118",
 
                             border:
                                 selectedItems.length !==
                                     maxSelections ?
-                                    "1px solid #374151" : "1px solid #fcff4c",
+                                    "1px solid #374151" : "2px solid #fcff4c",
 
                             color:
                                 selectedItems.length !==
@@ -268,7 +270,7 @@ export default function Selection({
                         {maxSelections}
                         )
                     </button>
-                )}
+                }
 
         </div>
     );
