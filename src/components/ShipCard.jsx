@@ -512,5 +512,9 @@ const styles = {
         borderRadius: "10px",
         border: "2px solid #243342",
         textAlign: "center",
+    },
+
+    buttonContainer: {
+        marginTop: "20px",
     }
 };

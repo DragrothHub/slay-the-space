@@ -47,7 +47,7 @@ export default function ShipSelection({ ships, markedShips, preselectedShips, ma
                         allowAbilityChange={allowAbilityChange}
                     >
 
-                        <button
+                        {maxSelections > 0 && <button
                             style={{
                                 background: "#0a1118",
                                 width: "100%",
@@ -77,7 +77,7 @@ export default function ShipSelection({ ships, markedShips, preselectedShips, ma
                             }}
                         >
                             {selected ? "Deselect" : "Select"}
-                        </button>
+                        </button>}
                     </ShipCard>
                 </div>
             )}

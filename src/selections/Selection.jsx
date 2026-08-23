@@ -221,7 +221,7 @@ export default function Selection({
                             onConfirm?.(selectedItems),
 
                 })
-                : !openedItemId && 
+                : !openedItemId && maxSelections > 0 &&
                     <button
                         style={{
                             position: selectedItems.length == maxSelections ? "fixed" : "initial",
