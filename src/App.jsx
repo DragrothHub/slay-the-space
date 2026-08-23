@@ -7,6 +7,7 @@ import { useGameState } from "./state/GameStateProvider";
 import ModuleCard from "./components/ModuleCard";
 import Selection from "./selections/Selection";
 import AbilityCard from "./components/AbilityCard";
+import RepairScreen from "./components/RepairScreen";
 
 function App()
 {
@@ -129,20 +130,7 @@ function App()
       )}
 
       {gameState.screen === "repair" &&(
-        <div         
-          onClick={() => setScreen("map")}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "#fff",
-            fontSize: "16px",
-            height: "100%",
-        }}>
-          <div>
-            All ships repaired
-          </div>
-        </div>
+        <RepairScreen />
       )}
 
       {/* Ship-Management Button */}

@@ -69,17 +69,7 @@ export default function MapNode({ node }) {
 
             case NodeTypes.REPAIR:
                 console.log(NodeTypes.REPAIR);
-
-                let ships = gameState.run.ships;
-
-                ships.forEach(ship => {
-                    ship.stats.currentShield = Math.max(ship.stats.currentShield, ship.stats.maxShield);
-                    ship.stats.currentArmor = Math.max(ship.stats.currentArmor, ship.stats.maxArmor);
-                    ship.stats.currentHull = Math.max(ship.stats.currentHull, ship.stats.maxHull);
-                });
-
-                updateShips(ships);
-
+                
                 setScreen("repair");
                 break;
 
