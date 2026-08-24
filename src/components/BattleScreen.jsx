@@ -11,7 +11,7 @@ import { moduleCollection } from "../data/modules";
 export default function BattleScreen()
 {
 
-    const { gameState, currentNode, setScreen, startBattle, finishBattle, selectRewards, confirmAction, resolveAction } = useGameState();
+    const { gameState, currentNode, setScreen, startBattle, finishBattle, selectRewards, confirmAction, resolveAction, addCredits } = useGameState();
     const battle = gameState.run?.battle;
     const [gameOver, setGameOver] = useState(false);
 
@@ -77,6 +77,8 @@ export default function BattleScreen()
         else 
         {
             finishBattle();
+
+            addCredits(100); // todo
 
             const rewardTypes = [
                 {
