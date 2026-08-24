@@ -3,22 +3,24 @@ function RepairOption({
     description,
     effect,
     onClick,
+    disabled,
 }) {
     return (
         <button
             onClick={onClick}
             style={{
                 textAlign: "left",
-                background: "#0a1118",
+                background: disabled ? "#222" : "#0a1118",
                 borderRadius: 10,
                 padding: 12,
-                border: "1px solid #243342",
-                color: "#fff",
+                border: disabled ? "1px solid #333" : "1px solid #243342",
+                color: disabled ? "#555" : "#fff",
             }}
+            disabled={disabled}
         >
             <div
                 style={{
-                    color: "#9cb7ca",
+                    color: disabled ? "#666" : "#9cb7ca",
                     fontSize: "17px",
                     fontWeight: "bold",
                     letterSpacing: "2px",

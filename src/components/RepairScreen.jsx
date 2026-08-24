@@ -47,9 +47,9 @@ function RepairScreen() {
                     ...ship,
                     stats: {
                         ...ship.stats,
-                        currentShield: ship.stats.maxShield,
-                        currentArmor: ship.stats.maxArmor,
-                        currentHull: ship.stats.maxHull,
+                        currentShield: Math.ceil(Math.min(ship.stats.currentShield + ship.stats.maxShield * 0.3, ship.stats.maxShield)),
+                        currentArmor: Math.ceil(Math.min(ship.stats.currentArmor + ship.stats.maxArmor * 0.3, ship.stats.maxArmor)),
+                        currentHull: Math.ceil(Math.min(ship.stats.currentHull + ship.stats.maxHull * 0.3, ship.stats.maxHull)),
                     }
                 }));
 
@@ -75,9 +75,9 @@ function RepairScreen() {
                 ...ship,
                 stats: {
                     ...ship.stats,
-                    currentShield: ship.stats.maxShield,
-                    currentArmor: ship.stats.maxArmor,
-                    currentHull: ship.stats.maxHull,
+                    currentShield: Math.max(ship.stats.currentShield, ship.stats.maxShield),
+                    currentArmor: Math.max(ship.stats.currentArmor, ship.stats.maxArmor),
+                    currentHull: Math.max(ship.stats.currentHull, ship.stats.maxHull),
                 }
             };
         });
@@ -127,15 +127,17 @@ function RepairScreen() {
                 {!shipSelectionOpen && <RepairOption
                     title="FIELD REPAIR"
                     description="Repair all ships."
-                    effect="+20% Hull"
+                    effect="+30% Shield/Armor/Hull"
                     onClick={() => onRepair("field")}
+                    disabled={repairUsed}
                 />}
 
                 {!shipSelectionOpen && <RepairOption
                     title="MAJOR REPAIR"
                     description="Heavily repair one ship."
-                    effect="+60% Hull · +30% Armor"
+                    effect="100% Full repair"
                     onClick={() => onRepair("major")}
+                    disabled={repairUsed}
                 />}
 
                 {/* <RepairOption
