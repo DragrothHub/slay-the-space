@@ -32,9 +32,6 @@ function RepairScreen() {
     }
 
     function onRepair(type) {
-
-        console.log("repair: ", type);
-
         switch (type) {
             case "major":
                 // Select ship to heal to full
@@ -42,6 +39,9 @@ function RepairScreen() {
                 break;
 
             case "field":
+                if(repairUsed)
+                    return;
+                
                 // Heal all ships a little
                 const repairedShips = gameState.run.ships.map(ship => ({
                     ...ship,
@@ -64,7 +64,8 @@ function RepairScreen() {
     }
 
     function onConfirmFullRepair(shipToRepair) {
-        setShipSelectionOpen(false);
+        if(repairUsed)
+            return;
 
         const repairedShips = gameState.run.ships.map(ship => {
             if (ship.id !== shipToRepair.id) {
@@ -84,6 +85,10 @@ function RepairScreen() {
 
         updateShips(repairedShips);
         setRepairUsed(true);
+
+        setTimeout(() => {
+            setShipSelectionOpen(false);
+        }, 500);
     }
 
     return (
