@@ -91,7 +91,7 @@ function App()
       {gameState.screen === "selectRewards" && (
         <Selection
           items={gameState.rewards.possibleRewards}
-          maxSelections={gameState.rewards.maxSelections}
+          maxSelections={gameState.rewards.maxSelection}
           title={`Choose an ${gameState.rewards.rewardType}`}
 
           renderMini={({ item, toggle, selected }) => (
@@ -173,7 +173,7 @@ function App()
 
             overflowY: "auto",
 
-            background: "rgba(0, 0, 0, 0.75)",
+            background: "rgba(0, 0, 0, 0.90)",
           }}
         >
           <div

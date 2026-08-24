@@ -22,8 +22,6 @@ function RepairOption({
                 style={{
                     color: disabled ? "#666" : "#9cb7ca",
                     fontSize: "17px",
-                    fontWeight: "bold",
-                    letterSpacing: "2px",
                 }}
             >
                 {title}

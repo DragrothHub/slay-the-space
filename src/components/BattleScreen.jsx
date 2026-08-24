@@ -5,7 +5,7 @@ import BattleLog from "./BattleLog";
 import { useGameState } from "../state/GameStateProvider";
 import { createShip } from "../data/createShip";
 import TurnOrder from "./TurnOrder";
-import { detonatorAbilityCollection } from "../data/abilities";
+import { detonatorAbilityCollection, primerAbilityCollection } from "../data/abilities";
 import { moduleCollection } from "../data/modules";
 
 export default function BattleScreen()
@@ -50,6 +50,15 @@ export default function BattleScreen()
         return enemyFleet;
     }
 
+    function getRandomRewards(collection, amount)
+    {
+        const rewards = Object.values(collection);
+
+        return rewards
+            .sort(() => Math.random() - 0.5)
+            .slice(0, amount);
+    }
+
     // Init battle
     useEffect(() =>
     {
@@ -65,16 +74,37 @@ export default function BattleScreen()
         {
             setGameOver(true);
         }
-        else
+        else 
         {
             finishBattle();
-            
-            if(Math.random() > 0.5){
-                selectRewards({possibleRewards: Object.values(detonatorAbilityCollection), maxSelection: 2, rewardType: "ability"});
-            }
-            else{
-                selectRewards({possibleRewards: Object.values(moduleCollection), maxSelection: 1, rewardType: "module"});
-            }
+
+            const rewardTypes = [
+                {
+                    type: "ability",
+                    collection: detonatorAbilityCollection,
+                    amount: 3,
+                },
+                {
+                    type: "ability",
+                    collection: primerAbilityCollection,
+                    amount: 3,
+                },
+                {
+                    type: "module",
+                    collection: moduleCollection,
+                    amount: 3,
+                }
+            ];
+
+            const reward = rewardTypes[
+                Math.floor(Math.random() * rewardTypes.length)
+            ];
+
+            selectRewards({
+                possibleRewards: getRandomRewards(reward.collection, reward.amount),
+                maxSelection: 1,
+                rewardType: reward.type
+            });
         }
     }, [battle?.winner]);
 

@@ -109,7 +109,7 @@ export default function Selection({
                 flexDirection: "column",
                 alignItems: "center",
                 width: "100%",
-                paddingBottom: !openedItemId && selectedItems.length > 0 ? "60px" : "0px",
+                paddingBottom: !openedItemId ? "60px" : "0px",
             }}
         >
 
@@ -211,20 +211,14 @@ export default function Selection({
 
             {renderConfirm
                 ? renderConfirm({
-
                     selectedItems,
-
                     maxSelections,
-
-                    confirm:
-                        () =>
-                            onConfirm?.(selectedItems),
-
+                    confirm: () => onConfirm?.(selectedItems),
                 })
                 : !openedItemId && maxSelections > 0 &&
                     <button
                         style={{
-                            position: selectedItems.length == maxSelections ? "fixed" : "initial",
+                            position: "fixed",
                             bottom: "10px",
                             width: "100%",
                             maxWidth: "370px",

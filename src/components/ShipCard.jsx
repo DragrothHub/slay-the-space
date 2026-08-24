@@ -242,8 +242,8 @@ export function MiniShipCard({ ship, borderColor, backgroundColor, onClick }) {
                     ? borderColor
                     : "2px solid transparent",
                 borderRadius: "10px",
-                maxWidth: 390,
-                minWidth: 370,
+                maxWidth: 370,
+                width: "100%",
             }}
         >
             <div

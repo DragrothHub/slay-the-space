@@ -122,10 +122,9 @@ function RepairScreen() {
                     <div
                         style={{
                             fontSize: "28px",
-                            letterSpacing: "4px",
                         }}
                     >
-                        REPAIR DOCK
+                        Repair Dock
                     </div>
 
                     <div
