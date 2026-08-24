@@ -109,7 +109,7 @@ export default function Selection({
                 flexDirection: "column",
                 alignItems: "center",
                 width: "100%",
-                paddingBottom: !openedItemId ? "60px" : "0px",
+                paddingBottom: !openedItemId && selectedItems.length > 0 ? "60px" : "0px",
             }}
         >
 

@@ -4,3 +4,10 @@ body {
     height: 100%;
     font-family: monospace;
 }
+
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}
