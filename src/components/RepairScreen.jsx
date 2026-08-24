@@ -1,6 +1,8 @@
 import RepairOption from "./RepairOption";
 import { useState } from "react";
 import { useGameState } from "../state/GameStateProvider";
+import Selection from "../selections/Selection";
+import { MiniShipCard } from "../components/ShipCard";
 
 function RepairScreen() {
 
@@ -10,15 +12,16 @@ function RepairScreen() {
         updateShips
     } = useGameState();
 
-    const [ repairUsed, setRepairUsed ] = useState(false);
+    const [repairUsed, setRepairUsed] = useState(false);
+    const [shipSelectionOpen, setShipSelectionOpen] = useState(false);
 
-    if(!gameState || !gameState?.run?.ships)
+    if (!gameState || !gameState?.run?.ships)
         return;
 
     const ships = gameState.run.ships;
 
     function onLeave() {
-        
+
         // Confirm when repair not used
         if (!repairUsed) {
             if (!confirm("Repair was not used by now. Leave anyways?"))
@@ -32,18 +35,54 @@ function RepairScreen() {
 
         console.log("repair: ", type);
 
-        const repairedShips = gameState.run.ships.map(ship => ({
-            ...ship,
-            stats: {
-                ...ship.stats,
-                currentShield: ship.stats.maxShield,
-                currentArmor: ship.stats.maxArmor,
-                currentHull: ship.stats.maxHull,
+        switch (type) {
+            case "major":
+                // Select ship to heal to full
+                setShipSelectionOpen(true);
+                break;
+
+            case "field":
+                // Heal all ships a little
+                const repairedShips = gameState.run.ships.map(ship => ({
+                    ...ship,
+                    stats: {
+                        ...ship.stats,
+                        currentShield: ship.stats.maxShield,
+                        currentArmor: ship.stats.maxArmor,
+                        currentHull: ship.stats.maxHull,
+                    }
+                }));
+
+                updateShips(repairedShips);
+
+                setRepairUsed(true);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    function onConfirmFullRepair(shipToRepair) {
+        setShipSelectionOpen(false);
+
+        const repairedShips = gameState.run.ships.map(ship => {
+            if (ship.id !== shipToRepair.id) {
+                return ship;
             }
-        }));
+
+            return {
+                ...ship,
+                stats: {
+                    ...ship.stats,
+                    currentShield: ship.stats.maxShield,
+                    currentArmor: ship.stats.maxArmor,
+                    currentHull: ship.stats.maxHull,
+                }
+            };
+        });
 
         updateShips(repairedShips);
-        
         setRepairUsed(true);
     }
 
@@ -85,28 +124,28 @@ function RepairScreen() {
                     </div>
                 </div>
 
-                <RepairOption
+                {!shipSelectionOpen && <RepairOption
                     title="FIELD REPAIR"
                     description="Repair all ships."
                     effect="+20% Hull"
                     onClick={() => onRepair("field")}
-                />
+                />}
 
-                <RepairOption
+                {!shipSelectionOpen && <RepairOption
                     title="MAJOR REPAIR"
                     description="Heavily repair one ship."
                     effect="+60% Hull · +30% Armor"
                     onClick={() => onRepair("major")}
-                />
+                />}
 
-                <RepairOption
+                {/* <RepairOption
                     title="SHIELD RECALIBRATION"
                     description="Restore the shields of your entire fleet."
                     effect="Fully restore Shields"
                     onClick={() => onRepair("shield")}
-                />
+                /> */}
 
-                <button
+                {!shipSelectionOpen && <button
                     onClick={onLeave}
                     style={{
                         background: "#0a1118",
@@ -119,8 +158,54 @@ function RepairScreen() {
                     }}
                 >
                     Leave
-                </button>
+                </button>}
+
+                {shipSelectionOpen && <Selection
+                    items={gameState.run.ships}
+                    maxSelections={1}
+                    title={"Select a ship to repair"}
+
+                    renderMini={({
+                        key,
+                        item,
+                        selected,
+                        toggle,
+                    }) => (
+                        <MiniShipCard
+                            key={key}
+                            ship={item}
+                            borderColor={
+                                selected
+                                    ? "2px solid #fcff4c"
+                                    : "2px solid transparent"
+                            }
+                            onClick={toggle}
+                        />
+                    )}
+
+                    onConfirm={(ships) => onConfirmFullRepair(ships[0])}
+                />}
+
+                {shipSelectionOpen && <button
+                    style={{
+                        background: "#0a1118",
+                        color: "#fff",
+                        padding: "10px",
+                        borderRadius: "10px",
+                        border: "2px solid #243342",
+                        textAlign: "center",
+                        position: "fixed",
+                        bottom: "70px",
+                        width: "100%",
+                        maxWidth: "374px",
+                        height: "50px",
+                    }}
+                    onClick={() => setShipSelectionOpen(false)}>
+                    Cancel
+                </button>}
+
             </div>
+
         </div>
     );
 }
