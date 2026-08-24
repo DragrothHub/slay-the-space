@@ -14,6 +14,7 @@ function RepairScreen() {
 
     const [repairUsed, setRepairUsed] = useState(false);
     const [shipSelectionOpen, setShipSelectionOpen] = useState(false);
+    const [showFieldHeal, setShowFieldHeal] = useState(false);
 
     if (!gameState || !gameState?.run?.ships)
         return;
@@ -41,6 +42,8 @@ function RepairScreen() {
             case "field":
                 if(repairUsed)
                     return;
+
+                setShowFieldHeal(true);
                 
                 // Heal all ships a little
                 const repairedShips = gameState.run.ships.map(ship => ({
@@ -53,9 +56,15 @@ function RepairScreen() {
                     }
                 }));
 
-                updateShips(repairedShips);
+                setTimeout(() => {
+                    updateShips(repairedShips);
+                }, 200);
 
                 setRepairUsed(true);
+
+                setTimeout(() => {
+                    setShowFieldHeal(false);
+                }, 1000);
                 break;
 
             default:
@@ -88,7 +97,7 @@ function RepairScreen() {
 
         setTimeout(() => {
             setShipSelectionOpen(false);
-        }, 500);
+        }, 800);
     }
 
     return (
@@ -129,7 +138,7 @@ function RepairScreen() {
                     </div>
                 </div>
 
-                {!shipSelectionOpen && <RepairOption
+                {!shipSelectionOpen && !showFieldHeal && <RepairOption
                     title="FIELD REPAIR"
                     description="Repair all ships."
                     effect="+30% Shield/Armor/Hull"
@@ -137,7 +146,7 @@ function RepairScreen() {
                     disabled={repairUsed}
                 />}
 
-                {!shipSelectionOpen && <RepairOption
+                {!shipSelectionOpen && !showFieldHeal && <RepairOption
                     title="MAJOR REPAIR"
                     description="Heavily repair one ship."
                     effect="100% Full repair"
@@ -152,7 +161,7 @@ function RepairScreen() {
                     onClick={() => onRepair("shield")}
                 /> */}
 
-                {!shipSelectionOpen && <button
+                {!shipSelectionOpen && !showFieldHeal && <button
                     onClick={onLeave}
                     style={{
                         background: "#0a1118",
@@ -167,7 +176,7 @@ function RepairScreen() {
                     Leave
                 </button>}
 
-                {shipSelectionOpen && <Selection
+                {shipSelectionOpen && !showFieldHeal && <Selection
                     items={gameState.run.ships}
                     maxSelections={1}
                     title={"Select a ship to repair"}
@@ -193,7 +202,7 @@ function RepairScreen() {
                     onConfirm={(ships) => onConfirmFullRepair(ships[0])}
                 />}
 
-                {shipSelectionOpen && <button
+                {shipSelectionOpen && !showFieldHeal && <button
                     style={{
                         background: "#0a1118",
                         color: "#fff",
@@ -210,6 +219,26 @@ function RepairScreen() {
                     onClick={() => setShipSelectionOpen(false)}>
                     Cancel
                 </button>}
+
+                {/* Only for field repair animation */}
+                {!shipSelectionOpen && showFieldHeal &&
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            gap: "12px",
+                            marginBottom: "10px",
+                            flexDirection: "column",
+                        }}
+                    >
+                        {ships.map(ship => (
+                            <MiniShipCard
+                                key={ship.id}
+                                ship={ship}
+                            />
+                        ))}
+                    </div>
+                }
 
             </div>
 

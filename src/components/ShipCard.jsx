@@ -498,7 +498,7 @@ const styles = {
     barFill: {
         height: "100%",
         borderRadius: 999,
-        transition: "width 0.2s",
+        transition: "width 0.5s",
     },
 
     radarChart: {
