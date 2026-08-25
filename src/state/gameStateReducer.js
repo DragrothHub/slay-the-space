@@ -29,6 +29,10 @@ export function gameStateReducer(state, action) {
 
                     currentNodeId: action.map.nodes[0].id,
 
+                    visitedNodes: [action.map.nodes[0].id],
+
+                    visitedConnections: [],
+
                     battle: null,
                 },
 
@@ -66,6 +70,8 @@ export function gameStateReducer(state, action) {
 
             const currentNode = state.run.map.nodeLookup[state.run.currentNodeId];
 
+            const connectionId = `${currentNode.id}_${action.nodeId}`;
+
             if (!currentNode.connections.includes(action.nodeId)) {
                 return state;
             }
@@ -78,6 +84,16 @@ export function gameStateReducer(state, action) {
                     ...state.run,
 
                     currentNodeId: action.nodeId,
+
+                    visitedNodes: [
+                        ...state.run.visitedNodes,
+                        action.nodeId
+                    ],
+
+                    visitedConnections: [
+                        ...state.run.visitedConnections,
+                        connectionId
+                    ],
                 },
 
             };

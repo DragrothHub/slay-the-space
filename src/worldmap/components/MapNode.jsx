@@ -25,6 +25,8 @@ export default function MapNode({ node }) {
 
     const { setScreen, moveToNode, currentNode, availableNodes, gameState, updateShips } = useGameState();
 
+    const isVisited = gameState.run.visitedNodes.includes(node.id) && !(currentNode.id === node.id);
+
     function handleClick(){
 
         moveToNode(node.id);
@@ -111,11 +113,11 @@ export default function MapNode({ node }) {
                     ? "3px solid white"
                     : "2px solid #222",
 
-                background: colors[node.type],
+                background: isVisited ? "#fff" : colors[node.type],
 
                 cursor: selectable ? "pointer" : "default",
 
-                opacity: selectable || currentNode.id === node.id ? 1 : 0.4,
+                opacity: selectable || currentNode.id === node.id || isVisited ? 1 : 0.2,
 
             }}
 
