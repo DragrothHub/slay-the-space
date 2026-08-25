@@ -38,17 +38,9 @@ export default function ModuleCard({ module }) {
                     color: "#9cb7ca",
                 }}
             >
-                {module.type === "shield" && (
-                    <span style={{ color: "#63d8ff" }}>
-                        Shield
-                    </span>
-                )}
-
-                {module.type === "armor" && (
-                    <span style={{ color: "#ffd45c" }}>
-                        Armor
-                    </span>
-                )}
+                <span style={{ color: module.color }}>
+                        {module.description}
+                </span>
             </div>
         </div>
     );
