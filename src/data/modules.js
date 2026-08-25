@@ -17,6 +17,14 @@ export const moduleCollection = {
         value: baseValue,
         color: "#f59e0b",
     },
+    module_defensive_repairbot : { 
+        id: "module_defensive_repairbot",
+        displayName: "RepairBot", 
+        category: "defensive", 
+        type: "repairbot", 
+        value: baseValue,
+        color: "#0bcaf5",
+    },
 };
 
 function randomItem(array) {

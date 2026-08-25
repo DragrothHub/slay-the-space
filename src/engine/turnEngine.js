@@ -4,6 +4,7 @@ import { applyDebuff, processTurnStartDebuffs, tickDebuffs, hasDebuff } from "./
 import { startCooldown, reduceCooldowns, isAbilityOnCooldown } from "./cooldowns";
 import { getAllUnits, getActiveUnit, getEnemyUnits } from "./helpers";
 import { abilityCollection } from "../data/abilities";
+import { processTurnEndModules, processTurnStartModules } from "./processModules";
 
 // ========================================
 // INIT
@@ -76,6 +77,8 @@ export function setNextActor(state) {
         advanceTurn(state);
         return setNextActor(state);
     }
+
+    processTurnStartModules(actor, state);
 
     // Reduce cooldowns
     reduceCooldowns(actor);
@@ -209,6 +212,8 @@ export function resolveAction(state) {
     }
 
     resolveAbility(actor, abilityId, target, state);
+
+    processTurnEndModules(actor, state);
 
     state.selectedAbilityId = null;
     state.selectedTargetId = null;
