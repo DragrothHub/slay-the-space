@@ -429,7 +429,6 @@ const styles = {
         overflow: "visible",
         color: "white",
         border: "1px solid #374151",
-        // fontFamily: "Arial",
     },
 
     imageWrapper: {
@@ -438,6 +437,7 @@ const styles = {
         background: "#000",
         display: "flex",
         justifyContent: "center",
+        borderRadius: 16,
     },
 
     image: {

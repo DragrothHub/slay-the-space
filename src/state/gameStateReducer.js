@@ -23,7 +23,7 @@ export function gameStateReducer(state, action) {
                 run: {
                     ships: action.ships,
 
-                    credits: 0,
+                    credits: 80,
 
                     map: action.map,
 
@@ -233,7 +233,7 @@ export function gameStateReducer(state, action) {
                             : state.inventory.modules ?? [],
 
                     neutralAbilities: [
-                        ...(state.inventory.neutralAbilites ?? []),
+                        ...(state.inventory.neutralAbilities ?? []),
                         ...newNeutralAbilities
                     ],
 
@@ -429,6 +429,61 @@ export function gameStateReducer(state, action) {
             };
         }
 
+
+        case "BUY_SHOP_ITEM": {
+
+            console.log("BUY_SHOP_ITEM:", action);
+
+            if (state.run.credits < action.price)
+                return state;
+
+            return {
+                ...state,
+
+                run: {
+                    ...state.run,
+
+                    credits:
+                        state.run.credits - action.price,
+                },
+
+                inventory: {
+                    ...state.inventory,
+
+                    modules:
+                        action.itemType === "module"
+                            ? [
+                                ...(state.inventory.modules ?? []),
+                                action.itemId,
+                            ]
+                            : state.inventory.modules,
+
+                    neutralAbilities:
+                        action.itemType === "neutral"
+                            ? [
+                                ...(state.inventory.neutralAbilities ?? []),
+                                action.itemId,
+                            ]
+                            : state.inventory.neutralAbilities,
+
+                    primerAbilities:
+                        action.itemType === "primer"
+                            ? [
+                                ...(state.inventory.primerAbilities ?? []),
+                                action.itemId,
+                            ]
+                            : state.inventory.primerAbilities,
+
+                    detonatorAbilities:
+                        action.itemType === "detonator"
+                            ? [
+                                ...(state.inventory.detonatorAbilities ?? []),
+                                action.itemId,
+                            ]
+                            : state.inventory.detonatorAbilities,
+                },
+            };
+        }
 
         default:
             return state;

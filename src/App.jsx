@@ -8,6 +8,7 @@ import ModuleCard from "./components/ModuleCard";
 import Selection from "./selections/Selection";
 import AbilityCard from "./components/AbilityCard";
 import RepairScreen from "./components/RepairScreen";
+import ShopScreen from "./components/ShopScreen";
 
 function App()
 {
@@ -131,6 +132,10 @@ function App()
 
       {gameState.screen === "repair" &&(
         <RepairScreen />
+      )}
+      
+      {gameState.screen === "shop" &&(
+        <ShopScreen />
       )}
 
       {/* Ship-Management Button */}

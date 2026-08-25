@@ -5,7 +5,7 @@ import { getConnectedNodes } from "../worldmap/utils/mapHelpers";
 import { createBattleState, initBattle } from "../engine/turnEngine";
 
 const initialGameState = {
-    screen: "initialshipselection", // "abilityselection",
+    screen: "initialshipselection",
 
     run: null,
 
@@ -67,6 +67,19 @@ export default function GameStateProvider({ children }) {
         dispatch({
             type: "ADD_CREDITS",
             amount,
+        });
+
+    }
+
+    function buyShopItem({itemId, price, type}) {
+
+        console.log("buyShopItem:", itemId, price, type);
+
+        dispatch({
+            type: "BUY_SHOP_ITEM",
+            itemId,
+            price,
+            itemType: type,
         });
 
     }
@@ -223,7 +236,9 @@ export default function GameStateProvider({ children }) {
 
         setScreen,
         startRun,
+
         addCredits,
+        buyShopItem,
 
         startBattle,
         updateBattle,

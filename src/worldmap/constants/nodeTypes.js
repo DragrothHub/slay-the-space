@@ -4,7 +4,7 @@ const NodeTypes = Object.freeze({
     ELITE: "elite",         //"#ff4444"
     EVENT: "event",         //"#ffcc00"
     DOCK: "dock",           //"#bb88ff"
-    TREASURE: "treasure",   //"#ffaa33"
+    SHOP: "shop",           //"#ffaa33"
     REPAIR: "repair",       //"#44ff44"
     BOSS: "boss",           //"#ffffff"
 });

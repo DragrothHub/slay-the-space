@@ -48,7 +48,7 @@ export default function assignNodeTypes(nodes, random) {
 
         } else if (roll < 0.95) {
 
-            node.type = NodeTypes.TREASURE;
+            node.type = NodeTypes.SHOP;
 
         } else {
 

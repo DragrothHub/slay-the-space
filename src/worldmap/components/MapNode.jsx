@@ -11,7 +11,7 @@ const colors = {
 
     [NodeTypes.DOCK]: "#bb88ff",
 
-    [NodeTypes.TREASURE]: "#ffaa33",
+    [NodeTypes.SHOP]: "#ffaa33",
 
     [NodeTypes.ELITE]: "#ff4444",
 
@@ -51,14 +51,13 @@ export default function MapNode({ node }) {
             case NodeTypes.DOCK:
                 console.log(NodeTypes.DOCK);
 
-            
                 setScreen("dock");
                 break;
 
-            case NodeTypes.TREASURE:
-                console.log(NodeTypes.TREASURE);
+            case NodeTypes.SHOP:
+                console.log(NodeTypes.SHOP);
 
-                // setScreen("treasure");
+                setScreen("shop");
                 break;
 
             case NodeTypes.EVENT:

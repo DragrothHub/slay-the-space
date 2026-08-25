@@ -8,7 +8,7 @@ export default function ModuleCard({ module }) {
             display: "flex",
             flexDirection: "column",
             gap: 8,
-            border: "1px solid #243342",
+            border: "2px solid #243342",
         }}>
             <div
                 style={{
