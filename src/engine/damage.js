@@ -1,4 +1,5 @@
 import { hasDebuff } from "./debuffs";
+import { processIncomingDamageModules, processOutgoingDamageModules } from "./processModules";
 
 // ========================================
 // DAMAGE SYSTEM
@@ -51,6 +52,14 @@ export function applyDamage(target, actor, ability, state) {
         hull: target.stats.currentHull,
     };
 
+    damage = processOutgoingDamageModules(
+        actor,
+        target,
+        ability,
+        damage,
+        state
+    );
+
     if (hasDebuff(target, "weakened")) {
         damage *= 1.10;
     }
@@ -58,6 +67,14 @@ export function applyDamage(target, actor, ability, state) {
     if (hasDebuff(actor, "exhausted")) {
         damage *= 0.90;
     }
+
+    damage = processIncomingDamageModules(
+        target,
+        actor,
+        ability,
+        damage,
+        state
+    );
 
     const layers = [
         { key: "currentShield", type: "shield" },

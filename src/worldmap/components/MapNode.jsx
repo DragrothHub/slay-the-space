@@ -113,11 +113,11 @@ export default function MapNode({ node }) {
                     ? "3px solid white"
                     : "2px solid #222",
 
-                background: isVisited ? "#fff" : colors[node.type],
+                background: isVisited ? "#aaa" : colors[node.type],
 
                 cursor: selectable ? "pointer" : "default",
 
-                opacity: selectable || currentNode.id === node.id || isVisited ? 1 : 0.2,
+                opacity: selectable || currentNode.id === node.id || isVisited ? 1 : 0.3,
 
             }}
 

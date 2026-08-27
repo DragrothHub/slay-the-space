@@ -68,8 +68,8 @@ export function calculateShipStats(ship) {
     let maxHull = baseValue;
 
     for (const module of ship.modules) {
-        if (moduleCollection[module].type === "shield") maxShield += moduleCollection[module].value;
-        if (moduleCollection[module].type === "armor") maxArmor += moduleCollection[module].value;
+        maxShield += moduleCollection[module].shield;
+        maxArmor += moduleCollection[module].armor;
     }
 
     maxHull += shipClasses[ship.class].hullBonus;

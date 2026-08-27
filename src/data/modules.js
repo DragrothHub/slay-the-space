@@ -1,41 +1,123 @@
-import { neutralBaseDamage, baseValue } from "./constants";
+const colorShield = "#3b82f6";
+const colorMixed = "#22c55e";
+const colorArmor = "#f59e0b";
 
 export const moduleCollection = {
-    module_defensive_shield : { 
-        id: "module_defensive_shield",
-        displayName: "ShieldMod", 
+    module_shield_booster : { 
+        id: "module_shield_booster",
+        displayName: "ShieldBooster", 
         description: "Gives boost to shield maximum",
-        category: "defensive", 
-        type: "shield", 
-        value: baseValue,
-        color: "#3b82f6",
+        shield: 200,
+        armor: 0,
+        color: colorShield,
     },
-    module_defensive_armor : { 
-        id: "module_defensive_armor",
-        displayName: "ArmorMod",
+    module_armor_booster : { 
+        id: "module_armor_booster",
+        displayName: "ArmorBooster",
         description: "Gives boost to armor maximum",
-        category: "defensive", 
-        type: "armor", 
-        value: baseValue,
-        color: "#f59e0b",
+        shield: 0,
+        armor: 200,
+        color: colorArmor,
     },
-    module_defensive_repairbot : { 
-        id: "module_defensive_repairbot",
-        displayName: "RepairBotMod", 
+
+    module_repairbot_shield : {
+        id: "module_repairbot_shield",
+        displayName: "RepairBot", 
         description: "Adds some shield after every turn",
-        category: "defensive", 
-        type: "repairbot", 
-        value: baseValue,
-        color: "#0bcaf5",
+        shield: 100,
+        armor: 0,
+        color: colorShield,
     },
-    module_offensive_kineticboost : { 
-        id: "module_offensive_kineticboost",
+    module_repairbot_armor : {
+        id: "module_repairbot_armor",
+        displayName: "RepairBot", 
+        description: "Adds some armor after every turn",
+        shield: 0,
+        armor: 100,
+        color: colorArmor,
+    },
+    module_repairbot_mixed : {
+        id: "module_repairbot_mixed",
+        displayName: "RepairBot", 
+        description: "Adds some shield and armor after every turn",
+        shield: 50,
+        armor: 50,
+        color: colorMixed,
+    },
+
+    module_kineticboost_shield : { 
+        id: "module_kineticboost_shield",
         displayName: "KineticBoost", 
         description: "Boosts kinetic damage",
-        category: "offensive", 
-        type: "kineticboost", 
-        value: baseValue,
-        color: "#f23b3b",
+        shield: 100,
+        armor: 0,
+        color: colorShield,
+    },
+    module_kineticboost_armor : { 
+        id: "module_kineticboost_armor",
+        displayName: "KineticBoost", 
+        description: "Boosts kinetic damage",
+        shield: 0,
+        armor: 100,
+        color: colorArmor,
+    },
+    module_kineticboost_mixed : { 
+        id: "module_kineticboost_mixed",
+        displayName: "KineticBoost", 
+        description: "Boosts kinetic damage",
+        shield: 50,
+        armor: 50,
+        color: colorMixed,
+    },
+
+    module_laserboost_shield : { 
+        id: "module_laserboost_shield",
+        displayName: "LaserBoost", 
+        description: "Boosts laser damage",
+        shield: 100,
+        armor: 0,
+        color: colorShield,
+    },
+    module_laserboost_armor : { 
+        id: "module_laserboost_armor",
+        displayName: "LaserBoost", 
+        description: "Boosts laser damage",
+        shield: 0,
+        armor: 100,
+        color: colorArmor,
+    },
+    module_laserboost_mixed : { 
+        id: "module_laserboost_mixed",
+        displayName: "LaserBoost", 
+        description: "Boosts laser damage",
+        shield: 50,
+        armor: 50,
+        color: colorMixed,
+    },
+
+    module_formation_shield : { 
+        id: "module_formation_shield",
+        displayName: "Formation", 
+        description: "Boosts ships for every formation module on different ships",
+        shield: 100,
+        armor: 0,
+        color: colorShield,
+    },
+    module_formation_armor : { 
+        id: "module_formation_armor",
+        displayName: "Formation", 
+        description: "Boosts ships for every formation module on different ships",
+        shield: 0,
+        armor: 100,
+        color: colorArmor,
+    },
+    module_formation_mixed : { 
+        id: "module_formation_mixed",
+        displayName: "Formation", 
+        description: "Boosts ships for every formation module on different ships",
+        shield: 50,
+        armor: 50,
+        color: colorMixed,
     },
 };
 
