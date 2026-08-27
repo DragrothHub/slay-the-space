@@ -28,6 +28,15 @@ export const moduleCollection = {
         value: baseValue,
         color: "#0bcaf5",
     },
+    module_offensive_kineticboost : { 
+        id: "module_offensive_kineticboost",
+        displayName: "KineticBoost", 
+        description: "Boosts kinetic damage",
+        category: "offensive", 
+        type: "kineticboost", 
+        value: baseValue,
+        color: "#f23b3b",
+    },
 };
 
 function randomItem(array) {
