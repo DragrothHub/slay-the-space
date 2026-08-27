@@ -15,7 +15,7 @@ export default function ModuleCard({ module }) {
                     position: "relative",
                     display: "flex",
                     justifyContent: "space-between",
-                    alignItems: "center"
+                    alignItems: "center",
                 }}
             >
                 <div
@@ -27,6 +27,16 @@ export default function ModuleCard({ module }) {
                 >
                     {module.displayName}
                 </div>
+
+                <div 
+                    style={{
+                        position: "relative",
+                        width: 10,
+                        height: 10,
+                        backgroundColor: module.defenceTypeColor,
+                        borderRadius: 10,
+                    }}
+                ></div>
             </div>
             
             <div

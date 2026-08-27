@@ -341,9 +341,16 @@ export function MiniShipCard({ ship, borderColor, backgroundColor, onClick }) {
                                     borderRadius: 999,
                                     background: "#1f2937",
                                     border: "1px solid #374151",
+
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    gap: 10,
                                 }}
                             >
                                 {<span style={{ color: `${moduleCollection[id].color}` }}>{moduleCollection[id].displayName}</span>}
+                                <div style={{width: 5, height: 5, borderRadius: 5, background: moduleCollection[id].defenceTypeColor}}></div>
                             </span>
                         ))}
                     </div>
