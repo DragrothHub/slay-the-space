@@ -2,7 +2,7 @@ import RepairOption from "./RepairOption";
 import { useState } from "react";
 import { useGameState } from "../state/GameStateProvider";
 import Selection from "../selections/Selection";
-import { MiniShipCard } from "../components/ShipCard";
+import MiniShipCard from "./MiniShipCard";
 
 function RepairScreen() {
 

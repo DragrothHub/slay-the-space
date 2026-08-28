@@ -1,6 +1,6 @@
-import { MiniShipCard } from "../components/ShipCard";
 import ShipCard from "../components/ShipCard";
 import Selection from "./Selection";
+import MiniShipCard from "../components/MiniShipCard";
 
 export default function ShipSelection({ ships, markedShips, preselectedShips, maxSelections, onConfirm, title, allowModuleChange, allowAbilityChange })
 {
