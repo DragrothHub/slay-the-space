@@ -151,12 +151,12 @@ function App()
         onClick={() => {setShowShipModal(!showShipModal); console.log(gameState);}}
         style={{
           position: "fixed",
-          top: "10px",
+          bottom: "10px",
           right: "10px",
           zIndex: 1000,
 
-          height: "28px",
-          width: "28px",
+          height: "32px",
+          width: "32px",
 
           display: "flex",
           alignItems: "center",
@@ -169,7 +169,7 @@ function App()
           fontSize: "16px",
         }}
       >
-        {showShipModal ? "▲" : "▼"}
+        {showShipModal ? "▼" : "▲"}
       </button>}
 
       {/* Ship Selection Overlay */}
