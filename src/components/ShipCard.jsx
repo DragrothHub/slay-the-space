@@ -7,6 +7,7 @@ import ModuleCard from "./ModuleCard";
 import ComboBox from "../selections/ComboBox";
 import { useGameState } from "../state/GameStateProvider";
 import StatBar from "./StatBar";
+import DebuffCard from "./DebuffCard";
 
 function ShipCard({
     ship,
@@ -244,6 +245,31 @@ function ShipCard({
                         );
                     })}
                 </div>
+
+                {ship.stats.debuffs.length > 0 && <span
+                    style={{
+                        margin: "10px auto 4px auto",
+                    }}
+                >
+                    Debuffs
+                </span>}
+
+                {ship.stats.debuffs.length > 0 && <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns:
+                            "repeat(auto-fit, minmax(280px, 1fr))",
+                        gap: 4,
+                    }}
+                >
+                    {ship.stats.debuffs.map((debuff, index) => (
+                        <DebuffCard
+                            key={debuff.id+"_"+index}
+                            debuffId={debuff.id}
+                            duration={debuff.duration}
+                        />
+                    ))}
+                </div>}
 
 
                 <div style={{ marginTop: "20px", }}>

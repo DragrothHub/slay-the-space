@@ -92,8 +92,8 @@ export function calculateShipStats(ship) {
 
         initiative,
 
-        debuffs: [], // [{ id, turnsRemaining }]
-        cooldowns: [], // [{ id, turnsRemaining }]
+        debuffs: [], // [{ id, duration }]
+        cooldowns: [], // [{ id, remainingCooldown }]
         position: 0,
     };
 }
