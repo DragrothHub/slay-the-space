@@ -470,8 +470,8 @@ export default function SplashScreen({ onFinished }) {
     }
 
     .top-left {
-        top: -2px;
-        left: 20px;
+        top: 20px;
+        left: 10px;
 
         border-top:
             2px solid #3c83ed;
@@ -481,8 +481,8 @@ export default function SplashScreen({ onFinished }) {
     }
 
     .top-right {
-        top: -2px;
-        right: 20px;
+        top: 20px;
+        right: 10px;
 
         border-top:
             2px solid #3c83ed;
@@ -492,8 +492,8 @@ export default function SplashScreen({ onFinished }) {
     }
 
     .bottom-left {
-        bottom: -2px;
-        left: 20px;
+        bottom: 20px;
+        left: 10px;
 
         border-bottom:
             2px solid #f2464d;
@@ -503,8 +503,8 @@ export default function SplashScreen({ onFinished }) {
     }
 
     .bottom-right {
-        bottom: -2px;
-        right: 20px;
+        bottom: 20px;
+        right: 10px;
 
         border-bottom:
             2px solid #f2464d;
@@ -556,10 +556,10 @@ export default function SplashScreen({ onFinished }) {
 
         line-height: 0.9;
 
-        font-weight: bold;
+        // font-weight: bold;
 
         letter-spacing:
-            0.08em;
+            0.2em;
 
         color: #f2f4f8;
 
@@ -606,10 +606,10 @@ export default function SplashScreen({ onFinished }) {
 
         line-height: 0.9;
 
-        font-weight: bold;
+        // font-weight: bold;
 
         letter-spacing:
-            0.04em;
+            0.2em;
 
         color: #3c83ed;
 
