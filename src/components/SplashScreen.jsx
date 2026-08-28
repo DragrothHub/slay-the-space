@@ -556,8 +556,6 @@ export default function SplashScreen({ onFinished }) {
 
         line-height: 0.9;
 
-        // font-weight: bold;
-
         letter-spacing:
             0.2em;
 
@@ -605,8 +603,6 @@ export default function SplashScreen({ onFinished }) {
             clamp(44px, 14vw, 82px);
 
         line-height: 0.9;
-
-        // font-weight: bold;
 
         letter-spacing:
             0.2em;
