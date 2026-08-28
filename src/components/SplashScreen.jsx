@@ -154,16 +154,6 @@ export default function SplashScreen({ onFinished }) {
                 <div className="system-info">
 
                     <div className="info-row">
-                        <span>HULL</span>
-
-                        <div className="info-bar">
-                            <div className="fill red" />
-                        </div>
-
-                        <span>100%</span>
-                    </div>
-
-                    <div className="info-row">
                         <span>SHIELD</span>
 
                         <div className="info-bar">
@@ -174,13 +164,23 @@ export default function SplashScreen({ onFinished }) {
                     </div>
 
                     <div className="info-row">
-                        <span>WEAPONS</span>
+                        <span>ARMOR</span>
 
                         <div className="info-bar">
-                            <div className="fill green" />
+                            <div className="fill orange" />
                         </div>
 
-                        <span>READY</span>
+                        <span>100%</span>
+                    </div>
+
+                    <div className="info-row">
+                        <span>HULL</span>
+
+                        <div className="info-bar">
+                            <div className="fill red" />
+                        </div>
+
+                        <span>100%</span>
                     </div>
 
                 </div>
@@ -747,15 +747,19 @@ export default function SplashScreen({ onFinished }) {
     }
 
     .red {
-        background: #f2464d;
+        background: #ef4444;
     }
 
     .blue {
-        background: #3c83ed;
+        background: #3b82f6;
     }
 
     .green {
-        background: #31c879;
+        background: #22c55e;
+    }
+
+    .orange {
+        background: #f59e0b;
     }
 
     /* ========================================
