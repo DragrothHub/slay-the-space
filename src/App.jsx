@@ -10,6 +10,7 @@ import AbilityCard from "./components/AbilityCard";
 import RepairScreen from "./components/RepairScreen";
 import ShopScreen from "./components/ShopScreen";
 import SplashScreen from "./components/SplashScreen";
+import InventoryScreen from "./components/InventoryScreen";
 
 function App() {
   const {
@@ -203,20 +204,36 @@ function App() {
 
               display: "flex",
               justifyContent: "center",
+              flexDirection: "column",
 
               paddingTop: "45px",
               boxSizing: "border-box",
             }}
           >
-            <ShipSelection
+            {!gameState.run.battle && <ShipSelection
               ships={gameState.run.ships}
-              preselectedShips={[]}
               title="Your Team"
               maxSelections={0}
               allowModuleChange={true}
               allowAbilityChange={true}
-              onConfirm={() => setShowShipModal(false)}
-            />
+            />}
+
+            {!gameState.run.battle && <div style={{textAlign: "center", fontSize: "1.5em",}}>Inventory</div>}
+            {!gameState.run.battle && <InventoryScreen/>}
+
+            {gameState.run.battle && <div style={{textAlign: "center", fontSize: "1.5em",}}>Active Battle</div>}
+
+            {gameState.run.battle && <ShipSelection
+              ships={gameState.run.battle.teams.A}
+              title="Your Team"
+              maxSelections={0}
+            />}
+
+            {gameState.run.battle && <ShipSelection
+              ships={gameState.run.battle.teams.B}
+              title="Enemy Team"
+              maxSelections={0}
+            />}
           </div>
         </div>
       )}
