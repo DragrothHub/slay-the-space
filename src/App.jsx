@@ -44,7 +44,7 @@ function App()
         <WorldMap />
       )}
 
-      {gameState.screen === "initialshipselection" && (
+      {gameState.screen === "initialshipselection" && !showSplash && (
         <ShipSelection
           ships={ships}
           title="Choose 2 ships"
