@@ -9,6 +9,7 @@ import Selection from "./selections/Selection";
 import AbilityCard from "./components/AbilityCard";
 import RepairScreen from "./components/RepairScreen";
 import ShopScreen from "./components/ShopScreen";
+import SplashScreen from "./components/SplashScreen";
 
 function App()
 {
@@ -21,6 +22,7 @@ function App()
   } = useGameState();
 
   const [showShipModal, setShowShipModal] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
   const ships = [
     createShip(),
@@ -32,6 +34,12 @@ function App()
 
   return (
     <>
+      {showSplash && (
+                <SplashScreen
+                    onFinished={() => setShowSplash(false)}
+                />
+      )}
+
       {gameState.screen === "map" && (
         <WorldMap />
       )}
