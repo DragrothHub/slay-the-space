@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createShip } from "./data/createShip";
 import WorldMap from "./worldmap/components/WorldMap";
 import BattleScreen from "./components/BattleScreen";
@@ -11,8 +11,7 @@ import RepairScreen from "./components/RepairScreen";
 import ShopScreen from "./components/ShopScreen";
 import SplashScreen from "./components/SplashScreen";
 
-function App()
-{
+function App() {
   const {
     gameState,
     setScreen,
@@ -23,21 +22,31 @@ function App()
 
   const [showShipModal, setShowShipModal] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+  const [ships] = useState(() => [
+    createShip(),
+    createShip(),
+    createShip(),
+    createShip(),
+    createShip(),
+  ]);
+  const [dockShips, setDockShips] = useState([]);
 
-  const ships = [
-    createShip(),
-    createShip(),
-    createShip(),
-    createShip(),
-    createShip(),
-  ];
+  useEffect(() => {
+    if (gameState.screen === "dock") {
+      setDockShips([
+        createShip(),
+        createShip(),
+        createShip(),
+      ]);
+    }
+  }, [gameState.screen]);
 
   return (
     <>
       {showSplash && (
-                <SplashScreen
-                    onFinished={() => setShowSplash(false)}
-                />
+        <SplashScreen
+          onFinished={() => setShowSplash(false)}
+        />
       )}
 
       {gameState.screen === "map" && (
@@ -60,11 +69,7 @@ function App()
 
       {gameState.screen === "dock" && (
         <ShipSelection
-          ships={[
-            createShip(),
-            createShip(),
-            createShip(),
-          ]}
+          ships={dockShips}
           title="Choose one ship"
           maxSelections={1}
           onConfirm={(selectedShip) => {
@@ -138,32 +143,32 @@ function App()
         <BattleScreen />
       )}
 
-      {gameState.screen === "repair" &&(
+      {gameState.screen === "repair" && (
         <RepairScreen />
       )}
-      
-      {gameState.screen === "shop" &&(
+
+      {gameState.screen === "shop" && (
         <ShopScreen />
       )}
 
       {/* Ship-Management Button */}
       {gameState?.run && <button
-        onClick={() => {setShowShipModal(!showShipModal); console.log(gameState);}}
+        onClick={() => {setShowShipModal(prev => !prev); console.log(gameState);}}
         style={{
           position: "fixed",
-          bottom: "10px",
-          right: "10px",
+          bottom: "20px",
+          left: "20px",
           zIndex: 1000,
 
-          height: "32px",
-          width: "32px",
+          height: "64px",
+          width: "64px",
 
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
 
           border: "1px solid #293242",
-          borderRadius: "6px",
+          borderRadius: "50%",
           background: "#111827",
           color: "#fff",
           fontSize: "16px",
@@ -208,7 +213,7 @@ function App()
               preselectedShips={[]}
               title="Your Team"
               maxSelections={0}
-              allowModuleChange={true} 
+              allowModuleChange={true}
               allowAbilityChange={true}
               onConfirm={() => setShowShipModal(false)}
             />
