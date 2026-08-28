@@ -112,7 +112,10 @@ export default function SplashScreen({ onFinished }) {
                                 &gt;&gt;
                             </span>
 
-                            <span className="title-main">
+                            <span 
+                                className="title-main glitch-text"
+                                data-text="SLAY"
+                            >
                                 SLAY
                             </span>
 
@@ -125,7 +128,10 @@ export default function SplashScreen({ onFinished }) {
                             THE
                         </div>
 
-                        <div className="title-space">
+                        <div 
+                            className="title-space glitch-text glitch-space"
+                            data-text="SPACE"
+                        >
                             SPACE
                         </div>
 
@@ -616,6 +622,236 @@ export default function SplashScreen({ onFinished }) {
             1.2s
             0.65s
             both;
+    }
+
+    /* ========================================
+    LOGO GLITCH
+    ======================================== */
+
+    .glitch-text {
+        position: relative;
+        display: inline-block;
+
+        animation:
+            title-glitch 4s
+            steps(1, end)
+            infinite;
+    }
+
+    /*
+    Die beiden Ebenen werden aus demselben
+    Text erzeugt und während des Glitches
+    leicht verschoben.
+    */
+
+    .glitch-text::before,
+    .glitch-text::after {
+        content: attr(data-text);
+
+        position: absolute;
+
+        left: 0;
+        top: 0;
+
+        width: 100%;
+        height: 100%;
+
+        pointer-events: none;
+
+        opacity: 0;
+    }
+
+    /* BLUE CHANNEL */
+
+    .glitch-text::before {
+        color: #3c83ed;
+
+        text-shadow:
+            2px 0 #3c83ed,
+            -2px 0 #3c83ed;
+
+        animation:
+            glitch-blue 4s
+            steps(1, end)
+            infinite;
+    }
+
+    /* RED / ORANGE CHANNEL */
+
+    .glitch-text::after {
+        color: #f2464d;
+
+        text-shadow:
+            -2px 0 #f2464d,
+            2px 0 #ff9f1a;
+
+        animation:
+            glitch-red 4s
+            steps(1, end)
+            infinite;
+    }
+
+    .glitch-space::before,
+    .glitch-space::after,
+    .glitch-space {
+        animation-delay: 0.1s;
+    }
+
+    @keyframes title-glitch {
+
+        0%,
+        86%,
+        100% {
+            transform: translate(0, 0);
+        }
+
+        87% {
+            transform: translate(-1px, 0);
+        }
+
+        88% {
+            transform: translate(2px, 0);
+        }
+
+        89% {
+            transform: translate(-1px, 1px);
+        }
+
+        90% {
+            transform: translate(0, 0);
+        }
+    }
+
+
+    /* ========================================
+    BLUE GLITCH
+    ======================================== */
+
+    @keyframes glitch-blue {
+
+        0%,
+        86%,
+        100% {
+            opacity: 0;
+
+            transform:
+                translate(0, 0);
+            
+            clip-path:
+                inset(0 0 100% 0);
+        }
+
+        /* tiny digital flicker */
+
+        87% {
+            opacity: 0.7;
+
+            transform:
+                translate(-3px, 0);
+
+            clip-path:
+                inset(18% 0 67% 0);
+        }
+
+        88% {
+            opacity: 0;
+
+            transform:
+                translate(4px, 0);
+
+            clip-path:
+                inset(52% 0 30% 0);
+        }
+
+        89% {
+            opacity: 0.8;
+
+            transform:
+                translate(-2px, 1px);
+
+            clip-path:
+                inset(72% 0 14% 0);
+        }
+
+        90% {
+            opacity: 0;
+
+            transform:
+                translate(0, 0);
+
+            clip-path:
+                inset(0 0 100% 0);
+        }
+    }
+
+
+    /* ========================================
+    RED / ORANGE GLITCH
+    ======================================== */
+
+    @keyframes glitch-red {
+
+        0%,
+        87%,
+        100% {
+            opacity: 0;
+
+            transform:
+                translate(0, 0);
+
+            clip-path:
+                inset(0 0 100% 0);
+        }
+
+        88% {
+            opacity: 0.7;
+
+            transform:
+                translate(3px, 0);
+
+            clip-path:
+                inset(35% 0 48% 0);
+        }
+
+        89% {
+            opacity: 0.85;
+
+            transform:
+                translate(5px, -1px);
+
+            clip-path:
+                inset(62% 0 23% 0);
+        }
+
+        90% {
+            opacity: 0;
+
+            transform:
+                translate(-3px, 1px);
+
+            clip-path:
+                inset(10% 0 78% 0);
+        }
+
+        91% {
+            opacity: 0.5;
+
+            transform:
+                translate(2px, 0);
+
+            clip-path:
+                inset(78% 0 8% 0);
+        }
+
+        92% {
+            opacity: 0;
+
+            transform:
+                translate(0, 0);
+
+            clip-path:
+                inset(0 0 100% 0);
+        }
     }
 
     /* ========================================
@@ -1264,7 +1500,7 @@ export default function SplashScreen({ onFinished }) {
     }
 
 `}</style>
-            
+
         </div>
     );
 }
