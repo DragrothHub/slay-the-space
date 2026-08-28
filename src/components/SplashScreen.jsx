@@ -5,20 +5,19 @@ export default function SplashScreen({ onFinished }) {
     const [launching, setLaunching] = useState(false);
 
     useEffect(() => {
-        // Intro ist nach dieser Zeit bereit für den Launch
         const timer = setTimeout(() => {
             setReady(true);
-        }, 2800);
+        }, 2600);
 
         return () => clearTimeout(timer);
     }, []);
 
     useEffect(() => {
-        function handleKeyDown() {
+        const handleKeyDown = () => {
             if (ready && !launching) {
                 launch();
             }
-        }
+        };
 
         window.addEventListener("keydown", handleKeyDown);
 
@@ -34,33 +33,27 @@ export default function SplashScreen({ onFinished }) {
 
         setTimeout(() => {
             onFinished?.();
-        }, 900);
+        }, 700);
     }
 
-    const stars = Array.from({ length: 90 }, (_, i) => ({
+    const stars = Array.from({ length: 55 }, (_, i) => ({
         id: i,
-        left: `${(i * 47.31) % 100}%`,
-        top: `${(i * 83.17) % 100}%`,
-        size: `${1 + (i % 3)}px`,
-        delay: `${(i % 15) * 0.17}s`,
-        duration: `${2 + (i % 5)}s`,
+        left: `${(i * 47.3) % 100}%`,
+        top: `${(i * 83.1) % 100}%`,
+        delay: `${(i % 10) * 0.2}s`,
+        duration: `${2 + (i % 4)}s`,
     }));
 
     return (
         <div
-            className={`splash-screen ${
-                launching ? "launching" : ""
-            }`}
+            className={`splash ${launching ? "launching" : ""}`}
             onClick={launch}
         >
-            {/* --------------------------------
+            {/* ============================
                 BACKGROUND
-            -------------------------------- */}
+            ============================ */}
 
-            <div className="space" />
-
-            <div className="nebula nebula-left" />
-            <div className="nebula nebula-right" />
+            <div className="background" />
 
             <div className="stars">
                 {stars.map((star) => (
@@ -70,8 +63,6 @@ export default function SplashScreen({ onFinished }) {
                         style={{
                             left: star.left,
                             top: star.top,
-                            width: star.size,
-                            height: star.size,
                             animationDelay: star.delay,
                             animationDuration: star.duration,
                         }}
@@ -79,1360 +70,1197 @@ export default function SplashScreen({ onFinished }) {
                 ))}
             </div>
 
-            {/* --------------------------------
-                PLANET / HORIZON
-            -------------------------------- */}
+            {/* ============================
+                MAIN
+            ============================ */}
 
-            <div className="planet">
-                <div className="planet-glow" />
-                <div className="planet-surface" />
-            </div>
+            <div className="screen">
 
-            {/* --------------------------------
-                MAIN CONTENT
-            -------------------------------- */}
+                {/* top status */}
+                <div className="top-bar">
+                    <span>STS // SYSTEM</span>
 
-            <main className="content">
-
-                {/* Small top label */}
-                <div className="top-label">
-                    <span className="top-line" />
-                    <span>DEEP SPACE PROTOCOL</span>
-                    <span className="top-line" />
+                    <span className="top-status">
+                        <i />
+                        ONLINE
+                    </span>
                 </div>
 
-                {/* --------------------------------
-                    LOGO
-                -------------------------------- */}
+                {/* ============================
+                    LOGO PANEL
+                ============================ */}
 
-                <div className="logo">
+                <div className="logo-panel">
 
-                    {/* HUD rings */}
-                    <div className="ring ring-outer" />
-                    <div className="ring ring-middle" />
-                    <div className="ring ring-inner" />
+                    <div className="panel-corner top-left" />
+                    <div className="panel-corner top-right" />
+                    <div className="panel-corner bottom-left" />
+                    <div className="panel-corner bottom-right" />
 
-                    {/* Rotating HUD segments */}
-                    <div className="hud-segments segment-one" />
-                    <div className="hud-segments segment-two" />
-
-                    {/* SLAY */}
-                    <div className="title slay">
-                        <span>SLAY</span>
+                    {/* small system label */}
+                    <div className="logo-label">
+                        <span>PROJECT</span>
+                        <span>01</span>
                     </div>
 
-                    {/* THE */}
-                    <div className="the-row">
-                        <div className="energy-line" />
+                    {/* main title */}
 
-                        <div className="the">
+                    <div className="title-wrapper">
+
+                        <div className="title-line">
+                            <span className="title-small">
+                                &gt;&gt;
+                            </span>
+
+                            <span className="title-main">
+                                SLAY
+                            </span>
+
+                            <span className="title-small">
+                                &lt;&lt;
+                            </span>
+                        </div>
+
+                        <div className="title-middle">
                             THE
                         </div>
 
-                        <div className="energy-line" />
+                        <div className="title-space">
+                            SPACE
+                        </div>
+
                     </div>
 
-                    {/* SPACE */}
-                    <div className="title space-title">
-                        <span>SPACE</span>
+                    {/* decorative line */}
+
+                    <div className="logo-divider">
+                        <span />
+                        <b />
+                        <span />
                     </div>
 
-                    {/* Logo flash */}
-                    <div className="logo-flash" />
+                    {/* description */}
 
-                    {/* Glitch */}
-                    <div className="glitch glitch-cyan">
-                        SLAY
+                    <div className="tagline">
+                        SURVIVE&nbsp;&nbsp; // &nbsp;&nbsp;UPGRADE&nbsp;&nbsp; // &nbsp;&nbsp;SLAY
                     </div>
 
-                    <div className="glitch glitch-pink">
-                        SPACE
-                    </div>
                 </div>
 
-                {/* --------------------------------
-                    SUBTITLE
-                -------------------------------- */}
+                {/* ============================
+                    SYSTEM INFO
+                ============================ */}
 
-                <div className="subtitle">
-                    <span>THE UNIVERSE</span>
-                    <span className="subtitle-divider">×</span>
-                    <span>IS YOURS TO SLAY</span>
+                <div className="system-info">
+
+                    <div className="info-row">
+                        <span>HULL</span>
+
+                        <div className="info-bar">
+                            <div className="fill red" />
+                        </div>
+
+                        <span>100%</span>
+                    </div>
+
+                    <div className="info-row">
+                        <span>SHIELD</span>
+
+                        <div className="info-bar">
+                            <div className="fill blue" />
+                        </div>
+
+                        <span>100%</span>
+                    </div>
+
+                    <div className="info-row">
+                        <span>WEAPONS</span>
+
+                        <div className="info-bar">
+                            <div className="fill green" />
+                        </div>
+
+                        <span>READY</span>
+                    </div>
+
                 </div>
 
-                {/* --------------------------------
-                    LAUNCH PROMPT
-                -------------------------------- */}
+                {/* ============================
+                    LAUNCH
+                ============================ */}
 
-                <div
-                    className={`launch-area ${
-                        ready ? "ready" : ""
-                    }`}
-                >
-                    <div className="launch-bracket">
-                        <span>[</span>
-                        <div className="launch-line" />
-                        <span>]</span>
+                <div className={`launch ${ready ? "ready" : ""}`}>
+
+                    <div className="launch-header">
+                        <span className="line" />
+
+                        <span>
+                            SYSTEM READY
+                        </span>
+
+                        <span className="line" />
                     </div>
 
-                    <div className="launch-text">
-                        PRESS ANY KEY
+                    <div className="launch-button">
+
+                        <div className="button-side">
+                            [
+                        </div>
+
+                        <div className="button-content">
+
+                            <div className="press">
+                                PRESS ANY KEY
+                            </div>
+
+                            <div className="launch-text">
+                                TO LAUNCH
+                            </div>
+
+                        </div>
+
+                        <div className="button-side">
+                            ]
+                        </div>
+
                     </div>
 
-                    <div className="launch-subtext">
-                        TO LAUNCH
-                    </div>
-
-                    <div className="launch-hint">
+                    <div className="tap-hint">
                         TAP SCREEN TO LAUNCH
                     </div>
+
                 </div>
-            </main>
 
-            {/* --------------------------------
-                CORNER HUD
-            -------------------------------- */}
+                {/* ============================
+                    BOTTOM
+                ============================ */}
 
-            <div className="corner corner-tl" />
-            <div className="corner corner-tr" />
-            <div className="corner corner-bl" />
-            <div className="corner corner-br" />
+                <div className="bottom-bar">
 
-            <div className="version">
-                STS // 01
+                    <span>
+                        BUILD 0.1.0
+                    </span>
+
+                    <span>
+                        DEEP SPACE
+                    </span>
+
+                    <span>
+                        <i className="green-dot" />
+                        READY
+                    </span>
+
+                </div>
+
             </div>
 
-            {/* --------------------------------
-                SCANLINES
-            -------------------------------- */}
+            {/* ============================
+                LAUNCH EFFECT
+            ============================ */}
 
-            <div className="scanlines" />
+            <div className="launch-overlay" />
 
-            {/* --------------------------------
-                LAUNCH FLASH
-            -------------------------------- */}
-
-            <div className="launch-flash" />
 
             <style>{`
 
-                * {
-                    box-sizing: border-box;
-                }
+    * {
+        box-sizing: border-box;
+    }
 
-                /* =================================
-                   SCREEN
-                ================================= */
+    /* ========================================
+       BASE
+    ======================================== */
 
-                .splash-screen {
-                    position: fixed;
-                    inset: 0;
-                    z-index: 99999;
+    .splash {
+        position: fixed;
+        inset: 0;
 
-                    width: 100%;
-                    height: 100dvh;
+        width: 100%;
+        height: 100dvh;
 
-                    overflow: hidden;
+        overflow: hidden;
 
-                    background: #02030a;
-                    color: white;
+        z-index: 99999;
 
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+        background: #05070d;
 
-                    cursor: pointer;
+        color: #f1f3f7;
 
-                    font-family:
-                        Arial,
-                        Helvetica,
-                        sans-serif;
+        font-family:
+            "Courier New",
+            Courier,
+            monospace;
 
-                    animation: screenAppear 1s ease-out;
-                }
+        cursor: pointer;
 
-                /* =================================
-                   BACKGROUND
-                ================================= */
+        animation:
+            splash-in
+            0.6s ease-out;
+    }
 
-                .space {
-                    position: absolute;
-                    inset: -20%;
+    .background {
+        position: absolute;
+        inset: 0;
 
-                    background:
-                        radial-gradient(
-                            circle at 50% 48%,
-                            rgba(75, 20, 130, 0.22),
-                            transparent 34%
-                        ),
-                        radial-gradient(
-                            circle at 0% 45%,
-                            rgba(0, 80, 255, 0.17),
-                            transparent 38%
-                        ),
-                        radial-gradient(
-                            circle at 100% 50%,
-                            rgba(255, 0, 160, 0.14),
-                            transparent 38%
-                        ),
-                        #02030a;
+        background:
+            radial-gradient(
+                circle at 50% 42%,
+                rgba(55, 80, 130, 0.11),
+                transparent 38%
+            ),
+            #05070d;
+    }
 
-                    animation:
-                        backgroundDrift 12s ease-in-out infinite;
-                }
+    /* ========================================
+       STARS
+    ======================================== */
 
-                .nebula {
-                    position: absolute;
+    .stars {
+        position: absolute;
+        inset: 0;
 
-                    width: 70vw;
-                    height: 70vw;
+        pointer-events: none;
+    }
 
-                    max-width: 500px;
-                    max-height: 500px;
+    .star {
+        position: absolute;
 
-                    border-radius: 50%;
+        width: 2px;
+        height: 2px;
 
-                    filter: blur(80px);
+        border-radius: 50%;
 
-                    opacity: 0.12;
-                }
+        background: #8994a8;
 
-                .nebula-left {
-                    left: -35%;
-                    top: 25%;
+        opacity: 0.15;
 
-                    background: #164dff;
+        animation:
+            twinkle
+            ease-in-out
+            infinite;
+    }
 
-                    animation:
-                        nebulaFloat 9s ease-in-out infinite;
-                }
+    /* ========================================
+       SCREEN LAYOUT
+    ======================================== */
 
-                .nebula-right {
-                    right: -35%;
-                    top: 35%;
+    .screen {
+        position: relative;
 
-                    background: #d020ff;
+        z-index: 5;
 
-                    animation:
-                        nebulaFloat 11s ease-in-out infinite reverse;
-                }
+        width: 100%;
+        height: 100%;
 
-                /* =================================
-                   STARS
-                ================================= */
+        display: flex;
+        flex-direction: column;
 
-                .stars {
-                    position: absolute;
-                    inset: 0;
-                }
+        align-items: center;
 
-                .star {
-                    position: absolute;
+        padding:
+            max(28px, env(safe-area-inset-top))
+            22px
+            max(25px, env(safe-area-inset-bottom));
 
-                    display: block;
+        animation:
+            screen-enter
+            1s
+            cubic-bezier(.16, 1, .3, 1);
+    }
 
-                    border-radius: 50%;
+    /* ========================================
+       TOP BAR
+    ======================================== */
 
-                    background: white;
+    .top-bar {
+        width: 100%;
+        max-width: 600px;
 
-                    opacity: 0.25;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-                    animation:
-                        twinkle ease-in-out infinite;
-                }
+        font-size: 10px;
 
-                /* =================================
-                   PLANET
-                ================================= */
+        letter-spacing: 0.15em;
 
-                .planet {
-                    position: absolute;
+        color: #7e8798;
+    }
 
-                    left: 50%;
-                    bottom: -43%;
+    .top-status {
+        display: flex;
+        align-items: center;
 
-                    width: 150%;
-                    aspect-ratio: 1;
+        gap: 7px;
 
-                    transform: translateX(-50%);
+        color: #53cf85;
+    }
 
-                    border-radius: 50%;
+    .top-status i {
+        width: 6px;
+        height: 6px;
 
-                    opacity: 0;
+        border-radius: 50%;
 
-                    animation:
-                        planetAppear 2s 1.3s forwards;
-                }
+        background: #53cf85;
 
-                .planet-surface {
-                    position: absolute;
-                    inset: 0;
+        box-shadow:
+            0 0 8px rgba(83, 207, 133, 0.8);
 
-                    border-radius: 50%;
+        animation:
+            blink
+            1.4s
+            infinite;
+    }
 
-                    background:
-                        radial-gradient(
-                            circle at 50% 35%,
-                            rgba(50, 70, 150, 0.5),
-                            rgba(10, 12, 35, 0.95) 55%,
-                            #02030a 70%
-                        );
+    /* ========================================
+       LOGO PANEL
+    ======================================== */
 
-                    box-shadow:
-                        inset 0 30px 80px rgba(70, 100, 255, 0.18);
-                }
+    .logo-panel {
+        position: relative;
 
-                .planet-glow {
-                    position: absolute;
+        width: 100%;
+        max-width: 600px;
 
-                    top: -3px;
-                    left: 5%;
+        margin-top: 15vh;
 
-                    width: 90%;
-                    height: 20px;
+        padding:
+            35px
+            18px
+            32px;
 
-                    border-radius: 50%;
+        border-radius: 18px;
 
-                    background: rgba(120, 150, 255, 0.9);
+        border:
+            2px solid
+            #293548;
 
-                    filter: blur(8px);
+        background:
+            rgba(14, 21, 34, 0.88);
 
-                    box-shadow:
-                        0 0 15px rgba(100, 130, 255, 0.8),
-                        0 0 45px rgba(70, 100, 255, 0.5),
-                        0 0 100px rgba(100, 50, 255, 0.3);
-                }
+        box-shadow:
+            0 15px 50px
+            rgba(0,0,0,0.35);
 
-                /* =================================
-                   CONTENT
-                ================================= */
+        animation:
+            panel-enter
+            1.1s
+            0.15s
+            both;
+    }
 
-                .content {
-                    position: relative;
+    /* ========================================
+       CORNERS
+    ======================================== */
 
-                    z-index: 10;
+    .panel-corner {
+        position: absolute;
 
-                    width: 100%;
-                    height: 100%;
+        width: 14px;
+        height: 14px;
 
-                    display: flex;
-                    flex-direction: column;
+        opacity: 0.7;
+    }
 
-                    align-items: center;
+    .top-left {
+        top: -2px;
+        left: 20px;
 
-                    padding:
-                        max(8vh, 45px)
-                        18px
-                        max(7vh, 40px);
+        border-top:
+            2px solid #3c83ed;
 
-                    animation:
-                        contentEnter 1.5s
-                        cubic-bezier(.16, 1, .3, 1);
-                }
+        border-left:
+            2px solid #3c83ed;
+    }
 
-                /* =================================
-                   TOP LABEL
-                ================================= */
+    .top-right {
+        top: -2px;
+        right: 20px;
 
-                .top-label {
-                    display: flex;
-                    align-items: center;
-                    gap: 9px;
+        border-top:
+            2px solid #3c83ed;
 
-                    margin-top: 1vh;
+        border-right:
+            2px solid #3c83ed;
+    }
 
-                    font-family:
-                        "Courier New",
-                        monospace;
+    .bottom-left {
+        bottom: -2px;
+        left: 20px;
 
-                    font-size: 8px;
+        border-bottom:
+            2px solid #f2464d;
 
-                    letter-spacing: 0.22em;
+        border-left:
+            2px solid #f2464d;
+    }
 
-                    color: rgba(210, 220, 255, 0.45);
+    .bottom-right {
+        bottom: -2px;
+        right: 20px;
 
-                    white-space: nowrap;
-                }
+        border-bottom:
+            2px solid #f2464d;
 
-                .top-line {
-                    width: 25px;
-                    height: 1px;
+        border-right:
+            2px solid #f2464d;
+    }
 
-                    background:
-                        rgba(170, 130, 255, 0.5);
-                }
+    /* ========================================
+       LOGO LABEL
+    ======================================== */
 
-                /* =================================
-                   LOGO
-                ================================= */
+    .logo-label {
+        display: flex;
 
-                .logo {
-                    position: relative;
+        justify-content: space-between;
 
-                    width: min(94vw, 520px);
+        font-size: 9px;
 
-                    margin-top: 9vh;
+        letter-spacing: 0.18em;
 
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
+        color: #687387;
 
-                    transform:
-                        perspective(700px)
-                        rotateX(8deg);
+        margin-bottom: 25px;
+    }
 
-                    animation:
-                        logoEnter 1.5s
-                        cubic-bezier(.16, 1, .3, 1);
-                }
+    /* ========================================
+       TITLE
+    ======================================== */
 
-                /* =================================
-                   HUD RINGS
-                ================================= */
+    .title-wrapper {
+        text-align: center;
 
-                .ring {
-                    position: absolute;
+        user-select: none;
+    }
 
-                    left: 50%;
-                    top: 50%;
+    .title-line {
+        display: flex;
 
-                    border-radius: 50%;
+        justify-content: center;
+        align-items: center;
 
-                    transform:
-                        translate(-50%, -50%);
+        gap: 10px;
+    }
 
-                    pointer-events: none;
-                }
+    .title-main {
+        font-size:
+            clamp(48px, 15vw, 90px);
 
-                .ring-outer {
-                    width: 115%;
-                    aspect-ratio: 1;
+        line-height: 0.9;
 
-                    border:
-                        1px solid
-                        rgba(140, 150, 255, 0.18);
+        font-weight: bold;
 
-                    border-top-color:
-                        rgba(200, 100, 255, 0.8);
+        letter-spacing:
+            0.08em;
 
-                    animation:
-                        rotate 18s linear infinite;
-                }
+        color: #f2f4f8;
 
-                .ring-middle {
-                    width: 94%;
-                    aspect-ratio: 1;
+        text-shadow:
+            0 0 20px
+            rgba(255,255,255,0.08);
 
-                    border:
-                        1px dashed
-                        rgba(150, 110, 255, 0.2);
+        animation:
+            title-reveal
+            1.1s
+            0.45s
+            both;
+    }
 
-                    animation:
-                        rotateReverse 25s linear infinite;
-                }
+    .title-small {
+        color: #3c83ed;
 
-                .ring-inner {
-                    width: 74%;
-                    aspect-ratio: 1;
+        font-size: 13px;
 
-                    border:
-                        1px solid
-                        rgba(100, 140, 255, 0.13);
+        opacity: 0.8;
+    }
 
-                    animation:
-                        rotate 35s linear infinite;
-                }
+    .title-middle {
+        margin-top: 12px;
 
-                .hud-segments {
-                    position: absolute;
+        font-size: 13px;
 
-                    width: 108%;
-                    aspect-ratio: 1;
+        font-weight: bold;
 
-                    border-radius: 50%;
+        letter-spacing:
+            0.55em;
 
-                    border:
-                        3px solid transparent;
+        padding-left:
+            0.55em;
 
-                    pointer-events: none;
-                }
+        color: #7f8a9c;
+    }
 
-                .segment-one {
-                    border-top-color:
-                        rgba(150, 80, 255, 0.8);
+    .title-space {
+        margin-top: 4px;
 
-                    border-right-color:
-                        rgba(70, 120, 255, 0.35);
+        font-size:
+            clamp(44px, 14vw, 82px);
 
-                    animation:
-                        rotate 9s linear infinite;
-                }
+        line-height: 0.9;
 
-                .segment-two {
-                    border-bottom-color:
-                        rgba(255, 50, 210, 0.55);
+        font-weight: bold;
 
-                    border-left-color:
-                        rgba(50, 180, 255, 0.3);
+        letter-spacing:
+            0.04em;
 
-                    animation:
-                        rotateReverse 13s linear infinite;
-                }
+        color: #3c83ed;
 
-                /* =================================
-                   TITLE
-                ================================= */
+        text-shadow:
+            0 0 18px
+            rgba(60, 131, 237, 0.18);
 
-                .title {
-                    position: relative;
+        animation:
+            space-reveal
+            1.2s
+            0.65s
+            both;
+    }
 
-                    font-family:
-                        Impact,
-                        Haettenschweiler,
-                        "Arial Black",
-                        sans-serif;
+    /* ========================================
+       LOGO DIVIDER
+    ======================================== */
 
-                    font-weight: 900;
+    .logo-divider {
+        display: flex;
 
-                    line-height: 0.8;
+        align-items: center;
 
-                    letter-spacing: 0.055em;
+        justify-content: center;
 
-                    text-align: center;
+        gap: 8px;
 
-                    user-select: none;
+        margin:
+            25px
+            0
+            16px;
+    }
 
-                    z-index: 5;
-                }
+    .logo-divider span {
+        height: 1px;
 
-                .slay {
-                    font-size:
-                        clamp(76px, 19vw, 125px);
+        flex: 1;
 
-                    color: #f3f6ff;
+        max-width: 100px;
 
-                    text-shadow:
-                        0 3px 0 #b9c4dd,
-                        0 7px 0 #66728e,
-                        0 12px 20px rgba(0,0,0,0.9),
-                        0 0 20px rgba(180,210,255,0.3);
-                }
+        background:
+            #334055;
+    }
 
-                .space-title {
-                    margin-top: 6px;
+    .logo-divider b {
+        width: 7px;
+        height: 7px;
 
-                    font-size:
-                        clamp(67px, 17vw, 115px);
+        border-radius: 50%;
 
-                    color: #e8d8ff;
+        background:
+            #f2464d;
 
-                    text-shadow:
-                        0 3px 0 #a26fd2,
-                        0 7px 0 #552a80,
-                        0 12px 20px rgba(0,0,0,0.9),
-                        0 0 20px rgba(200,60,255,0.9),
-                        0 0 50px rgba(130,20,255,0.45);
-                }
+        box-shadow:
+            0 0 10px
+            rgba(242,70,77,0.45);
+    }
 
-                /* =================================
-                   THE
-                ================================= */
+    /* ========================================
+       TAGLINE
+    ======================================== */
 
-                .the-row {
-                    position: relative;
+    .tagline {
+        text-align: center;
 
-                    z-index: 5;
+        font-size: 8px;
 
-                    width: 100%;
+        letter-spacing:
+            0.14em;
 
-                    display: flex;
-                    align-items: center;
+        color: #657084;
+    }
 
-                    justify-content: center;
+    /* ========================================
+       SYSTEM INFO
+    ======================================== */
 
-                    gap: 10px;
+    .system-info {
+        width: 100%;
+        max-width: 500px;
 
-                    margin:
-                        20px 0
-                        16px;
-                }
+        margin-top: 32px;
 
-                .the {
-                    font-size: 15px;
+        display: flex;
+        flex-direction: column;
 
-                    font-weight: 900;
+        gap: 9px;
 
-                    letter-spacing: 0.45em;
+        animation:
+            fade-up
+            1s
+            1.1s
+            both;
+    }
 
-                    padding-left: 0.45em;
+    .info-row {
+        display: grid;
 
-                    color: white;
+        grid-template-columns:
+            58px
+            1fr
+            45px;
 
-                    text-shadow:
-                        0 0 10px rgba(255,255,255,0.8),
-                        0 0 25px rgba(170,70,255,0.9);
-                }
+        align-items: center;
 
-                .energy-line {
-                    height: 1px;
+        gap: 9px;
 
-                    flex: 1;
+        font-size: 8px;
 
-                    max-width: 95px;
+        color: #697486;
+    }
 
-                    background:
-                        linear-gradient(
-                            90deg,
-                            transparent,
-                            rgba(255,255,255,0.8),
-                            #b34cff,
-                            transparent
-                        );
+    .info-row > span:last-child {
+        text-align: right;
+    }
 
-                    box-shadow:
-                        0 0 8px #a137ff;
+    .info-bar {
+        height: 5px;
 
-                    animation:
-                        energyPulse 2s ease-in-out infinite;
-                }
+        overflow: hidden;
 
-                /* =================================
-                   LOGO FLASH
-                ================================= */
+        border-radius: 10px;
 
-                .logo-flash {
-                    position: absolute;
+        background:
+            #1d2737;
+    }
 
-                    top: -30%;
-                    bottom: -30%;
+    .fill {
+        width: 100%;
+        height: 100%;
 
-                    left: -70%;
+        border-radius: inherit;
 
-                    width: 35px;
+        transform-origin: left;
 
-                    transform: skewX(-20deg);
+        animation:
+            bar-fill
+            1.2s
+            1.3s
+            both;
+    }
 
-                    background:
-                        linear-gradient(
-                            90deg,
-                            transparent,
-                            rgba(255,255,255,0.9),
-                            rgba(190,90,255,0.5),
-                            transparent
-                        );
+    .red {
+        background: #f2464d;
+    }
 
-                    filter: blur(6px);
+    .blue {
+        background: #3c83ed;
+    }
 
-                    opacity: 0;
+    .green {
+        background: #31c879;
+    }
 
-                    animation:
-                        lightSweep 2.8s 1s ease-out forwards;
-                }
+    /* ========================================
+       LAUNCH AREA
+    ======================================== */
 
-                /* =================================
-                   GLITCH
-                ================================= */
+    .launch {
+        position: absolute;
 
-                .glitch {
-                    position: absolute;
+        left: 22px;
+        right: 22px;
 
-                    z-index: 20;
+        bottom:
+            max(8vh, 70px);
 
-                    opacity: 0;
+        display: flex;
+        flex-direction: column;
 
-                    font-family:
-                        Impact,
-                        Haettenschweiler,
-                        "Arial Black",
-                        sans-serif;
+        align-items: center;
 
-                    font-weight: 900;
+        opacity: 0;
 
-                    pointer-events: none;
-                }
+        transform:
+            translateY(15px);
 
-                .glitch-cyan {
-                    top: 0;
+        transition:
+            opacity 0.7s ease,
+            transform 0.7s ease;
+    }
 
-                    font-size:
-                        clamp(76px, 19vw, 125px);
+    .launch.ready {
+        opacity: 1;
 
-                    color: #00eaff;
+        transform:
+            translateY(0);
+    }
 
-                    animation:
-                        glitch 2.8s 0.4s;
-                }
+    /* ========================================
+       LAUNCH HEADER
+    ======================================== */
 
-                .glitch-pink {
-                    bottom: 0;
+    .launch-header {
+        width: 100%;
+        max-width: 400px;
 
-                    font-size:
-                        clamp(67px, 17vw, 115px);
+        display: flex;
 
-                    color: #ff2bd6;
+        align-items: center;
 
-                    animation:
-                        glitch 2.8s 0.4s;
-                }
+        gap: 10px;
 
-                /* =================================
-                   SUBTITLE
-                ================================= */
+        color: #5f6b7e;
 
-                .subtitle {
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
+        font-size: 8px;
 
-                    margin-top: 5vh;
+        letter-spacing:
+            0.15em;
+    }
 
-                    font-family:
-                        "Courier New",
-                        monospace;
+    .launch-header .line {
+        height: 1px;
 
-                    font-size: 7px;
+        flex: 1;
 
-                    letter-spacing: 0.16em;
+        background:
+            #283345;
+    }
 
-                    color:
-                        rgba(210, 210, 240, 0.38);
+    /* ========================================
+       LAUNCH BUTTON
+    ======================================== */
 
-                    animation:
-                        fadeUp 1s 1.7s both;
-                }
+    .launch-button {
+        width: 100%;
+        max-width: 430px;
 
-                .subtitle-divider {
-                    color:
-                        rgba(190, 70, 255, 0.8);
-                }
+        min-height: 75px;
 
-                /* =================================
-                   LAUNCH
-                ================================= */
+        margin-top: 10px;
 
-                .launch-area {
-                    position: absolute;
+        display: flex;
 
-                    bottom: max(8vh, 55px);
+        align-items: center;
 
-                    left: 20px;
-                    right: 20px;
+        justify-content: center;
 
-                    display: flex;
-                    flex-direction: column;
+        border-radius: 14px;
 
-                    align-items: center;
+        border:
+            2px solid
+            #344156;
 
-                    opacity: 0;
+        background:
+            #111a2a;
 
-                    transform:
-                        translateY(15px);
+        box-shadow:
+            0 8px 25px
+            rgba(0,0,0,0.3);
 
-                    transition:
-                        opacity 0.8s ease,
-                        transform 0.8s ease;
-                }
+        transition:
+            transform 0.15s,
+            border-color 0.15s,
+            background 0.15s;
+    }
 
-                .launch-area.ready {
-                    opacity: 1;
+    .launch-button:active {
+        transform:
+            scale(0.97);
 
-                    transform:
-                        translateY(0);
-                }
+        background:
+            #18243a;
 
-                .launch-bracket {
-                    display: flex;
+        border-color:
+            #3c83ed;
+    }
 
-                    align-items: center;
+    .button-side {
+        color: #3c83ed;
 
-                    gap: 10px;
+        font-size: 20px;
 
-                    width: min(250px, 70vw);
+        opacity: 0.65;
+    }
 
-                    color:
-                        rgba(190, 120, 255, 0.7);
+    .button-content {
+        text-align: center;
 
-                    font-family:
-                        "Courier New",
-                        monospace;
+        flex: 1;
+    }
 
-                    font-size: 18px;
-                }
+    .press {
+        font-size:
+            clamp(12px, 3.5vw, 16px);
 
-                .launch-bracket > span {
-                    animation:
-                        bracketPulse 1.5s ease-in-out infinite;
-                }
+        font-weight: bold;
 
-                .launch-line {
-                    height: 1px;
+        letter-spacing:
+            0.18em;
 
-                    flex: 1;
+        padding-left:
+            0.18em;
 
-                    background:
-                        linear-gradient(
-                            90deg,
-                            transparent,
-                            rgba(180,100,255,0.7),
-                            transparent
-                        );
-                }
+        color: #f0f2f6;
 
-                .launch-text {
-                    margin-top: 12px;
+        animation:
+            launch-pulse
+            1.6s
+            ease-in-out
+            infinite;
+    }
 
-                    font-family:
-                        "Courier New",
-                        monospace;
+    .launch-text {
+        margin-top: 7px;
 
-                    font-size:
-                        clamp(12px, 3.5vw, 16px);
+        font-size: 9px;
 
-                    font-weight: bold;
+        letter-spacing:
+            0.35em;
 
-                    letter-spacing:
-                        0.25em;
+        padding-left:
+            0.35em;
 
-                    padding-left:
-                        0.25em;
+        color: #3c83ed;
+    }
 
-                    color: white;
+    .tap-hint {
+        margin-top: 12px;
 
-                    text-shadow:
-                        0 0 10px rgba(190,100,255,0.8);
-                }
+        font-size: 7px;
 
-                .launch-subtext {
-                    margin-top: 6px;
+        letter-spacing:
+            0.14em;
 
-                    font-family:
-                        "Courier New",
-                        monospace;
+        color: #4f5a6c;
+    }
 
-                    font-size: 9px;
+    /* ========================================
+       BOTTOM BAR
+    ======================================== */
 
-                    letter-spacing: 0.45em;
+    .bottom-bar {
+        position: absolute;
 
-                    padding-left: 0.45em;
+        bottom:
+            max(18px, env(safe-area-inset-bottom));
 
-                    color:
-                        rgba(190,150,255,0.7);
+        left: 22px;
+        right: 22px;
 
-                    animation:
-                        launchPulse 1.5s ease-in-out infinite;
-                }
+        display: flex;
 
-                .launch-hint {
-                    margin-top: 18px;
+        justify-content: space-between;
 
-                    font-family:
-                        "Courier New",
-                        monospace;
+        font-size: 7px;
 
-                    font-size: 7px;
+        letter-spacing:
+            0.1em;
 
-                    letter-spacing: 0.18em;
+        color: #434d5e;
+    }
 
-                    color:
-                        rgba(210,210,240,0.3);
+    .bottom-bar span:last-child {
+        display: flex;
 
-                    opacity: 0;
+        align-items: center;
 
-                    animation:
-                        hintAppear 1s 3s forwards;
-                }
+        gap: 5px;
 
-                /* =================================
-                   CORNERS
-                ================================= */
+        color: #536175;
+    }
 
-                .corner {
-                    position: absolute;
+    .green-dot {
+        width: 5px;
+        height: 5px;
 
-                    width: 22px;
-                    height: 22px;
+        border-radius: 50%;
 
-                    z-index: 20;
+        background: #31c879;
+    }
 
-                    opacity: 0.35;
-                }
+    /* ========================================
+       LAUNCH EFFECT
+    ======================================== */
 
-                .corner-tl {
-                    top: 20px;
-                    left: 20px;
+    .launch-overlay {
+        position: absolute;
+        inset: 0;
 
-                    border-top: 1px solid white;
-                    border-left: 1px solid white;
-                }
+        z-index: 100;
 
-                .corner-tr {
-                    top: 20px;
-                    right: 20px;
+        pointer-events: none;
 
-                    border-top: 1px solid white;
-                    border-right: 1px solid white;
-                }
+        background: white;
 
-                .corner-bl {
-                    bottom: 20px;
-                    left: 20px;
+        opacity: 0;
+    }
 
-                    border-bottom: 1px solid white;
-                    border-left: 1px solid white;
-                }
+    .launching .launch-overlay {
+        animation:
+            launch-flash
+            0.7s
+            ease-out
+            forwards;
+    }
 
-                .corner-br {
-                    bottom: 20px;
-                    right: 20px;
+    .launching .screen {
+        animation:
+            launch-away
+            0.7s
+            ease-in
+            forwards;
+    }
 
-                    border-bottom: 1px solid white;
-                    border-right: 1px solid white;
-                }
+    /* ========================================
+       ANIMATIONS
+    ======================================== */
 
-                .version {
-                    position: absolute;
+    @keyframes splash-in {
+        from {
+            opacity: 0;
+        }
 
-                    right: 23px;
-                    top: 52px;
+        to {
+            opacity: 1;
+        }
+    }
 
-                    font-family:
-                        "Courier New",
-                        monospace;
+    @keyframes screen-enter {
+        from {
+            opacity: 0;
 
-                    font-size: 7px;
+            transform:
+                translateY(15px);
+        }
 
-                    letter-spacing: 0.2em;
+        to {
+            opacity: 1;
 
-                    color:
-                        rgba(200,200,230,0.25);
+            transform:
+                translateY(0);
+        }
+    }
 
-                    writing-mode:
-                        vertical-rl;
-                }
+    @keyframes panel-enter {
+        from {
+            opacity: 0;
 
-                /* =================================
-                   SCANLINES
-                ================================= */
+            transform:
+                translateY(20px)
+                scale(0.97);
+        }
 
-                .scanlines {
-                    position: absolute;
-                    inset: 0;
+        to {
+            opacity: 1;
 
-                    pointer-events: none;
+            transform:
+                translateY(0)
+                scale(1);
+        }
+    }
 
-                    background:
-                        repeating-linear-gradient(
-                            to bottom,
-                            transparent 0px,
-                            transparent 3px,
-                            rgba(255,255,255,0.012) 4px
-                        );
+    @keyframes title-reveal {
+        from {
+            opacity: 0;
 
-                    opacity: 0.6;
+            letter-spacing:
+                0.35em;
 
-                    z-index: 50;
-                }
+            transform:
+                translateY(8px);
+        }
 
-                /* =================================
-                   LAUNCH FLASH
-                ================================= */
+        to {
+            opacity: 1;
 
-                .launch-flash {
-                    position: absolute;
+            letter-spacing:
+                0.08em;
 
-                    inset: 0;
+            transform:
+                translateY(0);
+        }
+    }
 
-                    background: white;
+    @keyframes space-reveal {
+        from {
+            opacity: 0;
 
-                    opacity: 0;
+            transform:
+                translateY(10px);
+        }
 
-                    pointer-events: none;
+        to {
+            opacity: 1;
 
-                    z-index: 100;
-                }
+            transform:
+                translateY(0);
+        }
+    }
 
-                .launching .launch-flash {
-                    animation:
-                        launchFlash 0.9s ease-out forwards;
-                }
+    @keyframes fade-up {
+        from {
+            opacity: 0;
 
-                .launching .content {
-                    animation:
-                        warpAway 0.9s
-                        cubic-bezier(.7,0,.84,0);
-                }
+            transform:
+                translateY(10px);
+        }
 
-                .launching .stars {
-                    animation:
-                        starsWarp 0.9s ease-in forwards;
-                }
+        to {
+            opacity: 1;
 
-                /* =================================
-                   ANIMATIONS
-                ================================= */
+            transform:
+                translateY(0);
+        }
+    }
 
-                @keyframes screenAppear {
-                    from {
-                        opacity: 0;
-                    }
+    @keyframes bar-fill {
+        from {
+            transform:
+                scaleX(0);
+        }
 
-                    to {
-                        opacity: 1;
-                    }
-                }
+        to {
+            transform:
+                scaleX(1);
+        }
+    }
 
-                @keyframes contentEnter {
-                    from {
-                        opacity: 0;
+    @keyframes twinkle {
+        0%, 100% {
+            opacity: 0.1;
+        }
 
-                        transform:
-                            translateY(25px)
-                            scale(0.95);
-                    }
+        50% {
+            opacity: 0.5;
+        }
+    }
 
-                    to {
-                        opacity: 1;
+    @keyframes blink {
+        0%, 100% {
+            opacity: 0.3;
+        }
 
-                        transform:
-                            translateY(0)
-                            scale(1);
-                    }
-                }
+        50% {
+            opacity: 1;
+        }
+    }
 
-                @keyframes logoEnter {
-                    0% {
-                        opacity: 0;
+    @keyframes launch-pulse {
+        0%, 100% {
+            opacity: 0.65;
+        }
 
-                        transform:
-                            perspective(700px)
-                            rotateX(25deg)
-                            scale(0.55);
+        50% {
+            opacity: 1;
+        }
+    }
 
-                        filter:
-                            blur(15px);
-                    }
+    @keyframes launch-flash {
+        0% {
+            opacity: 0;
+        }
 
-                    55% {
-                        opacity: 1;
-                    }
+        12% {
+            opacity: 0.8;
+        }
 
-                    100% {
-                        opacity: 1;
+        35% {
+            opacity: 0;
+        }
 
-                        transform:
-                            perspective(700px)
-                            rotateX(8deg)
-                            scale(1);
+        100% {
+            opacity: 0;
+        }
+    }
 
-                        filter:
-                            blur(0);
-                    }
-                }
+    @keyframes launch-away {
+        0% {
+            transform:
+                scale(1);
 
-                @keyframes backgroundDrift {
-                    0%, 100% {
-                        transform: scale(1);
-                    }
+            opacity: 1;
+        }
 
-                    50% {
-                        transform: scale(1.08);
-                    }
-                }
+        100% {
+            transform:
+                scale(1.08);
 
-                @keyframes nebulaFloat {
-                    0%, 100% {
-                        transform: translate(0, 0);
-                    }
+            opacity: 0;
+        }
+    }
 
-                    50% {
-                        transform: translate(20px, -30px);
-                    }
-                }
+    /* ========================================
+       SMALL PHONES
+    ======================================== */
 
-                @keyframes twinkle {
-                    0%, 100% {
-                        opacity: 0.15;
-                        transform: scale(0.8);
-                    }
+    @media (max-height: 700px) {
 
-                    50% {
-                        opacity: 0.9;
-                        transform: scale(1.2);
-                    }
-                }
+        .logo-panel {
+            margin-top: 8vh;
 
-                @keyframes planetAppear {
-                    from {
-                        opacity: 0;
-                        transform:
-                            translateX(-50%)
-                            scale(0.8);
-                    }
+            padding:
+                25px
+                15px
+                22px;
+        }
 
-                    to {
-                        opacity: 1;
-                        transform:
-                            translateX(-50%)
-                            scale(1);
-                    }
-                }
+        .system-info {
+            margin-top: 20px;
+        }
 
-                @keyframes rotate {
-                    from {
-                        transform:
-                            translate(-50%, -50%)
-                            rotate(0deg);
-                    }
+        .launch {
+            bottom: 55px;
+        }
+    }
 
-                    to {
-                        transform:
-                            translate(-50%, -50%)
-                            rotate(360deg);
-                    }
-                }
+    /* ========================================
+       VERY NARROW PHONES
+    ======================================== */
 
-                @keyframes rotateReverse {
-                    from {
-                        transform:
-                            translate(-50%, -50%)
-                            rotate(360deg);
-                    }
+    @media (max-width: 350px) {
 
-                    to {
-                        transform:
-                            translate(-50%, -50%)
-                            rotate(0deg);
-                    }
-                }
+        .logo-panel {
+            margin-top: 10vh;
+        }
 
-                @keyframes energyPulse {
-                    0%, 100% {
-                        opacity: 0.35;
-                        transform: scaleX(0.8);
-                    }
+        .title-main {
+            font-size: 45px;
+        }
 
-                    50% {
-                        opacity: 1;
-                        transform: scaleX(1);
-                    }
-                }
+        .title-space {
+            font-size: 41px;
+        }
 
-                @keyframes lightSweep {
-                    0% {
-                        left: -70%;
-                        opacity: 0;
-                    }
+        .tagline {
+            font-size: 7px;
+        }
 
-                    10% {
-                        opacity: 1;
-                    }
+        .system-info {
+            margin-top: 22px;
+        }
 
-                    60% {
-                        opacity: 0.8;
-                    }
+        .bottom-bar {
+            font-size: 6px;
+        }
+    }
 
-                    100% {
-                        left: 150%;
-                        opacity: 0;
-                    }
-                }
+    /* ========================================
+       REDUCED MOTION
+    ======================================== */
 
-                @keyframes glitch {
-                    0%, 75%, 100% {
-                        opacity: 0;
-                    }
+    @media (prefers-reduced-motion: reduce) {
 
-                    78% {
-                        opacity: 0.7;
-                        transform: translateX(-8px);
-                    }
+        *,
+        *::before,
+        *::after {
+            animation-duration:
+                0.01ms !important;
 
-                    80% {
-                        opacity: 0;
-                        transform: translateX(12px);
-                    }
+            animation-iteration-count:
+                1 !important;
+        }
+    }
 
-                    82% {
-                        opacity: 0.6;
-                        transform: translateX(-5px);
-                    }
-
-                    85% {
-                        opacity: 0;
-                    }
-                }
-
-                @keyframes fadeUp {
-                    from {
-                        opacity: 0;
-                        transform:
-                            translateY(10px);
-                    }
-
-                    to {
-                        opacity: 1;
-                        transform:
-                            translateY(0);
-                    }
-                }
-
-                @keyframes bracketPulse {
-                    0%, 100% {
-                        opacity: 0.4;
-                    }
-
-                    50% {
-                        opacity: 1;
-                    }
-                }
-
-                @keyframes launchPulse {
-                    0%, 100% {
-                        opacity: 0.55;
-                        text-shadow:
-                            0 0 5px rgba(180,80,255,0.4);
-                    }
-
-                    50% {
-                        opacity: 1;
-                        text-shadow:
-                            0 0 15px rgba(190,80,255,1),
-                            0 0 30px rgba(130,30,255,0.6);
-                    }
-                }
-
-                @keyframes hintAppear {
-                    from {
-                        opacity: 0;
-                    }
-
-                    to {
-                        opacity: 1;
-                    }
-                }
-
-                /* =================================
-                   LAUNCH
-                ================================= */
-
-                @keyframes launchFlash {
-                    0% {
-                        opacity: 0;
-                    }
-
-                    10% {
-                        opacity: 0.85;
-                    }
-
-                    35% {
-                        opacity: 0;
-                    }
-
-                    100% {
-                        opacity: 0;
-                    }
-                }
-
-                @keyframes warpAway {
-                    0% {
-                        opacity: 1;
-
-                        transform:
-                            scale(1);
-                    }
-
-                    100% {
-                        opacity: 0;
-
-                        transform:
-                            scale(1.35);
-
-                        filter:
-                            blur(15px);
-                    }
-                }
-
-                @keyframes starsWarp {
-                    from {
-                        transform: scale(1);
-                    }
-
-                    to {
-                        transform: scale(3);
-                    }
-                }
-
-                /* =================================
-                   SMALL PHONES
-                ================================= */
-
-                @media (max-height: 700px) {
-
-                    .logo {
-                        margin-top: 5vh;
-                    }
-
-                    .subtitle {
-                        margin-top: 3vh;
-                    }
-
-                    .launch-area {
-                        bottom: 5vh;
-                    }
-
-                    .planet {
-                        bottom: -52%;
-                    }
-                }
-
-                /* =================================
-                   LANDSCAPE
-                ================================= */
-
-                @media (orientation: landscape) {
-
-                    .content {
-                        padding-top: 25px;
-                        padding-bottom: 25px;
-                    }
-
-                    .logo {
-                        margin-top: 2vh;
-
-                        transform:
-                            perspective(700px)
-                            rotateX(5deg)
-                            scale(0.68);
-                    }
-
-                    .subtitle {
-                        margin-top: -1vh;
-                    }
-
-                    .launch-area {
-                        bottom: 25px;
-                    }
-
-                    .planet {
-                        bottom: -85%;
-                    }
-                }
-
-                /* =================================
-                   REDUCE MOTION
-                ================================= */
-
-                @media (prefers-reduced-motion: reduce) {
-
-                    *,
-                    *::before,
-                    *::after {
-                        animation-duration: 0.01ms !important;
-                        animation-iteration-count: 1 !important;
-                    }
-                }
-
-            `}</style>
+`}</style>
+            
         </div>
     );
 }
