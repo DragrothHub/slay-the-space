@@ -10,7 +10,7 @@ import AbilityCard from "./components/AbilityCard";
 import RepairScreen from "./components/RepairScreen";
 import ShopScreen from "./components/ShopScreen";
 import SplashScreen from "./components/SplashScreen";
-import InventoryScreen from "./components/InventoryScreen";
+import MenuPanel from "./components/MenuPanel";
 
 function App() {
   const {
@@ -21,7 +21,7 @@ function App() {
     collectRewards
   } = useGameState();
 
-  const [showShipModal, setShowShipModal] = useState(false);
+  const [showMenuPanel, setShowMenuPanel] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   const [ships] = useState(() => [
     createShip(),
@@ -154,7 +154,7 @@ function App() {
 
       {/* Ship-Management Button */}
       {gameState?.run && <button
-        onClick={() => {setShowShipModal(prev => !prev); console.log(gameState);}}
+        onClick={() => {setShowMenuPanel(prev => !prev); console.log(gameState);}}
         style={{
           position: "fixed",
           bottom: "20px",
@@ -175,67 +175,12 @@ function App() {
           fontSize: "16px",
         }}
       >
-        {showShipModal ? "▼" : "▲"}
+        {showMenuPanel ? "▼" : "▲"}
       </button>}
 
       {/* Ship Selection Overlay */}
-      {showShipModal && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 999,
-
-            display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "center",
-
-            overflowY: "auto",
-
-            background: "rgba(0, 0, 0, 0.90)",
-          }}
-        >
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              minHeight: "100%",
-              maxWidth: "390px",
-
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "column",
-
-              paddingTop: "45px",
-              boxSizing: "border-box",
-            }}
-          >
-            {!gameState.run.battle && <ShipSelection
-              ships={gameState.run.ships}
-              title="Your Team"
-              maxSelections={0}
-              allowModuleChange={true}
-              allowAbilityChange={true}
-            />}
-
-            {!gameState.run.battle && <div style={{textAlign: "center", fontSize: "1.5em",}}>Inventory</div>}
-            {!gameState.run.battle && <InventoryScreen/>}
-
-            {gameState.run.battle && <div style={{textAlign: "center", fontSize: "1.5em",}}>Active Battle</div>}
-
-            {gameState.run.battle && <ShipSelection
-              ships={gameState.run.battle.teams.A}
-              title="Your Team"
-              maxSelections={0}
-            />}
-
-            {gameState.run.battle && <ShipSelection
-              ships={gameState.run.battle.teams.B}
-              title="Enemy Team"
-              maxSelections={0}
-            />}
-          </div>
-        </div>
+      {showMenuPanel && (
+        <MenuPanel/>
       )}
     </>
   );
