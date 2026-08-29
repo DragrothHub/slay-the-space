@@ -52,6 +52,9 @@ export function initBattle(state) {
 // ========================================
 
 export function setNextActor(state) {
+
+    resolveDeaths(state);
+
     if (state.winner) return state;
 
     const actor = state.turnOrder[state.turnIndex];
@@ -231,44 +234,6 @@ export function resolveAction(state) {
 
     return state;
 }
-
-// export function confirmAction(state) {
-//     const actor = getActiveUnit(state);
-
-//     state.phase = "ready";
-
-//     const abilityId = state.selectedAbilityId;
-
-//     const target = getAllUnits(state).find(
-//         u => u.id === state.selectedTargetId
-//     );
-
-//     if (!actor || !abilityId || !target) return state;
-
-
-//     // trennung
-
-
-//     if (hasDebuff(target, "marked")) {
-//         reduceCooldowns(actor);
-//     }
-
-//     resolveAbility(actor, abilityId, target, state);
-
-//     state.selectedAbilityId = null;
-//     state.phase = "select-ability";
-
-//     resolveDeaths(state);
-
-//     checkVictory(state);
-
-//     if (!state.winner) {
-//         advanceTurn(state);
-//         setNextActor(state);
-//     }
-
-//     return state;
-// }
 
 // ========================================
 // ABILITY RESOLUTION
