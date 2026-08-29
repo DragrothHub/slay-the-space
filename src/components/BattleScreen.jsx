@@ -3,7 +3,7 @@ import BattleField from "./BattleField";
 import ActionPanel from "./ActionPanel";
 import BattleLog from "./BattleLog";
 import { useGameState } from "../state/GameStateProvider";
-import { createShip } from "../data/createShip";
+import { createEnemy } from "../data/createEnemy";
 import TurnOrder from "./TurnOrder";
 import { detonatorAbilityCollection, primerAbilityCollection } from "../data/abilities";
 import { moduleCollection } from "../data/modules";
@@ -25,21 +25,21 @@ export default function BattleScreen()
             case "combat":
                 for (let i = 1; i <= Math.min(currentNode.layer, 4); i++)
                 {
-                    enemyFleet.push(createShip(0));
+                    enemyFleet.push(createEnemy(0, 1));
                 }
                 break;
 
             case "elite":
                 for (let i = 1; i <= Math.min(currentNode.layer, 4); i++)
                 {
-                    enemyFleet.push(createShip(1));
+                    enemyFleet.push(createEnemy(1, 1));
                 }
                 break;
 
             case "boss":
-                enemyFleet.push(createShip(0));
-                enemyFleet.push(createShip(6));
-                enemyFleet.push(createShip(0));
+                enemyFleet.push(createEnemy(1,1));
+                enemyFleet.push(createEnemy(6,2));
+                enemyFleet.push(createEnemy(1,1));
                 break;
 
             default:

@@ -4,7 +4,9 @@ export default function StatBar({
     max,
     color,
 }) {
-    const percent = (value / max) * 100;
+
+    const segments = Math.max(1, Math.round(max / 25));
+    const percent = Math.min(100, (value / max) * 100);
 
     if (max == 0)
         return (<></>);
@@ -16,6 +18,7 @@ export default function StatBar({
                 justifyContent: "space-between",
                 marginBottom: 4,
                 fontSize: 14,
+                position: "relative",
             }}>
                 <span>{label}</span>
                 <span>
@@ -29,9 +32,11 @@ export default function StatBar({
                 background: "#374151",
                 borderRadius: 999,
                 overflow: "hidden",
+                position: "relative",
             }}>
                 <div
                     style={{
+                        position: "absolute",
                         height: "100%",
                         borderRadius: 999,
                         transition: "width 0.5s",
@@ -39,6 +44,32 @@ export default function StatBar({
                         backgroundColor: color,
                     }}
                 />
+                <div
+                    style={{
+                        position: "absolute",
+                        inset: 0,
+                        pointerEvents: "none",
+                    }}
+                >
+                    {Array.from({ length: segments - 1 }).map((_, index) => {
+                        const position = ((index + 1) / segments) * 100;
+
+                        return (
+                            <div
+                                key={index}
+                                style={{
+                                    position: "absolute",
+                                    left: `${position}%`,
+                                    top: 0,
+                                    bottom: 0,
+                                    width: 2,
+                                    transform: "translateX(-50%)",
+                                    background: "rgba(0, 0, 0, 0.8)",
+                                }}
+                            />
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );
