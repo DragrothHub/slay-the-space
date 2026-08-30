@@ -5,7 +5,7 @@ export default function StatBar({
     color,
 }) {
 
-    const segments = Math.max(1, Math.round(max / 25));
+    const segments = Math.max(1, Math.round(max / 50));
     const percent = Math.min(100, (value / max) * 100);
 
     if (max == 0)
