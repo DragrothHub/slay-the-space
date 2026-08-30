@@ -2,6 +2,26 @@ import { use } from "react";
 import { applyDamage } from "./damage";
 import { applyDebuff, debuffs } from "./debuffs";
 import { getFriendlyUnits } from "./helpers";
+import { moduleCollection } from "../data/modules";
+
+function removeDebuffsExcept(target, debuffId, amountToPreserve) {
+
+    let preserved = 0;
+
+    target.stats.debuffs = target.stats.debuffs.filter(debuff => {
+
+        if (debuff.id !== debuffId) {
+            return true;
+        }
+
+        if (preserved < amountToPreserve) {
+            preserved++;
+            return true;
+        }
+
+        return false;
+    });
+}
 
 // ========================================
 // DETONATION
@@ -20,10 +40,10 @@ export function detonate(target, actor, ability, state) {
         d => d.id === debuffId
     );
 
-    if(ability.detonatorEffect != "spreader"){
-        target.stats.debuffs = target.stats.debuffs.filter(
-            d => d.id !== debuffId
-        );
+    const countPreservers = actor.modules.filter(moduleId => moduleCollection[moduleId]?.effect === "preserver").length;
+
+    if (ability.detonatorEffect != "spreader") {
+        removeDebuffsExcept(target, debuffId, countPreservers);
     }
 
     const removedCount = removedDebuffs.length;

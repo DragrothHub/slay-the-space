@@ -1,5 +1,5 @@
 import { hasDebuff } from "./debuffs";
-import { processIncomingDamageModules, processOutgoingDamageModules } from "./processModules";
+import { processIncomingDamageModules, processOutgoingDamageModules, processDamageDealtModules } from "./processModules";
 
 // ========================================
 // DAMAGE SYSTEM
@@ -128,6 +128,14 @@ export function applyDamage(target, actor, ability, state) {
             timestamp: Date.now(),
         });
     }
+
+    processDamageDealtModules(
+        actor,
+        target,
+        ability,
+        totalDamage,
+        state
+    );
 
     return totalDamage;
 }

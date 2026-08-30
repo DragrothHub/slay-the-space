@@ -163,15 +163,37 @@ export const moduleCollection = {
         color: colorWhite,
     },
 
-    module_preserve_shield : {
-        id: "module_preserve_shield",
-        displayName: "Preserve", 
+    module_preserver_shield : {
+        id: "module_preserver_shield",
+        displayName: "Preserver", 
         description: "Keep a debuff stack after detonation",
-        effect: "preserve",
+        effect: "preserver",
         defenceType: "shield",
         defenceTypeColor: colorWhite,
         shield: 100,
         armor: 0,
+        color: colorWhite,
+    },
+    module_preserver_armor : {
+        id: "module_preserver_armor",
+        displayName: "Preserver", 
+        description: "Keep a debuff stack after detonation",
+        effect: "preserver",
+        defenceType: "armor",
+        defenceTypeColor: colorWhite,
+        shield: 0,
+        armor: 100,
+        color: colorWhite,
+    },
+    module_preserver_mixed : {
+        id: "module_preserver_mixed",
+        displayName: "Preserver", 
+        description: "Keep a debuff stack after detonation",
+        effect: "preserver",
+        defenceType: "mixed",
+        defenceTypeColor: colorWhite,
+        shield: 50,
+        armor: 50,
         color: colorWhite,
     },
 
@@ -185,7 +207,29 @@ export const moduleCollection = {
         shield: 100,
         armor: 0,
         color: colorWhite,
-    }
+    },
+    module_vampyr_armor : {
+        id: "module_vampyr_armor",
+        displayName: "Vampyr", 
+        description: "Refill some shield by dealing damage",
+        effect: "vampyr",
+        defenceType: "armor",
+        defenceTypeColor: colorWhite,
+        shield: 0,
+        armor: 100,
+        color: colorWhite,
+    },
+    module_vampyr_mixed : {
+        id: "module_vampyr_mixed",
+        displayName: "Vampyr", 
+        description: "Refill some shield by dealing damage",
+        effect: "vampyr",
+        defenceType: "mixed",
+        defenceTypeColor: colorWhite,
+        shield: 50,
+        armor: 50,
+        color: colorWhite,
+    },
 };
 
 function randomItem(array) {

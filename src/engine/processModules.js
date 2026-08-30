@@ -102,3 +102,19 @@ export function processIncomingDamageModules(
 
     return damage;
 }
+
+export function processDamageDealtModules(
+    activeShip,
+    target,
+    ability,
+    damage,
+    battleState
+){
+    // vampyr
+    const vampyrCount = getModuleCount(activeShip, "vampyr");
+    if(vampyrCount > 0){
+        let shieldRegen = Math.round(damage * 0.2 * vampyrCount);
+        activeShip.stats.currentShield += shieldRegen;
+        battleState.log.push(`${activeShip.name}: Gained ${shieldRegen} shield from Vampyr.`);
+    }
+}
