@@ -1,3 +1,7 @@
+import armor_icon from "../images/armor_icon.png";
+import shield_icon from "../images/shield_icon.png";
+import hull_icon from "../images/hull_icon.png";
+
 export default function StatBar({
     label,
     value,
@@ -20,7 +24,12 @@ export default function StatBar({
                 fontSize: 14,
                 position: "relative",
             }}>
-                <span>{label}</span>
+                <div>
+                    {label === "Armor" && <img src={armor_icon} style={{width: 14, height: 14, verticalAlign: "center", marginRight: 4}}/>}
+                    {label === "Shield" && <img src={shield_icon} style={{width: 14, height: 14, verticalAlign: "center", marginRight: 4}}/>}
+                    {label === "Hull" && <img src={hull_icon} style={{width: 14, height: 14, verticalAlign: "center", marginRight: 4}}/>}
+                    <span>{label}</span>
+                </div>
                 <span>
                     {value}/{max}
                 </span>

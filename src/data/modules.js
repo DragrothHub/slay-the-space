@@ -1,6 +1,7 @@
 const colorShield = "#3b82f6";
 const colorMixed = "#22c55e";
 const colorArmor = "#f59e0b";
+const colorWhite = "#fff";
 
 export const moduleCollection = {
     module_shield_booster : { 
@@ -9,10 +10,10 @@ export const moduleCollection = {
         description: "Gives boost to shield maximum",
         effect: null,
         defenceType: "shield",
-        defenceTypeColor: colorShield,
+        defenceTypeColor: colorWhite,
         shield: 200,
         armor: 0,
-        color: colorShield,
+        color: colorWhite,
     },
     module_armor_booster : { 
         id: "module_armor_booster",
@@ -20,10 +21,10 @@ export const moduleCollection = {
         description: "Gives boost to armor maximum",
         effect: null,
         defenceType: "armor",
-        defenceTypeColor: colorArmor,
+        defenceTypeColor: colorWhite,
         shield: 0,
         armor: 200,
-        color: colorArmor,
+        color: colorWhite,
     },
 
     module_repairbot_shield : {
@@ -32,10 +33,10 @@ export const moduleCollection = {
         description: "Adds some shield after every turn",
         effect: "repairbot_shield",
         defenceType: "shield",
-        defenceTypeColor: colorShield,
+        defenceTypeColor: colorWhite,
         shield: 100,
         armor: 0,
-        color: colorShield,
+        color: colorWhite,
     },
     module_repairbot_armor : {
         id: "module_repairbot_armor",
@@ -43,10 +44,10 @@ export const moduleCollection = {
         description: "Adds some armor after every turn",
         effect: "repairbot_armor",
         defenceType: "armor",
-        defenceTypeColor: colorArmor,
+        defenceTypeColor: colorWhite,
         shield: 0,
         armor: 100,
-        color: colorArmor,
+        color: colorWhite,
     },
     module_repairbot_mixed : {
         id: "module_repairbot_mixed",
@@ -54,10 +55,10 @@ export const moduleCollection = {
         description: "Adds some shield and armor after every turn",
         effect: "repairbot_mixed",
         defenceType: "mixed",
-        defenceTypeColor: colorMixed,
+        defenceTypeColor: colorWhite,
         shield: 50,
         armor: 50,
-        color: colorMixed,
+        color: colorWhite,
     },
 
     module_kineticboost_shield : { 
@@ -66,10 +67,10 @@ export const moduleCollection = {
         description: "Boosts kinetic damage",
         effect: "kineticboost",
         defenceType: "shield",
-        defenceTypeColor: colorShield,
+        defenceTypeColor: colorWhite,
         shield: 100,
         armor: 0,
-        color: colorShield,
+        color: colorWhite,
     },
     module_kineticboost_armor : { 
         id: "module_kineticboost_armor",
@@ -77,10 +78,10 @@ export const moduleCollection = {
         description: "Boosts kinetic damage",
         effect: "kineticboost",
         defenceType: "armor",
-        defenceTypeColor: colorArmor,
+        defenceTypeColor: colorWhite,
         shield: 0,
         armor: 100,
-        color: colorArmor,
+        color: colorWhite,
     },
     module_kineticboost_mixed : { 
         id: "module_kineticboost_mixed",
@@ -88,10 +89,10 @@ export const moduleCollection = {
         description: "Boosts kinetic damage",
         effect: "kineticboost",
         defenceType: "mixed",
-        defenceTypeColor: colorMixed,
+        defenceTypeColor: colorWhite,
         shield: 50,
         armor: 50,
-        color: colorMixed,
+        color: colorWhite,
     },
 
     module_laserboost_shield : { 
@@ -100,10 +101,10 @@ export const moduleCollection = {
         description: "Boosts laser damage",
         effect: "laserboost",
         defenceType: "shield",
-        defenceTypeColor: colorShield,
+        defenceTypeColor: colorWhite,
         shield: 100,
         armor: 0,
-        color: colorShield,
+        color: colorWhite,
     },
     module_laserboost_armor : { 
         id: "module_laserboost_armor",
@@ -111,10 +112,10 @@ export const moduleCollection = {
         description: "Boosts laser damage",
         effect: "laserboost",
         defenceType: "armor",
-        defenceTypeColor: colorArmor,
+        defenceTypeColor: colorWhite,
         shield: 0,
         armor: 100,
-        color: colorArmor,
+        color: colorWhite,
     },
     module_laserboost_mixed : { 
         id: "module_laserboost_mixed",
@@ -122,10 +123,10 @@ export const moduleCollection = {
         description: "Boosts laser damage",
         effect: "laserboost",
         defenceType: "mixed",
-        defenceTypeColor: colorMixed,
+        defenceTypeColor: colorWhite,
         shield: 50,
         armor: 50,
-        color: colorMixed,
+        color: colorWhite,
     },
 
     module_formation_shield : { 
@@ -134,10 +135,10 @@ export const moduleCollection = {
         description: "Boosts ships for every formation module on different ships",
         effect: "formation",
         defenceType: "shield",
-        defenceTypeColor: colorShield,
+        defenceTypeColor: colorWhite,
         shield: 100,
         armor: 0,
-        color: colorShield,
+        color: colorWhite,
     },
     module_formation_armor : { 
         id: "module_formation_armor",
@@ -145,10 +146,10 @@ export const moduleCollection = {
         description: "Boosts ships for every formation module on different ships",
         effect: "formation",
         defenceType: "armor",
-        defenceTypeColor: colorArmor,
+        defenceTypeColor: colorWhite,
         shield: 0,
         armor: 100,
-        color: colorArmor,
+        color: colorWhite,
     },
     module_formation_mixed : { 
         id: "module_formation_mixed",
@@ -156,11 +157,35 @@ export const moduleCollection = {
         description: "Boosts ships for every formation module on different ships",
         effect: "formation",
         defenceType: "mixed",
-        defenceTypeColor: colorMixed,
+        defenceTypeColor: colorWhite,
         shield: 50,
         armor: 50,
-        color: colorMixed,
+        color: colorWhite,
     },
+
+    module_preserve_shield : {
+        id: "module_preserve_shield",
+        displayName: "Preserve", 
+        description: "Keep a debuff stack after detonation",
+        effect: "preserve",
+        defenceType: "shield",
+        defenceTypeColor: colorWhite,
+        shield: 100,
+        armor: 0,
+        color: colorWhite,
+    },
+
+    module_vampyr_shield : {
+        id: "module_vampyr_shield",
+        displayName: "Vampyr", 
+        description: "Refill some shield by dealing damage",
+        effect: "vampyr",
+        defenceType: "shield",
+        defenceTypeColor: colorWhite,
+        shield: 100,
+        armor: 0,
+        color: colorWhite,
+    }
 };
 
 function randomItem(array) {

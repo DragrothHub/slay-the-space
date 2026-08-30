@@ -1,3 +1,6 @@
+import armor_icon_colored from "../images/armor_icon_colored.png";
+import shield_icon_colored from "../images/shield_icon_colored.png";
+
 export default function ModuleCard({ module }) {
     return (
         <div style={{
@@ -28,17 +31,11 @@ export default function ModuleCard({ module }) {
                     {module.displayName}
                 </div>
 
-                <div 
-                    style={{
-                        position: "relative",
-                        width: 10,
-                        height: 10,
-                        backgroundColor: module.defenceTypeColor,
-                        borderRadius: 10,
-                    }}
-                ></div>
+                {module.defenceType === "armor" && <img src={armor_icon_colored} style={{ width: 18, height: 18, verticalAlign: "center" }} />}
+                {module.defenceType === "shield" && <img src={shield_icon_colored} style={{ width: 18, height: 18, verticalAlign: "center" }} />}
+                {module.defenceType === "mixed" && <div><img src={shield_icon_colored} style={{ width: 18, height: 18, verticalAlign: "center" }} /><img src={armor_icon_colored} style={{ width: 18, height: 18, verticalAlign: "center" }} /></div>}
             </div>
-            
+
             <div
                 style={{
                     position: "relative",

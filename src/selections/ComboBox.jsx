@@ -162,7 +162,7 @@ export default function ComboBox({
                             position: "absolute",
 
                             right: 10,
-                            top: 10,
+                            bottom: 10,
 
                             width: 28,
                             height: 28,

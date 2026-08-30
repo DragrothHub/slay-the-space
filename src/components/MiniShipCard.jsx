@@ -3,6 +3,8 @@ import { shipClasses } from "../data/shipClasses";
 import { moduleCollection } from "../data/modules";
 import { abilityCollection } from "../data/abilities";
 import { debuffs } from "../engine/debuffs";
+import armor_icon_colored from "../images/armor_icon_colored.png";
+import shield_icon_colored from "../images/shield_icon_colored.png";
 
 export default function MiniShipCard({ ship, borderColor, backgroundColor, onClick }) {
     return (
@@ -122,7 +124,9 @@ export default function MiniShipCard({ ship, borderColor, backgroundColor, onCli
                                 }}
                             >
                                 {<span style={{ color: `${moduleCollection[id].color}` }}>{moduleCollection[id].displayName}</span>}
-                                <div style={{width: 5, height: 5, borderRadius: 5, background: moduleCollection[id].defenceTypeColor}}></div>
+                                {moduleCollection[id].defenceType === "armor" && <img src={armor_icon_colored} style={{width: 10, height: 10, verticalAlign: "center"}}/>}
+                                {moduleCollection[id].defenceType === "shield" && <img src={shield_icon_colored} style={{width: 10, height: 10, verticalAlign: "center"}}/>}
+                                {moduleCollection[id].defenceType === "mixed" && <div><img src={shield_icon_colored} style={{width: 10, height: 10, verticalAlign: "center"}}/><img src={armor_icon_colored} style={{width: 10, height: 10, verticalAlign: "center"}}/></div>}
                             </span>
                         ))}
                     </div>
