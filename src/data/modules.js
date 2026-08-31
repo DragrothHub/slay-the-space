@@ -230,6 +230,40 @@ export const moduleCollection = {
         armor: 50,
         color: colorWhite,
     },
+
+    module_rainbow_shield : {
+        id: "module_rainbow_shield",
+        displayName: "Rainbow", 
+        description: "Increase damage based on distinct debuffs on the target",
+        effect: "rainbow",
+        defenceType: "shield",
+        defenceTypeColor: colorWhite,
+        shield: 100,
+        armor: 0,
+        color: colorWhite,
+    },
+    module_rainbow_armor : {
+        id: "module_rainbow_armor",
+        displayName: "Rainbow",
+        description: "Increase damage based on distinct debuffs on the target",
+        effect: "rainbow",
+        defenceType: "armor",
+        defenceTypeColor: colorWhite,
+        shield: 0,
+        armor: 100,
+        color: colorWhite,
+    },
+    module_rainbow_mixed : {
+        id: "module_rainbow_mixed",
+        displayName: "Rainbow", 
+        description: "Increase damage based on distinct debuffs on the target",
+        effect: "rainbow",
+        defenceType: "mixed",
+        defenceTypeColor: colorWhite,
+        shield: 50,
+        armor: 50,
+        color: colorWhite,
+    },
 };
 
 function randomItem(array) {

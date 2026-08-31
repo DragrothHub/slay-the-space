@@ -1,5 +1,5 @@
 import { getFriendlyUnits } from "./helpers";
-import { moduleCollection } from "../data/modules";
+import { getRandomModule, moduleCollection } from "../data/modules";
 
 function getModuleCount(ship, effect) {
     return ship.modules.filter(
@@ -76,6 +76,17 @@ export function processOutgoingDamageModules(
         damage *= 1 + (0.10 * formationCount);
 
         battleState.log.push(`${activeShip.name}: Formation is boosting damage (+${10 * formationCount}%).`);
+    }
+
+    const rainbowCount = getModuleCount(activeShip, "rainbow");
+    if(rainbowCount > 0){
+        const distinctDebuffs = [...new Set(target.stats.debuffs.map(debuff => debuff.id))];
+
+        if(distinctDebuffs.length > 0){
+            damage *= 1 + (0.1 * (distinctDebuffs.length - 1) * rainbowCount);
+        }
+
+        battleState.log.push(`${activeShip.name}: Rainbow is boosting damage (+${10 * (distinctDebuffs.length - 1) * rainbowCount}%).`);
     }
 
     return damage;
