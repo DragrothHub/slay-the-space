@@ -1,3 +1,5 @@
+import { useGameState } from "../../state/GameStateProvider";
+
 export default function MapConnection({
 
     from,
@@ -5,6 +7,12 @@ export default function MapConnection({
     to,
 
 }) {
+
+    const { gameState } = useGameState();
+
+    const visited = gameState.run.visitedConnections.some(
+        c => c === from.id+"_"+to.id
+    );
 
     return (
 
@@ -18,9 +26,9 @@ export default function MapConnection({
 
             y2={to.y}
 
-            stroke="#777"
+            stroke={visited ? "#fff" : "#777"}
 
-            strokeWidth="3"
+            strokeWidth={visited ? "5" : "3"}
 
         />
 
