@@ -1,5 +1,6 @@
 import { useGameState } from "../../state/GameStateProvider";
 import MapConnection from "./MapConnection";
+import MapLegend from "./MapLegend";
 import MapNode from "./MapNode";
 import PlayerMarker from "./PlayerMarker";
 
@@ -66,6 +67,8 @@ export default function WorldMap({ startBattle }) {
             <PlayerMarker
                 node={currentNode}
             />
+
+            <MapLegend/>
         </div>
 
     );
