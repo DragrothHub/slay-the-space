@@ -84,9 +84,9 @@ export function processOutgoingDamageModules(
 
         if(distinctDebuffs.length > 0){
             damage *= 1 + (0.1 * (distinctDebuffs.length - 1) * rainbowCount);
+            
+            battleState.log.push(`${activeShip.name}: Rainbow is boosting damage (+${10 * (distinctDebuffs.length - 1) * rainbowCount}%).`);
         }
-
-        battleState.log.push(`${activeShip.name}: Rainbow is boosting damage (+${10 * (distinctDebuffs.length - 1) * rainbowCount}%).`);
     }
 
     return damage;
