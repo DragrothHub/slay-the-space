@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { debuffs } from "../engine/debuffs";
 import "./Ship.css";
 import AnimationDetonator from "../animations/AnimationDetonator";
+import { detonatorAbilityCollection } from "../data/abilities";
+import Detonation from "./Detonation";
 
 export default function Ship({
     unit,
     damageEvents = [],
+    detonationEvents = [],
     isActive,
     isTargeted,
     isDead,
@@ -15,7 +18,9 @@ export default function Ship({
     reverse = false,
 }) {
     const [damageFlash, setDamageFlash] = useState(null);
+    const [detonationFlash, setDetonationFlash] = useState(null);
     const [lastEventTime, setLastEventTime] = useState(null);
+    const [lastDetonationTime, setLastDetonationTime] = useState(null);
 
     useEffect(() => {
         const event = damageEvents.find(
@@ -33,6 +38,27 @@ export default function Ship({
 
         return () => clearTimeout(t);
     }, [damageEvents]);
+
+    useEffect(() => {
+        const event = detonationEvents.find(
+            e => e.targetId === unit.id && e.timestamp > lastDetonationTime
+        );
+
+        if (!event || !event.detonatorId || !detonatorAbilityCollection[event.detonatorId]) return;
+
+        const detonator = detonatorAbilityCollection[event.detonatorId];
+
+        const debuff = debuffs[detonator.detonatesDebuff];
+
+        setDetonationFlash(debuff.color);
+        setLastDetonationTime(event.timestamp);
+
+        const t = setTimeout(() => {
+            setDetonationFlash(null);
+        }, 500);
+
+        return () => clearTimeout(t);
+    }, [detonationEvents])
 
     const borderColor = isDead
         ? "darkred"
@@ -59,6 +85,7 @@ export default function Ship({
                 }}
                 onClick={onClick}
             >
+                
                 <div>
                     <StatBarSmall
                         bigger={isTargeted || isActive}
@@ -117,6 +144,8 @@ export default function Ship({
                             -{damageFlash}
                         </div>
                     )}
+
+                    
 
                 </div>
 
@@ -204,6 +233,8 @@ export default function Ship({
                             `,
                         }}
                     />
+
+                    {detonationFlash && <Detonation color={detonationFlash}/>}
 
                     {/* Debuff Indicators */}
                     {activeDebuffs.length > 0 && (

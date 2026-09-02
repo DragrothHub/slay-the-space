@@ -68,6 +68,12 @@ export function detonate(target, actor, ability, state) {
         `${removedCount} stack(s) of ${debuffId} detonated on ${target.name} for ${damageDone} damage`
     );
 
+    state.detonationEvents.push({
+            targetId: target.id,
+            detonatorId: ability.id,
+            timestamp: Date.now(),
+    });
+
     // ==============================
     // 3. DETONATION EFFECT
     // ==============================
@@ -176,6 +182,12 @@ export function detonate(target, actor, ability, state) {
                 );
 
                 if (!cascadeTarget) break;
+
+                state.detonationEvents.push({
+                    targetId: cascadeTarget.id,
+                    detonatorId: ability.id,
+                    timestamp: Date.now(),
+                });
 
                 // Remove debuff
                 const removed = cascadeTarget.stats.debuffs.filter(d => d.id === debuffId);
