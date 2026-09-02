@@ -11,6 +11,7 @@ import RepairScreen from "./components/RepairScreen";
 import ShopScreen from "./components/ShopScreen";
 import SplashScreen from "./components/SplashScreen";
 import MenuPanel from "./components/MenuPanel";
+import RevealCard from "./components/RevealCard";
 
 function App() {
   const {
@@ -110,24 +111,26 @@ function App() {
           title={`Choose an ${gameState.rewards.rewardType}`}
 
           renderMini={({ item, toggle, selected }) => (
-            <div
-              onClick={toggle}
-              style={{
-                border: selected
-                  ? "2px solid #fcff4c"
-                  : "2px solid transparent",
-                borderRadius: "10px",
-                width: "370px",
-              }}
-            >
-              {gameState.rewards?.rewardType === "ability" && (
-                <AbilityCard abilityId={item.id} />
-              )}
+            <RevealCard>
+              <div
+                onClick={toggle}
+                style={{
+                  border: selected
+                    ? "2px solid #fcff4c"
+                    : "2px solid transparent",
+                  borderRadius: "10px",
+                  width: "370px",
+                }}
+              >
+                {gameState.rewards?.rewardType === "ability" && (
+                  <AbilityCard abilityId={item.id} />
+                )}
 
-              {gameState.rewards?.rewardType === "module" && (
-                <ModuleCard module={item} />
-              )}
-            </div>
+                {gameState.rewards?.rewardType === "module" && (
+                  <ModuleCard module={item} />
+                )}
+              </div>
+            </RevealCard>
           )}
 
           onConfirm={(selectedRewards) => {

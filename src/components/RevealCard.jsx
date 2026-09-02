@@ -10,7 +10,7 @@ export default function RevealCard({
         <div
             onClick={() => setRevealed(true)}
             style={{
-                width: "100%",
+                maxWidth: 370,
                 perspective: 1000,
                 cursor: revealed ? "default" : "pointer",
             }}
@@ -41,8 +41,16 @@ export default function RevealCard({
                     style={{
                         position: "absolute",
                         inset: 0,
-
-                        background: "#0a1118",
+                        background: `
+                            repeating-linear-gradient(
+                                45deg,
+                                transparent 0px,
+                                transparent 5px,
+                                #101b25 5px,
+                                #101b25 6px
+                            ),
+                            #0f1521
+                        `,
                         borderRadius: 10,
                         border: "2px solid #243342",
 
