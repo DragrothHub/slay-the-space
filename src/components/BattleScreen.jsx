@@ -10,14 +10,25 @@ import { moduleCollection } from "../data/modules";
 
 export default function BattleScreen()
 {
+    const {
+        gameState,
+        currentNode,
+        setScreen,
+        startBattle,
+        finishBattle,
+        selectRewards,
+        confirmAction,
+        resolveAction,
+        addCredits
+    } = useGameState();
 
-    const { gameState, currentNode, setScreen, startBattle, finishBattle, selectRewards, confirmAction, resolveAction, addCredits } = useGameState();
     const battle = gameState.run?.battle;
+
     const [gameOver, setGameOver] = useState(false);
+    const [battleWon, setBattleWon] = useState(false);
 
     function getEnemyFleetByNode(node)
     {
-
         let enemyFleet = [];
 
         switch (currentNode.type)
@@ -37,9 +48,9 @@ export default function BattleScreen()
                 break;
 
             case "boss":
-                enemyFleet.push(createEnemy(1,1));
-                enemyFleet.push(createEnemy(6,2));
-                enemyFleet.push(createEnemy(1,1));
+                enemyFleet.push(createEnemy(1, 1));
+                enemyFleet.push(createEnemy(6, 2));
+                enemyFleet.push(createEnemy(1, 1));
                 break;
 
             default:
@@ -66,76 +77,104 @@ export default function BattleScreen()
         startBattle(enemyFleet);
     }, []);
 
+    // Detect battle result
     useEffect(() =>
     {
         if (!battle?.winner) return;
 
-        if (battle.winner == "B")
+        if (battle.winner === "B")
         {
             setGameOver(true);
         }
-        else 
+        else
         {
-            finishBattle();
-
-            addCredits(100); // todo
-
-            const rewardTypes = [
-                {
-                    type: "ability",
-                    collection: detonatorAbilityCollection,
-                    amount: 3,
-                },
-                {
-                    type: "ability",
-                    collection: primerAbilityCollection,
-                    amount: 3,
-                },
-                {
-                    type: "module",
-                    collection: moduleCollection,
-                    amount: 3,
-                }
-            ];
-
-            const reward = rewardTypes[
-                Math.floor(Math.random() * rewardTypes.length)
-            ];
-
-            selectRewards({
-                possibleRewards: getRandomRewards(reward.collection, reward.amount),
-                maxSelection: 1,
-                rewardType: reward.type
-            });
+            // Don't finish the battle yet.
+            // Keep the battlefield visible until the player clicks.
+            setBattleWon(true);
         }
     }, [battle?.winner]);
 
-    useEffect(() => {
+    function continueAfterVictory()
+    {
+        if (!battleWon) return;
+
+        const rewardTypes = [
+            {
+                type: "ability",
+                collection: detonatorAbilityCollection,
+                amount: 3,
+            },
+            {
+                type: "ability",
+                collection: primerAbilityCollection,
+                amount: 3,
+            },
+            {
+                type: "module",
+                collection: moduleCollection,
+                amount: 3,
+            }
+        ];
+
+        const reward = rewardTypes[
+            Math.floor(Math.random() * rewardTypes.length)
+        ];
+
+        selectRewards({
+            possibleRewards: getRandomRewards(
+                reward.collection,
+                reward.amount
+            ),
+            maxSelection: 1,
+            rewardType: reward.type
+        });
+
+        addCredits(100); // todo
+
+        // Only now leave the battle.
+        finishBattle();
+    }
+
+    useEffect(() =>
+    {
         if (battle?.phase !== "enemy-confirm") return;
 
-        const timer = setTimeout(() => {
+        const timer = setTimeout(() =>
+        {
             confirmAction();
         }, 500);
 
         return () => clearTimeout(timer);
     }, [battle?.phase, battle?.activeUnitId]);
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         if (battle?.phase !== "ability-animation") return;
 
         console.log("animation phase");
 
-        const timer = setTimeout(() => {
+        const timer = setTimeout(() =>
+        {
             resolveAction();
         }, 0);
 
         return () => clearTimeout(timer);
-    }, [battle?.phase, battle?.activeUnitId, battle?.selectedAbilityId]);
+    }, [
+        battle?.phase,
+        battle?.activeUnitId,
+        battle?.selectedAbilityId
+    ]);
 
     if (!battle) return <div>Loading...</div>;
 
     return (
-        <div>
+        <div
+            style={{
+                position: "relative",
+                width: "100%",
+                height: "100%",
+            }}
+        >
             <BattleField />
 
             <ActionPanel />
@@ -144,21 +183,129 @@ export default function BattleScreen()
 
             <TurnOrder />
 
+            {/* VICTORY */}
+            {battleWon &&
+                <div
+                    onClick={continueAfterVictory}
+                    style={{
+                        position: "absolute",
+                        inset: 0,
+                        zIndex: 100,
+
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+
+                        background: "rgba(0, 0, 0, 0.62)",
+
+                        cursor: "pointer",
+
+                        animation: "battleVictoryFadeIn 250ms ease-out",
+                    }}
+                >
+                    <div
+                        style={{
+                            textAlign: "center",
+                            userSelect: "none",
+
+                            animation: "battleVictoryScaleIn 350ms ease-out",
+                        }}
+                    >
+                        <div
+                            style={{
+                                fontSize: "0.8rem",
+                                letterSpacing: "0.45em",
+                                opacity: 0.65,
+                                marginBottom: "10px",
+                            }}
+                        >
+                            BATTLE COMPLETE
+                        </div>
+
+                        <div
+                            style={{
+                                fontSize: "4rem",
+                                letterSpacing: "0.08em",
+                                color: "#fff",
+                                textShadow: `
+                                    0 0 10px rgba(255,255,255,0.5),
+                                    0 0 30px rgba(255,220,120,0.35),
+                                    0 0 60px rgba(255,180,60,0.2)
+                                `,
+                            }}
+                        >
+                            VICTORY
+                        </div>
+
+                        <div
+                            style={{
+                                marginTop: "20px",
+                                fontSize: "0.9rem",
+                                opacity: 0.55,
+                                letterSpacing: "0.15em",
+                            }}
+                        >
+                            TAP TO CONTINUE
+                        </div>
+                    </div>
+
+                    <style>
+                        {`
+                            @keyframes battleVictoryFadeIn
+                            {
+                                from
+                                {
+                                    opacity: 0;
+                                }
+
+                                to
+                                {
+                                    opacity: 1;
+                                }
+                            }
+
+                            @keyframes battleVictoryScaleIn
+                            {
+                                from
+                                {
+                                    opacity: 0;
+                                    transform: scale(0.85);
+                                }
+
+                                to
+                                {
+                                    opacity: 1;
+                                    transform: scale(1);
+                                }
+                            }
+                        `}
+                    </style>
+                </div>
+            }
+
+            {/* GAME OVER */}
             {gameOver &&
                 <div
                     style={{
                         position: "absolute",
-                        fontSize: "1.5em",
-                        top: "0px",
-                        left: "0px",
+                        inset: 0,
+                        zIndex: 100,
+
                         background: "rgba(0,0,0,0.8)",
-                        width: "100%",
-                        height: "100%",
+
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+
                         textAlign: "center",
-                        alignContent: "center"
-                    }}>
-                    Game Over
-                    <br></br>
+                        fontSize: "1.5em",
+                    }}
+                >
+                    <div>
+                        Game Over
+                    </div>
+
                     <div
                         style={{
                             width: "200px",
@@ -168,8 +315,10 @@ export default function BattleScreen()
                             textAlign: "center",
                             alignContent: "center",
                             margin: "30px auto",
+                            cursor: "pointer",
                         }}
-                        onClick={() => window.location.reload()}>
+                        onClick={() => window.location.reload()}
+                    >
                         Restart
                     </div>
                 </div>
