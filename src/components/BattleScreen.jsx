@@ -188,7 +188,7 @@ export default function BattleScreen()
                 <div
                     onClick={continueAfterVictory}
                     style={{
-                        position: "absolute",
+                        position: "fixed",
                         inset: 0,
                         zIndex: 100,
 
@@ -287,7 +287,7 @@ export default function BattleScreen()
             {gameOver &&
                 <div
                     style={{
-                        position: "absolute",
+                        position: "fixed",
                         inset: 0,
                         zIndex: 100,
 
