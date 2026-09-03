@@ -80,7 +80,7 @@ export default function Ship({
                     justifyContent: "center",
                     alignItems: "center",
                     borderRadius: 12,
-                    opacity: isDead ? 0.35 : 1,
+                    opacity: isDead && !detonationFlash ? 0.35 : 1,
                     position: "relative",
                 }}
                 onClick={onClick}
