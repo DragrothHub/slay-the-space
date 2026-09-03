@@ -46,8 +46,8 @@ export default function RevealCard({
                                 45deg,
                                 transparent 0px,
                                 transparent 5px,
-                                #101b25 5px,
-                                #101b25 6px
+                                #1e3245 5px,
+                                #101b25 8px
                             ),
                             #0f1521
                         `,
