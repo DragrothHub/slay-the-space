@@ -10,7 +10,7 @@ import ship_9 from "../images/ship_9.png";
 
 import { getRandomModule, moduleCollection } from "./modules";
 import { getRandomShipClass, shipClasses } from "./shipClasses";
-import { getRandomNeutralAbility, getRandomPrimerAbility, getRandomDetonatorAbility } from "./abilities";
+import { getRandomNeutralAbility, getRandomPrimerAbility, getRandomDetonatorAbility, detonatorAbilityCollection, primerAbilityCollection } from "./abilities";
 import { baseValue } from "./constants";
 
 // ========================================
@@ -32,11 +32,7 @@ export function createShip(numberOfModules = 2, numberOfAttributePoints = 360) {
 
         modules: [],
 
-        abilities: [
-            getRandomNeutralAbility(),
-            getRandomPrimerAbility(),
-            getRandomDetonatorAbility(),
-        ],
+        abilities: getRandomAbilities(),
 
         attributes: attributes,
 
@@ -52,6 +48,26 @@ export function createShip(numberOfModules = 2, numberOfAttributePoints = 360) {
     ship.name = (shipClasses[ship.class].displayName || "Unknown") + '_' + Math.floor(Math.random() * 1000);
 
     return ship;
+}
+
+function getRandomAbilities(){
+
+    let randomNeutral = getRandomNeutralAbility();
+    let randomPrimer = getRandomPrimerAbility();
+    let randomDetonator = getRandomDetonatorAbility();
+
+    let counter = 0;
+
+    while(primerAbilityCollection[randomPrimer].appliesDebuff == detonatorAbilityCollection[randomDetonator].detonatesDebuff && counter < 10){
+        randomDetonator = getRandomDetonatorAbility();
+        counter++;
+    }
+
+    return [
+        randomNeutral,
+        randomPrimer,
+        randomDetonator,
+    ];
 }
 
 function randomItem(array) {
