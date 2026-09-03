@@ -115,6 +115,8 @@ function RepairScreen() {
                     width: "700px",
                     display: "flex",
                     flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
                     gap: "24px",
                 }}
             >
