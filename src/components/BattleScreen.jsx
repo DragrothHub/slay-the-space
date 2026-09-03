@@ -225,12 +225,12 @@ export default function BattleScreen()
                         <div
                             style={{
                                 fontSize: "4rem",
-                                letterSpacing: "0.08em",
+                                letterSpacing: "0.1em",
                                 color: "#fff",
                                 textShadow: `
                                     0 0 10px rgba(255,255,255,0.5),
-                                    0 0 30px rgba(255,220,120,0.35),
-                                    0 0 60px rgba(255,180,60,0.2)
+                                    0 0 30px #0064c1,
+                                    0 0 60px #0084ff
                                 `,
                             }}
                         >
