@@ -38,7 +38,6 @@ export default function BattleScreen()
                 for (let i = 1; i <= Math.min(currentNode.layer, 4); i++)
                 {
                     let enemy = createEnemy(0,1);
-                    // applyDebuff(enemy, "summonClone", 3);
                     enemyFleet.push(enemy);
                 }
                 break;
@@ -46,7 +45,8 @@ export default function BattleScreen()
             case "elite":
                 for (let i = 1; i <= Math.min(currentNode.layer, 4); i++)
                 {
-                    enemyFleet.push(createEnemy(1, 1));
+                    let enemy = createEnemy(1, 1);
+                    enemyFleet.push(enemy);
                 }
                 break;
 
@@ -54,8 +54,15 @@ export default function BattleScreen()
                 enemyFleet.push(createEnemy(1, 1));
                 
                 let boss = createEnemy(6,2);
-                applyDebuff(boss, "shieldExplosion");
-                applyDebuff(boss, "shieldRegeneration", 5);
+
+                if(Math.random() > 0.5){
+                    applyDebuff(boss, "shieldExplosion");
+                    applyDebuff(boss, "shieldRegeneration", 5);
+                }
+                else{
+                    applyDebuff(boss, "summonClone", 3);
+                }
+
                 enemyFleet.push(boss);
 
                 enemyFleet.push(createEnemy(1, 1));
