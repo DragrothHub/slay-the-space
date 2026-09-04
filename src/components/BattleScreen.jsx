@@ -7,6 +7,7 @@ import { createEnemy } from "../data/createEnemy";
 import TurnOrder from "./TurnOrder";
 import { detonatorAbilityCollection, primerAbilityCollection } from "../data/abilities";
 import { moduleCollection } from "../data/modules";
+import { applyDebuff } from "../engine/debuffs";
 
 export default function BattleScreen()
 {
@@ -36,7 +37,8 @@ export default function BattleScreen()
             case "combat":
                 for (let i = 1; i <= Math.min(currentNode.layer, 4); i++)
                 {
-                    enemyFleet.push(createEnemy(0, 1));
+                    let enemy = createEnemy(0,1);
+                    enemyFleet.push(enemy);
                 }
                 break;
 
@@ -49,7 +51,12 @@ export default function BattleScreen()
 
             case "boss":
                 enemyFleet.push(createEnemy(1, 1));
-                enemyFleet.push(createEnemy(6, 2));
+                
+                let boss = createEnemy(6,2);
+                applyDebuff(boss, "shieldExplosion");
+                applyDebuff(boss, "shieldRegeneration", 5);
+                enemyFleet.push(boss);
+
                 enemyFleet.push(createEnemy(1, 1));
                 break;
 
@@ -82,14 +89,15 @@ export default function BattleScreen()
     {
         if (!battle?.winner) return;
 
-        if (battle.winner === "B")
-        {
-            setGameOver(true);
+        if (battle.winner === "B") {
+            // setGameOver(true);
+            const timer = setTimeout(() => {
+                setGameOver(true);
+            }, 2000);
+
+            return () => clearTimeout(timer);
         }
-        else
-        {
-            // Don't finish the battle yet.
-            // Keep the battlefield visible until the player clicks.
+        else {
             setBattleWon(true);
         }
     }, [battle?.winner]);
