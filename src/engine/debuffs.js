@@ -77,6 +77,16 @@ export const debuffs = {
         icon: null,
         baseDuration: 10,
     },
+
+    summonClone: {
+        id: "summonCopy",
+        displayName: "Summon Copy",
+        description: "When timer reaches zero the ship will summon a copy of itself.",
+        color: mechanicColor,
+        category: "mechanic",
+        icon: null,
+        baseDuration: 10,
+    },
 };
 
 export function applyDebuff(target, debuffId, duration) {
@@ -167,7 +177,55 @@ export function processTurnStartDebuffs(unit, state) {
             );
         }
     }
-} 
+
+    if (hasDebuff(unit, "summonCopy")) {
+
+        const copyEffects = unit.stats.debuffs.filter(
+            d => d.id === "summonCopy" && d.duration === 1
+        );
+
+        if (copyEffects.length > 0) {
+
+            // Team des aktuellen Schiffs finden
+            let team = null;
+
+            if (state.teams.A.some(u => u.id === unit.id)) {
+                team = "A";
+            } else if (state.teams.B.some(u => u.id === unit.id)) {
+                team = "B";
+            }
+
+            if (team) {
+
+                const teamUnits = state.teams[team];
+
+                if (teamUnits.length < 4) {
+
+                    const copiedUnit = structuredClone(unit);
+
+                    copiedUnit.id = `${unit.id}_copy_${Date.now()}`;
+                    copiedUnit.name = copiedUnit.name + "_Clone";
+
+                    copiedUnit.stats.debuffs = copiedUnit.stats.debuffs.filter(
+                        d => d.id !== "summonCopy"
+                    );
+
+                    state.teams[team].push(copiedUnit);
+
+                    state.log.push(
+                        `${unit.name} summons a copy of itself.`
+                    );
+
+                } else {
+
+                    state.log.push(
+                        `${unit.name} cannot summon a copy. The team is full.`
+                    );
+                }
+            }
+        }
+    }
+}
 
 /**
  * Duration ticking (after effects resolved)

@@ -38,6 +38,7 @@ export default function BattleScreen()
                 for (let i = 1; i <= Math.min(currentNode.layer, 4); i++)
                 {
                     let enemy = createEnemy(0,1);
+                    // applyDebuff(enemy, "summonClone", 3);
                     enemyFleet.push(enemy);
                 }
                 break;
