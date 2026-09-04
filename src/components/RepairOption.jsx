@@ -9,6 +9,7 @@ function RepairOption({
         <button
             onClick={onClick}
             style={{
+                width: "100%",
                 textAlign: "left",
                 background: disabled ? "#222" : "#0a1118",
                 borderRadius: 10,

@@ -21,10 +21,10 @@ function RepairScreen() {
 
     const ships = gameState.run.ships;
 
-    function onLeave() {
+    function onLeave(force = false) {
 
         // Confirm when repair not used
-        if (!repairUsed) {
+        if (!repairUsed && !force) {
             if (!confirm("Repair was not used by now. Leave anyways?"))
                 return;
         }
@@ -63,7 +63,7 @@ function RepairScreen() {
                 setRepairUsed(true);
 
                 setTimeout(() => {
-                    setShowFieldHeal(false);
+                    onLeave(true);
                 }, 1000);
                 break;
 
@@ -96,7 +96,7 @@ function RepairScreen() {
         setRepairUsed(true);
 
         setTimeout(() => {
-            setShipSelectionOpen(false);
+            onLeave(true);
         }, 800);
     }
 
@@ -112,7 +112,7 @@ function RepairScreen() {
         >
             <div
                 style={{
-                    width: "700px",
+                    width: "370px",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -165,6 +165,7 @@ function RepairScreen() {
                 {!shipSelectionOpen && !showFieldHeal && <button
                     onClick={onLeave}
                     style={{
+                        width: "100%",
                         background: "#0a1118",
                         borderRadius: 10,
                         padding: 12,
