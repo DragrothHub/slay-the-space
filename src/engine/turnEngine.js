@@ -118,6 +118,11 @@ function aiTurn(state, actor){
 
     const enemies = getEnemyUnits(state, actor).filter(enemy => enemy.stats.currentHull > 0);
 
+    if (enemies?.length < 1) {
+        resolveDeaths(state);
+        if (state.winner) return state;
+    }
+
     state.selectedTargetId = enemies[Math.floor(Math.random() * enemies.length)].id;
 
     const usableAbilities = actor.abilities.filter(
