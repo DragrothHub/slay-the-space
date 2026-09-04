@@ -1,3 +1,6 @@
+import { applyDamage } from "./damage";
+import { getEnemyUnits } from "./helpers";
+
 // ========================================
 // DEBUFF SYSTEM
 // ========================================
@@ -11,6 +14,8 @@ export const debuffs = {
         description: "Takes increased damage from all sources.",
         color: "#ef4444",
         category: "debuff",
+        icon: null,
+        baseDuration: 3,
     },
 
     exhausted: {
@@ -19,6 +24,8 @@ export const debuffs = {
         description: "Deals reduced damage.",
         color: "#f59e0b",
         category: "debuff",
+        icon: null,
+        baseDuration: 3,
     },
 
     marked: {
@@ -27,6 +34,8 @@ export const debuffs = {
         description: "Attacking marked targets reduces all cooldowns.",
         color: "#22c55e",
         category: "debuff",
+        icon: null,
+        baseDuration: 3,
     },
 
     stunned: {
@@ -35,6 +44,8 @@ export const debuffs = {
         description: "Target skips its next turn.",
         color: "#a855f7",
         category: "debuff",
+        icon: null,
+        baseDuration: 1,
     },
 
     shocked: {
@@ -43,6 +54,8 @@ export const debuffs = {
         description: "Takes damage over time.",
         color: "#3b82f6",
         category: "debuff",
+        icon: null,
+        baseDuration: 3,
     },
 
     shieldExplosion: {
@@ -51,7 +64,7 @@ export const debuffs = {
         description: "Triggers an explosion dealing damage equal to current shield value.",
         color: mechanicColor,
         category: "mechanic",
-        icon: "*",
+        icon: null,
         baseDuration: 10,
     },
 
@@ -61,19 +74,24 @@ export const debuffs = {
         description: "When timer reaches zero the shields will be restored if not destroyed.",
         color: mechanicColor,
         category: "mechanic",
-        icon: "O",
+        icon: null,
         baseDuration: 10,
     },
 };
 
-export function applyDebuff(target, debuffId, duration = 3) {
+export function applyDebuff(target, debuffId, duration) {
     if (!target.stats.debuffs) {
         target.stats.debuffs = [];
     }
 
+    const debuff = debuffs[debuffId];
+
+    const actualDuration =
+        duration ?? debuff?.baseDuration ?? 3;
+
     target.stats.debuffs.push({
         id: debuffId,
-        duration: duration,
+        duration: actualDuration,
     });
 }
 
@@ -106,7 +124,50 @@ export function processTurnStartDebuffs(unit, state) {
 
         state.log.push(`${unit.name} takes ${damage} shock damage.`);
     }
-}
+
+    if (hasDebuff(unit, "shieldExplosion")) {
+
+        const shieldExplosionDebuffsExplodingThisTurn = unit.stats.debuffs.filter(
+            d => d.id === "shieldExplosion" && d.duration === 1
+        );
+
+        if(shieldExplosionDebuffsExplodingThisTurn.length > 0) {
+            const damage = unit.stats.currentShield;
+
+            const enemies = getEnemyUnits(state, unit).filter(enemy => enemy.stats.currentHull > 0);
+
+            for (const enemy of enemies) {
+                applyDamage(enemy, unit, {
+                    id: "shieldExplosion",
+                    type: "none",
+                    value: damage,
+                }, state);
+            }
+
+            if (enemies.length > 0) {
+                state.log.push(
+                    `Shield Explosion deals ${damage} damage to ${enemies.length} targets`
+                );
+            }
+
+            unit.stats.currentShield = 0;
+        }
+    }
+
+    if (hasDebuff(unit, "shieldRegeneration")) {
+
+        const shieldRegenerations = unit.stats.debuffs.filter(
+            d => d.id === "shieldRegeneration" && d.duration === 1
+        );
+
+        if (shieldRegenerations.length > 0 && unit.stats.currentShield) {
+            unit.stats.currentShield = unit.stats.maxShield;
+            state.log.push(
+                `${unit.name}'s shields are fully regenerated.`
+            );
+        }
+    }
+} 
 
 /**
  * Duration ticking (after effects resolved)
