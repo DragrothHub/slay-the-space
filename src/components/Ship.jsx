@@ -4,6 +4,7 @@ import "./Ship.css";
 import AnimationDetonator from "../animations/AnimationDetonator";
 import { detonatorAbilityCollection } from "../data/abilities";
 import Detonation from "./Detonation";
+import StatusEffect from "./StatusEffect";
 
 export default function Ship({
     unit,
@@ -248,29 +249,11 @@ export default function Ship({
                             }}
                         >
                             {activeDebuffs.map((debuff, index) => (
-                                <div
-                                    key={`${debuff.id}-${index}`}
-                                    title={`${debuff.id} (${debuff.duration})`}
-                                    style={{
-                                        width: isTargeted || isActive ? 10 : 8,
-                                        height: isTargeted || isActive ? 10 : 8,
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        fontSize: "0.8em",
-                                        borderRadius: "50%",
-                                        color: "#b4b4b4",
-                                        boxShadow: `
-                                            0 0 6px ${
-                                                debuffs[debuff.id].color ?? "#fff"
-                                            }
-                                        `,
-                                        background: "conic-gradient(transparent 0deg " + 120 * (3 - debuff.duration) + "deg, " + debuffs[debuff.id].color + " 0deg 360deg)",
-                                        border: "1px solid" + debuffs[debuff.id].color,
-                                    }}
-                                >
-                                    <div style={{ position: "relative", top: "12px", left: "0px" }}>{debuff.duration}</div>
-                                </div>
+                                <StatusEffect
+                                    effect={debuffs[debuff.id]}
+                                    duration={debuff.duration}
+                                    isTargeted={isTargeted}
+                                    isActive={isActive} />
                             ))}
                         </div>
                     )}

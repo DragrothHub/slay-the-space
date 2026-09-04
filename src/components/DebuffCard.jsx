@@ -1,4 +1,5 @@
 import { debuffs } from "../engine/debuffs";
+import StatusEffect from "./StatusEffect";
 
 export default function DebuffCard({ debuffId, duration }) {
 
@@ -36,7 +37,7 @@ export default function DebuffCard({ debuffId, duration }) {
                     {debuff.displayName}
                 </div>
 
-                <div
+                {/* <div
                     style={{
                         width: 10,
                         height: 10,
@@ -52,7 +53,13 @@ export default function DebuffCard({ debuffId, duration }) {
                     }}
                 >
                     <div style={{ position: "relative", top: "12px", left: "0px" }}>{duration}</div>
-                </div>
+                </div> */}
+
+                <StatusEffect
+                    effect={debuff}
+                    duration={duration}
+                    isTargeted={false}
+                    isActive={false} />
             </div>
 
             <div

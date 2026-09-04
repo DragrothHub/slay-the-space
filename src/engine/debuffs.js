@@ -2,12 +2,15 @@
 // DEBUFF SYSTEM
 // ========================================
 
+const mechanicColor = "#facc15";
+
 export const debuffs = {
     weakened: {
         id: "weakened",
         displayName: "Weakened",
         description: "Takes increased damage from all sources.",
         color: "#ef4444",
+        category: "debuff",
     },
 
     exhausted: {
@@ -15,6 +18,7 @@ export const debuffs = {
         displayName: "Exhausted",
         description: "Deals reduced damage.",
         color: "#f59e0b",
+        category: "debuff",
     },
 
     marked: {
@@ -22,6 +26,7 @@ export const debuffs = {
         displayName: "Marked",
         description: "Attacking marked targets reduces all cooldowns.",
         color: "#22c55e",
+        category: "debuff",
     },
 
     stunned: {
@@ -29,6 +34,7 @@ export const debuffs = {
         displayName: "Stunned",
         description: "Target skips its next turn.",
         color: "#a855f7",
+        category: "debuff",
     },
 
     shocked: {
@@ -36,6 +42,27 @@ export const debuffs = {
         displayName: "Shocked",
         description: "Takes damage over time.",
         color: "#3b82f6",
+        category: "debuff",
+    },
+
+    shieldExplosion: {
+        id: "shieldExplosion",
+        displayName: "Shield Explosion",
+        description: "Triggers an explosion dealing damage equal to current shield value.",
+        color: mechanicColor,
+        category: "mechanic",
+        icon: "*",
+        baseDuration: 10,
+    },
+
+    shieldRegeneration: {
+        id: "shieldRegeneration",
+        displayName: "Shield Regeneration",
+        description: "When timer reaches zero the shields will be restored if not destroyed.",
+        color: mechanicColor,
+        category: "mechanic",
+        icon: "O",
+        baseDuration: 10,
     },
 };
 
