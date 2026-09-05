@@ -110,7 +110,7 @@ export default function MapNode({ node }) {
                 borderRadius: "50%",
 
                 border: currentNode.id === node.id
-                    ? "2px solid white"
+                    ? "4px solid #fff"
                     : isVisited ? "4px solid #fff" : "2px solid transparent", // `10px solid ${colors[node.type]}` : "2px solid #22222200",
 
                 background: colors[node.type], // isVisited ? "#fff" : colors[node.type],

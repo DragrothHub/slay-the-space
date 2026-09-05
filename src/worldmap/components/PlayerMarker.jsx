@@ -12,17 +12,17 @@ export default function PlayerMarker({
 
                 position: "absolute",
 
-                left: node.x - 24,
+                left: node.x - 25,
 
-                top: node.y - 24,
+                top: node.y - 25,
 
-                width: 48,
+                width: 50,
 
-                height: 48,
+                height: 50,
 
                 borderRadius: "50%",
 
-                border: "3px solid cyan",
+                border: "4px solid #fff",
 
                 pointerEvents: "none",
 

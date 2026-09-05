@@ -30,11 +30,12 @@ export default function MapLegend() {
             flexDirection: "column"
         }}>
             {Object.keys(NodeTypes).map((nodeType) => (
-                <div style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    // justifyContent: "space-between"
+                <div 
+                    key={nodeType}
+                    style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
                 }}>
                     <div
                         style={{
