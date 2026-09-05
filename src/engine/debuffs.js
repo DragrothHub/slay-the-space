@@ -78,7 +78,7 @@ export const debuffs = {
         baseDuration: 10,
     },
 
-    summonClone: {
+    summonCopy: {
         id: "summonCopy",
         displayName: "Summon Copy",
         description: "When timer reaches zero the ship will summon a copy of itself.",
@@ -177,10 +177,16 @@ export function processTurnStartDebuffs(unit, state) {
             }
 
             unit.stats.currentShield = 0;
-        }
 
-        // Restart mechanic
-        restartMechanic(shieldExplosionDebuffsExplodingThisTurn);
+            state.animationEvents.push({
+                targetId: unit.id,
+                mechanicId: "shieldExplosion",
+                timestamp: Date.now(),
+            });
+
+            // Restart mechanic
+            restartMechanic(shieldExplosionDebuffsExplodingThisTurn);
+        }
     }
 
     if (hasDebuff(unit, "shieldRegeneration")) {
@@ -194,10 +200,16 @@ export function processTurnStartDebuffs(unit, state) {
             state.log.push(
                 `${unit.name}'s shields are fully regenerated.`
             );
-        }
 
-        // Restart mechanic
-        restartMechanic(shieldRegenerations);
+            state.animationEvents.push({
+                targetId: unit.id,
+                mechanicId: "shieldRegeneration",
+                timestamp: Date.now(),
+            });
+            
+            // Restart mechanic
+            restartMechanic(shieldRegenerations);
+        }
     }
 
     if (hasDebuff(unit, "summonCopy")) {
@@ -245,10 +257,18 @@ export function processTurnStartDebuffs(unit, state) {
                     );
                 }
             }
-        }
 
-        // Restart mechanic
-        restartMechanic(copyEffects);
+            state.animationEvents.push({
+                targetId: unit.id,
+                mechanicId: "summonCopy",
+                timestamp: Date.now(),
+            });
+
+            console.log(state.animationEvents);
+            
+            // Restart mechanic
+            restartMechanic(copyEffects);
+        }
     }
 
     if (hasDebuff(unit, "cleanseDebuffs")) {
@@ -271,10 +291,16 @@ export function processTurnStartDebuffs(unit, state) {
             state.log.push(
                 `${unit.name} cleanses all debuffs from all ships.`
             );
-        }
 
-        // Restart mechanic
-        restartMechanic(cleanseEffects);
+            state.animationEvents.push({
+                targetId: unit.id,
+                mechanicId: "cleanseDebuffs",
+                timestamp: Date.now(),
+            });
+
+            // Restart mechanic
+            restartMechanic(cleanseEffects);
+        }
     }
 }
 

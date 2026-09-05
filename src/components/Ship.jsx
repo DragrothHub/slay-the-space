@@ -5,11 +5,12 @@ import AnimationDetonator from "../animations/AnimationDetonator";
 import { detonatorAbilityCollection } from "../data/abilities";
 import Detonation from "./Detonation";
 import StatusEffect from "./StatusEffect";
+import MechanicAura from "./MechanicAura";
 
 export default function Ship({
     unit,
     damageEvents = [],
-    detonationEvents = [],
+    animationEvents = [],
     isActive,
     isTargeted,
     isDead,
@@ -20,8 +21,9 @@ export default function Ship({
 }) {
     const [damageFlash, setDamageFlash] = useState(null);
     const [detonationFlash, setDetonationFlash] = useState(null);
+    const [mechanicFlash, setMechanicFlash] = useState(null);
     const [lastEventTime, setLastEventTime] = useState(null);
-    const [lastDetonationTime, setLastDetonationTime] = useState(null);
+    const [lastAnimationTime, setLastAnimationTime] = useState(null);
 
     useEffect(() => {
         const event = damageEvents.find(
@@ -41,25 +43,40 @@ export default function Ship({
     }, [damageEvents]);
 
     useEffect(() => {
-        const event = detonationEvents.find(
-            e => e.targetId === unit.id && e.timestamp > lastDetonationTime
+        const event = animationEvents.find(
+            e => e.targetId === unit.id && e.timestamp > lastAnimationTime
         );
 
-        if (!event || !event.detonatorId || !detonatorAbilityCollection[event.detonatorId]) return;
+        if (!event) return;
 
-        const detonator = detonatorAbilityCollection[event.detonatorId];
+        let t;
 
-        const debuff = debuffs[detonator.detonatesDebuff];
+        if (event.detonatorId && detonatorAbilityCollection[event.detonatorId]) {
+            const detonator = detonatorAbilityCollection[event.detonatorId];
 
-        setDetonationFlash(debuff.color);
-        setLastDetonationTime(event.timestamp);
+            const debuff = debuffs[detonator.detonatesDebuff];
 
-        const t = setTimeout(() => {
-            setDetonationFlash(null);
-        }, 500);
+            setDetonationFlash(debuff.color);
+            setLastAnimationTime(event.timestamp);
+
+            t = setTimeout(() => {
+                setDetonationFlash(null);
+            }, 500);
+        }
+
+        if (event.mechanicId && debuffs[event.mechanicId]) {
+            const mechanicEffect = debuffs[event.mechanicId];
+
+            setMechanicFlash(mechanicEffect.color);
+            setLastAnimationTime(event.timestamp);
+
+            t = setTimeout(() => {
+                setMechanicFlash(null);
+            }, 500);
+        }
 
         return () => clearTimeout(t);
-    }, [detonationEvents])
+    }, [animationEvents])
 
     const borderColor = isDead
         ? "darkred"
@@ -236,6 +253,8 @@ export default function Ship({
                     />
 
                     {detonationFlash && <Detonation color={detonationFlash}/>}
+
+                    {mechanicFlash && <MechanicAura color={mechanicFlash}/>}
 
                     {/* Debuff Indicators */}
                     {activeDebuffs.length > 0 && (

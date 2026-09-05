@@ -61,7 +61,7 @@ function TeamFleet({
                     <Ship
                         unit={unit}
                         damageEvents={battle.damageEvents}
-                        detonationEvents={battle.detonationEvents}
+                        animationEvents={battle.animationEvents}
                         isActive={battle.activeUnitId === unit.id}
                         isTargeted={battle.selectedTargetId === unit.id}
                         isDead={unit.stats.currentHull <= 0}

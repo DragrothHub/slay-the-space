@@ -31,7 +31,7 @@ export function createBattleState(teamA, teamB) {
         winner: null,
 
         damageEvents: [],
-        detonationEvents: [],
+        animationEvents: [],
 
         log: [],
     };

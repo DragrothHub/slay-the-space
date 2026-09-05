@@ -68,7 +68,7 @@ export function detonate(target, actor, ability, state) {
         `${removedCount} stack(s) of ${debuffId} detonated on ${target.name} for ${damageDone} damage`
     );
 
-    state.detonationEvents.push({
+    state.animationEvents.push({
             targetId: target.id,
             detonatorId: ability.id,
             timestamp: Date.now(),
@@ -183,7 +183,7 @@ export function detonate(target, actor, ability, state) {
 
                 if (!cascadeTarget) break;
 
-                state.detonationEvents.push({
+                state.animationEvents.push({
                     targetId: cascadeTarget.id,
                     detonatorId: ability.id,
                     timestamp: Date.now(),
