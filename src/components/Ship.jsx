@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { debuffs } from "../engine/debuffs";
 import "./Ship.css";
-import AnimationDetonator from "../animations/AnimationDetonator";
 import { detonatorAbilityCollection } from "../data/abilities";
 import Detonation from "./Detonation";
 import StatusEffect from "./StatusEffect";
 import MechanicAura from "./MechanicAura";
+import StatBarSmall from "./StatBarSmall";
 
 export default function Ship({
     unit,
@@ -15,8 +15,6 @@ export default function Ship({
     isTargeted,
     isDead,
     onClick,
-    animation,
-    mode = "image",
     reverse = false,
 }) {
     const [damageFlash, setDamageFlash] = useState(null);
@@ -88,129 +86,124 @@ export default function Ship({
 
     const activeDebuffs = unit.stats?.debuffs ?? [];
 
-    if (mode === "image") {
-        return (
+    return (
+        <div
+            style={{
+                width: 80,
+                height: 80,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 12,
+                opacity: isDead && !detonationFlash ? 0.35 : 1,
+                position: "relative",
+            }}
+            onClick={onClick}
+        >
+            <div>
+                <StatBarSmall
+                    bigger={isTargeted || isActive}
+                    value={unit.stats?.currentShield ?? 0}
+                    max={Math.max(
+                        unit.stats?.maxShield ?? 0,
+                        unit.stats?.currentShield ?? 0
+                    )}
+                    color="#3b82f6"
+                />
+
+                <StatBarSmall
+                    bigger={isTargeted || isActive}
+                    value={unit.stats?.currentArmor ?? 0}
+                    max={Math.max(
+                        unit.stats?.maxArmor ?? 0,
+                        unit.stats?.currentArmor ?? 0
+                    )}
+                    color="#f59e0b"
+                />
+
+                <StatBarSmall
+                    bigger={isTargeted || isActive}
+                    value={unit.stats?.currentHull ?? 0}
+                    max={Math.max(
+                        unit.stats?.maxHull ?? 0,
+                        unit.stats?.currentHull ?? 0
+                    )}
+                    color="#ef4444"
+                />
+
+                <div style={{
+                    transition: "width 0.2s, left 0.2s, top 0.2s, font-size 0.4s",
+                    width: isTargeted || isActive ? 60 : 30,
+                    marginTop: 0,
+                    color: isTargeted ? "#ef4444" : isActive ? "rgb(158, 203, 255)" : "black",
+                    position: "relative",
+                    left: isTargeted || isActive ? 60 : 30,
+                    top: isTargeted || isActive ? 45 : 30,
+                    zIndex: 1,
+                    fontSize: isTargeted || isActive ? "1em" : "0.0em",
+                }}>{unit.name}</div>
+
+                {damageFlash && (
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: 40,
+                            color: "#ef4444",
+                            fontWeight: "bold",
+                            fontSize: 18,
+                            animation: "floatUp 2.5s ease-out",
+                            pointerEvents: "none",
+                        }}
+                    >
+                        -{damageFlash}
+                    </div>
+                )}
+            </div>
+
             <div
                 style={{
-                    width: 80,
-                    height: 80,
+                    position: "relative",
+                    width: isTargeted || isActive ? 140 : 60,
+                    height: isTargeted || isActive ? 140 : 60,
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    borderRadius: 12,
-                    opacity: isDead && !detonationFlash ? 0.35 : 1,
-                    position: "relative",
+
+                    transition: "width 0.25s ease, height 0.25s ease",
                 }}
-                onClick={onClick}
             >
-                
-                <div>
-                    <StatBarSmall
-                        bigger={isTargeted || isActive}
-                        value={unit.stats?.currentShield ?? 0}
-                        max={Math.max(
-                                unit.stats?.maxShield ?? 0,
-                                unit.stats?.currentShield ?? 0
-                            )}
-                        color="#3b82f6"
+                {(isTargeted || isActive) && (
+                    <div
+                        className="targetRingInner"
+                        style={{
+                            position: `absolute`,
+                            borderLeft: `2px solid ${borderColor}`,
+                            borderRight: `2px solid ${borderColor}`,
+                            borderTop: "2px solid transparent",
+                            borderBottom: "2px solid transparent",
+                            animation: `rotateTargetReverse 10s linear infinite`,
+                            inset: 30,
+                            opacity: 0.6,
+                            pointerEvents: `none`,
+                            borderRadius: `50%`,
+                        }}
                     />
+                )}
 
-                    <StatBarSmall
-                        bigger={isTargeted || isActive}
-                        value={unit.stats?.currentArmor ?? 0}
-                        max={Math.max(
-                                unit.stats?.maxArmor ?? 0,
-                                unit.stats?.currentArmor ?? 0
-                            )}
-                        color="#f59e0b"
-                    />
+                {(isTargeted || isActive) && (
+                    <div
+                        style={{
+                            position: "absolute",
+                            inset: 22,
 
-                    <StatBarSmall
-                        bigger={isTargeted || isActive}
-                        value={unit.stats?.currentHull ?? 0}
-                        max={Math.max(
-                                unit.stats?.maxHull ?? 0,
-                                unit.stats?.currentHull ?? 0
-                            )}
-                        color="#ef4444"
-                    />
+                            border: `2px solid ${borderColor}`,
+                            borderRadius: "50%",
 
-                    <div style={{
-                        transition: "width 0.2s, left 0.2s, top 0.2s, font-size 0.4s",
-                        width: isTargeted || isActive ? 60 : 30,
-                        marginTop: 0,
-                        color: isTargeted ? "#ef4444" : isActive ? "rgb(158, 203, 255)" : "black",
-                        position: "relative",
-                        left: isTargeted || isActive ? 60 : 30,
-                        top: isTargeted || isActive ? 45 : 30,
-                        zIndex: 1,
-                        fontSize: isTargeted || isActive ? "1em" : "0.0em",
-                    }}>{unit.name}</div>
+                            opacity: 0.6,
 
-                    {damageFlash && (
-                        <div
-                            style={{
-                                position: "absolute",
-                                top: 40,
-                                color: "#ef4444",
-                                fontWeight: "bold",
-                                fontSize: 18,
-                                animation: "floatUp 2.5s ease-out",
-                                pointerEvents: "none",
-                            }}
-                        >
-                            -{damageFlash}
-                        </div>
-                    )}
+                            animation: "rotateTarget 8s linear infinite",
 
-                    
-
-                </div>
-
-                <div
-                    style={{
-                        position: "relative",
-                        width: isTargeted || isActive ? 140 : 60,
-                        height: isTargeted || isActive ? 140 : 60,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-
-                        transition: "width 0.25s ease, height 0.25s ease",
-                    }}
-                >
-                    {(isTargeted || isActive) && (
-                        <div
-                            className="targetRingInner"
-                            style={{
-                                position: `absolute`,
-                                borderLeft: `2px solid ${borderColor}`,
-                                borderRight: `2px solid ${borderColor}`,
-                                borderTop: "2px solid transparent",
-                                borderBottom: "2px solid transparent",
-                                animation: `rotateTargetReverse 10s linear infinite`,
-                                inset: 30,
-                                opacity: 0.6,
-                                pointerEvents: `none`,
-                                borderRadius: `50%`,
-                            }}
-                        />
-                    )}
-
-                    {(isTargeted || isActive) && (
-                        <div
-                            style={{
-                                position: "absolute",
-                                inset: 22,
-
-                                border: `2px solid ${borderColor}`,
-                                borderRadius: "50%",
-
-                                opacity: 0.6,
-
-                                animation: "rotateTarget 8s linear infinite",
-
-                                clipPath: `
+                            clipPath: `
                                     polygon(
                                         0% 20%,
                                         20% 20%,
@@ -229,253 +222,53 @@ export default function Ship({
                                         0% 80%
                                     )
                                 `,
-                            }}
-                        />
-                    )}
+                        }}
+                    />
+                )}
 
-                    <img
-                        src={unit.image}
-                        style={{
-                            width: isTargeted || isActive ? "140px" : "60px",
+                <img
+                    src={unit.image}
+                    style={{
+                        width: isTargeted || isActive ? "140px" : "60px",
 
-                            transform: reverse
-                                ? "rotate(180deg)"
-                                : "rotate(0deg)",
+                        transform: reverse
+                            ? "rotate(180deg)"
+                            : "rotate(0deg)",
 
-                            opacity: isTargeted || isActive ? 1 : 0.8,
+                        opacity: isTargeted || isActive ? 1 : 0.8,
 
-                            transition: `
+                        transition: `
                                 width 0.25s ease,
                                 opacity 0.25s ease,
                                 filter 0.25s ease
                             `,
-                        }}
-                    />
+                    }}
+                />
 
-                    {detonationFlash && <Detonation color={detonationFlash}/>}
+                {detonationFlash && <Detonation color={detonationFlash} />}
 
-                    {mechanicFlash && <MechanicAura color={mechanicFlash}/>}
+                {mechanicFlash && <MechanicAura color={mechanicFlash} />}
 
-                    {/* Debuff Indicators */}
-                    {activeDebuffs.length > 0 && (
-                        <div
-                            style={{
-                                position: "absolute",
-                                bottom: isTargeted || isActive ? -10 : -20,
-                                display: "flex",
-                                gap: 4,
-                                borderRadius: 999,
-                            }}
-                        >
-                            {activeDebuffs.map((debuff, index) => (
-                                <StatusEffect
-                                    effect={debuffs[debuff.id]}
-                                    duration={debuff.duration}
-                                    isTargeted={isTargeted}
-                                    isActive={isActive} />
-                            ))}
-                        </div>
-                    )}
-                </div>
-
-                {animation === "animationDetonator" && <AnimationDetonator/>}
-
-            </div>
-        );
-    }
-
-    return (
-        <div
-            style={{
-                width: 140,
-                opacity: isDead ? 0.4 : 1,
-                fontSize: 12,
-                border: `2px solid ${borderColor}`,
-                borderRadius: 12,
-                padding: 4,
-            }}
-            onClick={onClick}
-        >
-            <div
-                style={{
-                    marginBottom: 4,
-                    textAlign: "center",
-                }}
-            >
-                {unit.name || "Unnamed"}
-            </div>
-
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: 4,
-                    marginBottom: 6,
-                    minHeight: 10,
-                }}
-            >
-                {activeDebuffs.map((debuff, index) => (
+                {/* Debuff Indicators */}
+                {activeDebuffs.length > 0 && (
                     <div
-                        key={`${debuff.id}-${index}`}
-                        title={`${debuff.id} (${debuff.duration})`}
                         style={{
-                            width: 8,
-                            height: 8,
-                            borderRadius: "50%",
-                            background:
-                                debuffColors[debuff.id] ?? "#ffffff",
+                            position: "absolute",
+                            bottom: isTargeted || isActive ? -10 : -20,
+                            display: "flex",
+                            gap: 4,
+                            borderRadius: 999,
                         }}
-                    />
-                ))}
-            </div>
-
-            <StatBar
-                label="Shield"
-                value={unit.stats?.currentShield ?? 0}
-                max={unit.stats?.maxShield ?? 0}
-                color="#3b82f6"
-            />
-
-            <StatBar
-                label="Armor"
-                value={unit.stats?.currentArmor ?? 0}
-                max={unit.stats?.maxArmor ?? 0}
-                color="#f59e0b"
-            />
-
-            <StatBar
-                label="Hull"
-                value={unit.stats?.currentHull ?? 0}
-                max={unit.stats?.maxHull ?? 0}
-                color="#ef4444"
-            />
-        </div>
-    );
-}
-
-function StatBarSmall({
-    label,
-    value,
-    max,
-    color,
-    bigger,
-}) {
-    if (max <= 0)
-        return null;
-
-    const width = bigger ? 60 : 30;
-    const height = bigger ? 4 : 2;
-
-    const segments = Math.max(1, Math.round(max / 50));
-    const percent = Math.min(100, (value / max) * 100);
-
-    return (
-        <div
-            style={{
-                transition: "width 0.2s, left 0.2s, top 0.2s",
-                width,
-                marginBottom: 2,
-                position: "relative",
-                left: bigger ? 60 : 30,
-                top: bigger ? 40 : 30,
-                zIndex: 1,
-            }}
-        >
-            <div
-                style={{
-                    width: "100%",
-                    height,
-                    background: "#222",
-                    borderRadius: 999,
-                    overflow: "hidden",
-                    position: "relative",
-                }}
-            >
-                <div
-                    style={{
-                        position: "absolute",
-                        left: 0,
-                        top: 0,
-                        bottom: 0,
-                        width: `${percent}%`,
-                        background: color,
-                        transition: "width 0.2s",
-                    }}
-                />
-                <div
-                    style={{
-                        position: "absolute",
-                        inset: 0,
-                        pointerEvents: "none",
-                    }}
-                >
-                    {Array.from({ length: segments - 1 }).map((_, index) => {
-                        const position = ((index + 1) / segments) * 100;
-
-                        return (
-                            <div
-                                key={index}
-                                style={{
-                                    position: "absolute",
-                                    left: `${position}%`,
-                                    top: 0,
-                                    bottom: 0,
-                                    width: 2,
-                                    transform: "translateX(-50%)",
-                                    background: "rgba(0, 0, 0, 0.8)",
-                                }}
-                            />
-                        );
-                    })}
-                </div>
-            </div>
-        </div>
-    );
-}
-
-function StatBar({
-    label,
-    value,
-    max,
-    color,
-}) {
-    if (max <= 0)
-        return null;
-
-    const percent = (value / max) * 100;
-
-    return (
-        <div style={{ marginBottom: 4 }}>
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    fontSize: 10,
-                }}
-            >
-                <span>{label}</span>
-                <span>
-                    {value}/{max}
-                </span>
-            </div>
-
-            <div
-                style={{
-                    width: "100%",
-                    height: 6,
-                    background: "#222",
-                    borderRadius: 999,
-                    overflow: "hidden",
-                }}
-            >
-                <div
-                    style={{
-                        width: `${percent}%`,
-                        height: "100%",
-                        background: color,
-                        transition: "width 0.2s",
-                    }}
-                />
+                    >
+                        {activeDebuffs.map((debuff, index) => (
+                            <StatusEffect
+                                effect={debuffs[debuff.id]}
+                                duration={debuff.duration}
+                                isTargeted={isTargeted}
+                                isActive={isActive} />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
