@@ -87,7 +87,23 @@ export const debuffs = {
         icon: null,
         baseDuration: 10,
     },
+
+    cleanseDebuffs: {
+        id: "cleanseDebuffs",
+        displayName: "Cleanse Debuffs",
+        description: "Removes all debuffs from all ships.",
+        color: mechanicColor,
+        category: "mechanic",
+        icon: null, //"✦",
+        baseDuration: 3,
+    },
 };
+
+function restartMechanic(effects){
+    for (let effect of effects){
+        effect.duration += debuffs[effect.id].baseDuration;
+    }
+}
 
 export function applyDebuff(target, debuffId, duration) {
     if (!target.stats.debuffs) {
@@ -162,6 +178,9 @@ export function processTurnStartDebuffs(unit, state) {
 
             unit.stats.currentShield = 0;
         }
+
+        // Restart mechanic
+        restartMechanic(shieldExplosionDebuffsExplodingThisTurn);
     }
 
     if (hasDebuff(unit, "shieldRegeneration")) {
@@ -176,6 +195,9 @@ export function processTurnStartDebuffs(unit, state) {
                 `${unit.name}'s shields are fully regenerated.`
             );
         }
+
+        // Restart mechanic
+        restartMechanic(shieldRegenerations);
     }
 
     if (hasDebuff(unit, "summonCopy")) {
@@ -224,6 +246,35 @@ export function processTurnStartDebuffs(unit, state) {
                 }
             }
         }
+
+        // Restart mechanic
+        restartMechanic(copyEffects);
+    }
+
+    if (hasDebuff(unit, "cleanseDebuffs")) {
+
+        const cleanseEffects = unit.stats.debuffs.filter(
+            d => d.id === "cleanseDebuffs" && d.duration === 1
+        );
+
+        if (cleanseEffects.length > 0) {
+
+            for (const team of Object.values(state.teams)) {
+                for (const ship of team) {
+
+                    ship.stats.debuffs = ship.stats.debuffs.filter(
+                        d => debuffs[d.id]?.category === "mechanic"
+                    );
+                }
+            }
+
+            state.log.push(
+                `${unit.name} cleanses all debuffs from all ships.`
+            );
+        }
+
+        // Restart mechanic
+        restartMechanic(cleanseEffects);
     }
 }
 
