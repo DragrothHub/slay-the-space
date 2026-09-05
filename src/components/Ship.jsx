@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
-import { debuffs } from "../engine/debuffs";
 import "./Ship.css";
-import { detonatorAbilityCollection } from "../data/abilities";
-import Detonation from "./Detonation";
+import { debuffs } from "../engine/debuffs";
 import StatusEffect from "./StatusEffect";
-import MechanicAura from "./MechanicAura";
 import StatBarSmall from "./StatBarSmall";
+import ShipAnimations from "../animations/ShipAnimations";
+import useShipAnimations from "../animations/useShipAnimations";
 
 export default function Ship({
     unit,
@@ -17,64 +15,12 @@ export default function Ship({
     onClick,
     reverse = false,
 }) {
-    const [damageFlash, setDamageFlash] = useState(null);
-    const [detonationFlash, setDetonationFlash] = useState(null);
-    const [mechanicFlash, setMechanicFlash] = useState(null);
-    const [lastEventTime, setLastEventTime] = useState(null);
-    const [lastAnimationTime, setLastAnimationTime] = useState(null);
 
-    useEffect(() => {
-        const event = damageEvents.find(
-            e => e.targetId === unit.id && e.timestamp > lastEventTime
-        );
-
-        if (!event) return;
-
-        setDamageFlash(event.amount);
-        setLastEventTime(event.timestamp);
-
-        const t = setTimeout(() => {
-            setDamageFlash(null);
-        }, 500);
-
-        return () => clearTimeout(t);
-    }, [damageEvents]);
-
-    useEffect(() => {
-        const event = animationEvents.find(
-            e => e.targetId === unit.id && e.timestamp > lastAnimationTime
-        );
-
-        if (!event) return;
-
-        let t;
-
-        if (event.detonatorId && detonatorAbilityCollection[event.detonatorId]) {
-            const detonator = detonatorAbilityCollection[event.detonatorId];
-
-            const debuff = debuffs[detonator.detonatesDebuff];
-
-            setDetonationFlash(debuff.color);
-            setLastAnimationTime(event.timestamp);
-
-            t = setTimeout(() => {
-                setDetonationFlash(null);
-            }, 500);
-        }
-
-        if (event.mechanicId && debuffs[event.mechanicId]) {
-            const mechanicEffect = debuffs[event.mechanicId];
-
-            setMechanicFlash(mechanicEffect.color);
-            setLastAnimationTime(event.timestamp);
-
-            t = setTimeout(() => {
-                setMechanicFlash(null);
-            }, 500);
-        }
-
-        return () => clearTimeout(t);
-    }, [animationEvents])
+    const {damageFlash, detonationFlash, mechanicFlash,} = useShipAnimations({
+        unitId: unit.id,
+        damageEvents,
+        animationEvents,
+    });
 
     const borderColor = isDead
         ? "darkred"
@@ -142,22 +88,6 @@ export default function Ship({
                     zIndex: 1,
                     fontSize: isTargeted || isActive ? "1em" : "0.0em",
                 }}>{unit.name}</div>
-
-                {damageFlash && (
-                    <div
-                        style={{
-                            position: "absolute",
-                            top: 40,
-                            color: "#ef4444",
-                            fontWeight: "bold",
-                            fontSize: 18,
-                            animation: "floatUp 2.5s ease-out",
-                            pointerEvents: "none",
-                        }}
-                    >
-                        -{damageFlash}
-                    </div>
-                )}
             </div>
 
             <div
@@ -245,9 +175,11 @@ export default function Ship({
                     }}
                 />
 
-                {detonationFlash && <Detonation color={detonationFlash} />}
-
-                {mechanicFlash && <MechanicAura color={mechanicFlash} />}
+                <ShipAnimations 
+                    detonationFlash={detonationFlash} 
+                    mechanicFlash={mechanicFlash}
+                    damageFlash={damageFlash}
+                />
 
                 {/* Debuff Indicators */}
                 {activeDebuffs.length > 0 && (
