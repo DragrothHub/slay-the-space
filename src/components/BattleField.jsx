@@ -79,6 +79,7 @@ function TeamFleet({
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                minHeight: 120,
             }}
         >
             {/* Gegner zuerst Stats, dann Ships */}
