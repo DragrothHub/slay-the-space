@@ -24,7 +24,7 @@ export default function TurnOrder() {
     };
 
     function canSelectTarget(target){
-        if(target.stats.currentHull <= 0)
+        if(target.destroyed)
                 return false;
 
         const targetIsInTeamA = battle.teams.A.some(u => u.id === target.id);
@@ -75,7 +75,7 @@ export default function TurnOrder() {
 
                 const icon = shipIcons[ship.class];
 
-                if(ship.stats.currentHull < 1) return;
+                if(ship.destroyed) return;
 
                 return (
                     <div

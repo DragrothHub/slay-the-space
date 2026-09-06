@@ -47,6 +47,78 @@ export function createShip(numberOfModules = 2, numberOfAttributePoints = 360) {
 
     ship.name = (shipClasses[ship.class].displayName || "Unknown") + '_' + Math.floor(Math.random() * 1000);
 
+    ship.destroyed = false;
+
+    return ship;
+}
+
+export function createEnemyTest(config = {}) {
+    const {
+        typeId = "enemy",
+        name = "Enemy",
+        class: shipClass = getRandomShipClass(),
+        image = randomItem(shipImages),
+
+        // Direkte Kampfwerte
+        shield = 0,
+        armor = 0,
+        hull = 0,
+
+        // Optional weiterhin normale Attribute
+        attributes = {
+            initiative: 0,
+            kineticAtk: 0,
+            laserAtk: 0,
+            hull: 0,
+            shieldDef: 0,
+            armorDef: 0,
+        },
+
+        // Fähigkeiten und Module können explizit vorgegeben werden
+        modules = [],
+        abilities = [],
+
+        // Start-Debuffs
+        debuffs = [],
+    } = config;
+
+    const ship = {
+        id: crypto.randomUUID(),
+
+        typeId,
+        name,
+
+        class: shipClass,
+        color: "",
+        image,
+
+        modules,
+        abilities,
+
+        attributes,
+
+        manufacturer: "Enemy",
+    };
+
+    ship.stats = {
+        maxShield: shield,
+        currentShield: shield,
+
+        maxArmor: armor,
+        currentArmor: armor,
+
+        maxHull: hull,
+        currentHull: hull,
+
+        initiative: attributes.initiative ?? 0,
+
+        debuffs,
+        cooldowns: [],
+        position: 0,
+    };
+
+    ship.destroyed = false;
+
     return ship;
 }
 

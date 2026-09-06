@@ -83,7 +83,7 @@ export function detonate(target, actor, ability, state) {
             // ==============================
             // SPLASH DAMAGE
             // ==============================
-            const splashTargets = enemies.filter(enemy => enemy.id !== target.id && enemy.stats.currentHull > 0);
+            const splashTargets = enemies.filter(enemy => enemy.id !== target.id && !enemy.destroyed);
 
             const splashDamage = explosionDamage * 0.4;
 
@@ -136,7 +136,7 @@ export function detonate(target, actor, ability, state) {
             // ==============================
             // SPREAD THE DEBUFF TO THE FLEET
             // ==============================
-            const spreadTargets = enemies.filter(enemy => enemy.id !== target.id && enemy.stats.currentHull > 0);
+            const spreadTargets = enemies.filter(enemy => enemy.id !== target.id && !enemy.destroyed);
 
             for (const enemy of spreadTargets) {
                 for(let i = 0; i < removedCount; i++){
@@ -164,7 +164,7 @@ export function detonate(target, actor, ability, state) {
                 // Explosion like bomber but only factor 0.3
                 cascadeDamage *= 0.3;
 
-                const splashTargets = enemies.filter(enemy => enemy.id !== cascadeTarget.id && enemy.stats.currentHull > 0);
+                const splashTargets = enemies.filter(enemy => enemy.id !== cascadeTarget.id && !enemy.destroyed);
 
                 for (const enemy of splashTargets) {
                     applyDamage(enemy, actor, {
@@ -181,7 +181,7 @@ export function detonate(target, actor, ability, state) {
 
                 // Find next enemy with same debuff
                 cascadeTarget = enemies.find(enemy =>
-                    enemy.stats.currentHull > 0 &&
+                    !enemy.destroyed &&
                     enemy.stats.debuffs.some(d => d.id === debuffId)
                 );
 

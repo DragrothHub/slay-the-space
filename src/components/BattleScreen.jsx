@@ -3,7 +3,7 @@ import BattleField from "./BattleField";
 import ActionPanel from "./ActionPanel";
 import BattleLog from "./BattleLog";
 import { useGameState } from "../state/GameStateProvider";
-import { createEnemy } from "../data/createEnemy";
+import { createEnemy, createShieldExplosionEnemy } from "../data/createEnemy";
 import TurnOrder from "./TurnOrder";
 import { detonatorAbilityCollection, primerAbilityCollection } from "../data/abilities";
 import { moduleCollection } from "../data/modules";
@@ -37,7 +37,7 @@ export default function BattleScreen()
             case "combat":
                 for (let i = 1; i <= Math.min(currentNode.layer, 4); i++)
                 {
-                    let enemy = createEnemy(0,1);
+                    let enemy = createShieldExplosionEnemy(); // createEnemy(0,1);
                     enemyFleet.push(enemy);
                 }
                 break;

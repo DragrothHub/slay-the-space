@@ -13,7 +13,7 @@ function TeamFleet({
     const battle = gameState.run.battle;
 
     function canSelectTarget(target){
-        if(target.stats.currentHull <= 0)
+        if(target.destroyed)
                 return false;
 
         const targetIsInTeamA = battle.teams.A.some(u => u.id === target.id);
@@ -64,7 +64,7 @@ function TeamFleet({
                         animationEvents={battle.animationEvents}
                         isActive={battle.activeUnitId === unit.id}
                         isTargeted={battle.selectedTargetId === unit.id}
-                        isDead={unit.stats.currentHull <= 0}
+                        isDead={unit.destroyed}
                         reverse={reverse}
                         onClick={() => handleSelectTarget(unit)}
                     />

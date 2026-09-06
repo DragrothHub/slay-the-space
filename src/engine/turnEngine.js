@@ -60,12 +60,8 @@ export function setNextActor(state) {
 
     const actor = state.turnOrder[state.turnIndex];
 
-    if (!actor) {
-        advanceTurn(state);
-    }
-
-    // skip dead
-    if (actor.stats.currentHull <= 0) {
+    // skip dead or not existent
+    if (!actor || actor.destroyed) {
         advanceTurn(state);
         return setNextActor(state);
     }
@@ -75,8 +71,10 @@ export function setNextActor(state) {
     // ===============================
     processTurnStartDebuffs(actor, state);
 
+    resolveDeaths(state);
+
     // check death after DOT
-    if (actor.stats.currentHull <= 0) {
+    if (actor.destroyed) {
         state.log.push(`${actor.name} was destroyed by effects.`);
         advanceTurn(state);
         return setNextActor(state);
@@ -116,11 +114,15 @@ export function setNextActor(state) {
 
 function aiTurn(state, actor){
 
-    const enemies = getEnemyUnits(state, actor).filter(enemy => enemy.stats.currentHull > 0);
+    const enemies = getEnemyUnits(state, actor).filter(enemy => !enemy.destroyed);
 
     if (enemies?.length < 1) {
         resolveDeaths(state);
+
         if (state.winner) return state;
+
+        advanceTurn(state);
+        return setNextActor(state);
     }
 
     state.selectedTargetId = enemies[Math.floor(Math.random() * enemies.length)].id;
@@ -147,7 +149,7 @@ function getDefaultTarget(state) {
     const lastTarget = state.teams.B.find(
         u =>
             u.id === lastSelectedTarget &&
-            u.stats.currentHull > 0
+            !u.destroyed
     );
 
     if (lastTarget) {
@@ -156,7 +158,7 @@ function getDefaultTarget(state) {
 
     // sonst erstes lebendes Ziel
     const firstAliveEnemy = state.teams.B.find(
-        u => u.stats.currentHull > 0
+        u => !u.destroyed
     );
 
     return firstAliveEnemy?.id ?? null;
@@ -289,7 +291,7 @@ function advanceTurn(state) {
 
 function calculateTurnOrder(state) {
     return getAllUnits(state)
-        .filter(u => u.stats.currentHull > 0)
+        .filter(u => !u.destroyed)
         .sort((a, b) => (b.stats.initiative ?? 0) - (a.stats.initiative ?? 0));
 }
 
@@ -299,11 +301,11 @@ function calculateTurnOrder(state) {
 
 function checkVictory(state) {
     const aliveA = state.teams.A.some(
-        u => u.stats.currentHull > 0
+        u => !u.destroyed
     );
 
     const aliveB = state.teams.B.some(
-        u => u.stats.currentHull > 0
+        u => !u.destroyed
     );
 
     if (!aliveA) state.winner = "B";
@@ -315,14 +317,17 @@ function checkVictory(state) {
 // ========================================
 
 function resolveDeaths(state) {
-
     getAllUnits(state).forEach(unit => {
-
-        if (unit.stats.currentHull > 0) return;
         if (unit.destroyed) return;
 
-        unit.destroyed = true;
+        const isDead =
+            unit.stats.currentHull <= 0 &&
+            unit.stats.currentShield <= 0 &&
+            unit.stats.currentArmor <= 0;
 
+        if (!isDead) return;
+
+        unit.destroyed = true;
         unit.stats.debuffs = [];
 
         state.log.push(`${unit.name} was destroyed.`);

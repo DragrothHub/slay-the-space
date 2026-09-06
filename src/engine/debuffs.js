@@ -160,7 +160,7 @@ export function processTurnStartDebuffs(unit, state) {
         if(shieldExplosionDebuffsExplodingThisTurn.length > 0) {
             const damage = unit.stats.currentShield;
 
-            const enemies = getEnemyUnits(state, unit).filter(enemy => enemy.stats.currentHull > 0);
+            const enemies = getEnemyUnits(state, unit).filter(enemy => !enemy.destroyed);
 
             for (const enemy of enemies) {
                 applyDamage(enemy, unit, {
