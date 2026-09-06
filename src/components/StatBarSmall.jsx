@@ -13,6 +13,14 @@ export default function StatBarSmall({
     const segments = Math.max(1, Math.round(max / 50));
     const percent = Math.min(100, (value / max) * 100);
 
+    // Overshield:
+    // 0 bei value <= max
+    // 100 bei value >= max * 2
+    const overshieldPercent = Math.min(
+        100,
+        Math.max(0, ((value - max) / max) * 100)
+    );
+
     return (
         <div
             style={{
@@ -46,6 +54,19 @@ export default function StatBarSmall({
                         transition: "width 0.2s",
                     }}
                 />
+
+                <div
+                    style={{
+                        position: "absolute",
+                        left: 0,
+                        top: 0,
+                        bottom: 0,
+                        width: `${overshieldPercent}%`,
+                        background: "rgba(255, 255, 255, 0.5)",
+                        transition: "width 0.2s",
+                    }}
+                />
+
                 <div
                     style={{
                         position: "absolute",
