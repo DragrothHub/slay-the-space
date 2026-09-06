@@ -1,4 +1,4 @@
-import { getFriendlyUnits } from "./helpers";
+import { getFriendlyUnits, repairShip } from "./helpers";
 import { getRandomModule, moduleCollection } from "../data/modules";
 
 function getModuleCount(ship, effect) {
@@ -39,23 +39,38 @@ export function processTurnEndModules(activeShip, battleState){
     //repairbot_shield
     const repairbotShieldCount = getModuleCount(activeShip, "repairbot_shield");
     if(repairbotShieldCount > 0){
-        activeShip.stats.currentShield += 5 * repairbotShieldCount;
-        battleState.log.push(`${activeShip.name} was repaired by repair bot (+${5 * repairbotShieldCount} Shield).`);
+
+        const { shieldRestored } = repairShip({
+            ship: activeShip,
+            shield: 5 * repairbotShieldCount,
+        });
+
+        battleState.log.push(`${activeShip.name} was repaired by repair bot (+${shieldRestored} Shield).`);
     }
 
     //repairbot_armor
     const repairbotArmorCount = getModuleCount(activeShip, "repairbot_armor");
     if(repairbotArmorCount > 0){
-        activeShip.stats.currentArmor += 5 * repairbotArmorCount;
-        battleState.log.push(`${activeShip.name} was repaired by repair bot (+${5 * repairbotArmorCount} Armor).`);
+        
+        const { armorRestored } = repairShip({
+            ship: activeShip,
+            armor: 5 * repairbotArmorCount,
+        });
+
+        battleState.log.push(`${activeShip.name} was repaired by repair bot (+${armorRestored} Armor).`);
     }
 
     //repairbot_mixed
     const repairbotMixedCount = getModuleCount(activeShip, "repairbot_mixed");
     if(repairbotMixedCount > 0){
-        activeShip.stats.currentShield += 3 * repairbotMixedCount;
-        activeShip.stats.currentArmor  += 2 * repairbotMixedCount;
-        battleState.log.push(`${activeShip.name} was repaired by repair bot (+${3 * repairbotMixedCount} Shield / +${2 * repairbotMixedCount} Armor).`);
+
+        const { shieldRestored, armorRestored } = repairShip({
+            ship: activeShip,
+            shield: 3 * repairbotMixedCount,
+            armor: 2 * repairbotMixedCount,
+        });
+
+        battleState.log.push(`${activeShip.name} was repaired by repair bot (+${shieldRestored} Shield / +${armorRestored} Armor).`);
     }
 
 }
@@ -82,7 +97,7 @@ export function processOutgoingDamageModules(
     if(rainbowCount > 0){
         const distinctDebuffs = [...new Set(target.stats.debuffs.map(debuff => debuff.id))];
 
-        if(distinctDebuffs.length > 0){
+        if(distinctDebuffs.length > 1){
             damage *= 1 + (0.1 * (distinctDebuffs.length - 1) * rainbowCount);
             
             battleState.log.push(`${activeShip.name}: Rainbow is boosting damage (+${10 * (distinctDebuffs.length - 1) * rainbowCount}%).`);
@@ -124,8 +139,13 @@ export function processDamageDealtModules(
     // vampyr
     const vampyrCount = getModuleCount(activeShip, "vampyr");
     if(vampyrCount > 0){
-        let shieldRegen = Math.round(damage * 0.2 * vampyrCount);
-        activeShip.stats.currentShield += shieldRegen;
-        battleState.log.push(`${activeShip.name}: Gained ${shieldRegen} shield from Vampyr.`);
+        const shieldRegen = Math.round(damage * 0.2 * vampyrCount);
+
+        const { shieldRestored } = repairShip({
+            ship: activeShip,
+            shield: shieldRegen,
+        });
+
+        battleState.log.push(`${activeShip.name}: Gained ${shieldRestored} shield by Vampyr.`);
     }
 }

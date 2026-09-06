@@ -1,7 +1,7 @@
 import { use } from "react";
 import { applyDamage } from "./damage";
 import { applyDebuff, debuffs } from "./debuffs";
-import { getFriendlyUnits } from "./helpers";
+import { getFriendlyUnits, repairShip } from "./helpers";
 import { moduleCollection } from "../data/modules";
 
 function removeDebuffsExcept(target, debuffId, amountToPreserve) {
@@ -118,12 +118,16 @@ export function detonate(target, actor, ability, state) {
 
         case "vampire":
             // ==============================
-            // HEAL FROM DAMAGE
+            // HEAL FROM DAMAGE (MAX SHIELD * 2)
             // ==============================
-            actor.stats.currentShield += damageDone;
+
+            const { shieldRestored } = repairShip({
+                ship: actor,
+                shield: damageDone,
+            });
 
             state.log.push(
-                `${actor.name} overloads shields by ${damageDone}`
+                `${actor.name}: Gained ${shieldRestored} shield by Vampyr Detonator.`
             );
 
             break;
