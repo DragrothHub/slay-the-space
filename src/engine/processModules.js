@@ -90,7 +90,9 @@ export function processOutgoingDamageModules(
 
         damage *= 1 + (0.10 * formationCount);
 
-        battleState.log.push(`${activeShip.name}: Formation is boosting damage (+${10 * formationCount}%).`);
+        if(formationCount > 0) {
+            battleState.log.push(`${activeShip.name}: Formation is boosting damage (+${10 * formationCount}%).`);
+        }
     }
 
     const rainbowCount = getModuleCount(activeShip, "rainbow");
