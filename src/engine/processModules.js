@@ -7,38 +7,38 @@ function getModuleCount(ship, effect) {
     ).length;
 }
 
-export function processTurnStartModules(activeShip, battleState){
+export function processTurnStartModules(activeShip, battleState) {
 
     // kineticboost
     const kineticboostCount = getModuleCount(activeShip, "kineticboost");
-    if(kineticboostCount > 0){
+    if (kineticboostCount > 0) {
         activeShip.attributes.kineticAtk += 100 * kineticboostCount;
     }
 
     // laserboost
     const laserboostCount = getModuleCount(activeShip, "laserboost");
-    if(laserboostCount > 0){
+    if (laserboostCount > 0) {
         activeShip.attributes.laserAtk += 100 * laserboostCount;
     }
 }
 
-export function processTurnEndModules(activeShip, battleState){
+export function processTurnEndModules(activeShip, battleState) {
 
     // kineticboost
     const kineticboostCount = getModuleCount(activeShip, "kineticboost");
-    if(kineticboostCount > 0){
+    if (kineticboostCount > 0) {
         activeShip.attributes.kineticAtk -= 100 * kineticboostCount;
     }
 
     // laserboost
     const laserboostCount = getModuleCount(activeShip, "laserboost");
-    if(laserboostCount > 0){
+    if (laserboostCount > 0) {
         activeShip.attributes.laserAtk -= 100 * laserboostCount;
     }
 
     //repairbot_shield
     const repairbotShieldCount = getModuleCount(activeShip, "repairbot_shield");
-    if(repairbotShieldCount > 0){
+    if (repairbotShieldCount > 0) {
 
         const { shieldRestored } = repairShip({
             ship: activeShip,
@@ -50,8 +50,8 @@ export function processTurnEndModules(activeShip, battleState){
 
     //repairbot_armor
     const repairbotArmorCount = getModuleCount(activeShip, "repairbot_armor");
-    if(repairbotArmorCount > 0){
-        
+    if (repairbotArmorCount > 0) {
+
         const { armorRestored } = repairShip({
             ship: activeShip,
             armor: 5 * repairbotArmorCount,
@@ -62,7 +62,7 @@ export function processTurnEndModules(activeShip, battleState){
 
     //repairbot_mixed
     const repairbotMixedCount = getModuleCount(activeShip, "repairbot_mixed");
-    if(repairbotMixedCount > 0){
+    if (repairbotMixedCount > 0) {
 
         const { shieldRestored, armorRestored } = repairShip({
             ship: activeShip,
@@ -83,25 +83,25 @@ export function processOutgoingDamageModules(
     battleState
 ) {
 
-    if(getModuleCount(activeShip, "formation") > 0){
+    if (getModuleCount(activeShip, "formation") > 0) {
         const formationCount = getFriendlyUnits(battleState, activeShip).filter(
             ship => getModuleCount(ship, "formation") > 0
         ).length - 1;
 
         damage *= 1 + (0.10 * formationCount);
 
-        if(formationCount > 0) {
+        if (formationCount > 0) {
             battleState.log.push(`${activeShip.name}: Formation is boosting damage (+${10 * formationCount}%).`);
         }
     }
 
     const rainbowCount = getModuleCount(activeShip, "rainbow");
-    if(rainbowCount > 0){
+    if (rainbowCount > 0) {
         const distinctDebuffs = [...new Set(target.stats.debuffs.map(debuff => debuff.id))];
 
-        if(distinctDebuffs.length > 1){
+        if (distinctDebuffs.length > 1) {
             damage *= 1 + (0.1 * (distinctDebuffs.length - 1) * rainbowCount);
-            
+
             battleState.log.push(`${activeShip.name}: Rainbow is boosting damage (+${10 * (distinctDebuffs.length - 1) * rainbowCount}%).`);
         }
     }
@@ -118,14 +118,16 @@ export function processIncomingDamageModules(
     battleState
 ) {
 
-    if(getModuleCount(target, "formation") > 0){
+    if (getModuleCount(target, "formation") > 0) {
         const formationCount = getFriendlyUnits(battleState, target).filter(
             ship => getModuleCount(ship, "formation") > 0
         ).length - 1;
 
         damage *= 1 - (0.05 * formationCount);
 
-        battleState.log.push(`${target.name}: Formation is reducing incoming damage (-${5 * formationCount}%).`);
+        if (formationCount > 0) {
+            battleState.log.push(`${target.name}: Formation is reducing incoming damage (-${5 * formationCount}%).`);
+        }
     }
 
     return damage;
@@ -137,10 +139,10 @@ export function processDamageDealtModules(
     ability,
     damage,
     battleState
-){
+) {
     // vampyr
     const vampyrCount = getModuleCount(activeShip, "vampyr");
-    if(vampyrCount > 0){
+    if (vampyrCount > 0) {
         const shieldRegen = Math.round(damage * 0.2 * vampyrCount);
 
         const { shieldRestored } = repairShip({
