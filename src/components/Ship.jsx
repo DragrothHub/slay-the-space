@@ -18,7 +18,7 @@ export default function Ship({
     onLongPress,
 }) {
 
-    const {damageFlash, detonationFlash, mechanicFlash,} = useShipAnimations({
+    const { damageFlash, detonationFlash, mechanicFlash, } = useShipAnimations({
         unitId: unit.id,
         damageEvents,
         animationEvents,
@@ -66,6 +66,11 @@ export default function Ship({
                 borderRadius: 12,
                 opacity: isDead && !detonationFlash ? 0.35 : 1,
                 position: "relative",
+                userSelect: "none",
+                WebkitUserSelect: "none",
+                WebkitTouchCallout: "none",
+                WebkitUserDrag: "none",
+                touchAction: "manipulation",
             }}
             onClick={onClick}
             onPointerDown={handlePointerDown}
@@ -191,10 +196,11 @@ export default function Ship({
                                 filter 0.25s ease
                             `,
                     }}
+                    draggable={false}
                 />
 
-                <ShipAnimations 
-                    detonationFlash={detonationFlash} 
+                <ShipAnimations
+                    detonationFlash={detonationFlash}
                     mechanicFlash={mechanicFlash}
                     damageFlash={damageFlash}
                 />
