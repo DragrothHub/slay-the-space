@@ -44,15 +44,15 @@ function RepairScreen() {
                     return;
 
                 setShowFieldHeal(true);
-                
+
                 // Heal all ships a little
                 const repairedShips = gameState.run.ships.map(ship => ({
                     ...ship,
                     stats: {
                         ...ship.stats,
-                        currentShield: Math.ceil(Math.min(ship.stats.currentShield + ship.stats.maxShield * 0.3, ship.stats.maxShield)),
-                        currentArmor: Math.ceil(Math.min(ship.stats.currentArmor + ship.stats.maxArmor * 0.3, ship.stats.maxArmor)),
-                        currentHull: Math.ceil(Math.min(ship.stats.currentHull + ship.stats.maxHull * 0.3, ship.stats.maxHull)),
+                        currentShield: ship.stats.currentShield > ship.stats.maxShield ? ship.stats.currentShield : Math.ceil(Math.min(ship.stats.currentShield + ship.stats.maxShield * 0.3, ship.stats.maxShield)),
+                        currentArmor: ship.stats.currentArmor > ship.stats.maxArmor ? ship.stats.currentArmor : Math.ceil(Math.min(ship.stats.currentArmor + ship.stats.maxArmor * 0.3, ship.stats.maxArmor)),
+                        currentHull: ship.stats.currentHull > ship.stats.maxHull ? ship.stats.currentHull : Math.ceil(Math.min(ship.stats.currentHull + ship.stats.maxHull * 0.3, ship.stats.maxHull)),
                     }
                 }));
 
