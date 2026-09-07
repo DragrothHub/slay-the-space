@@ -1,17 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ShipSelection from "../selections/ShipSelection";
 import InventoryScreen from "./InventoryScreen";
 import { useGameState } from "../state/GameStateProvider";
 
-
-export default function MenuPanel() {
+export default function MenuPanel({ shipId }) {
     const { gameState } = useGameState();
 
-    const isBattle = !!gameState.run.battle;
+    const isBattle = !!gameState.run?.battle;
 
-    const [activeTab, setActiveTab] = useState(
-        isBattle ? "team" : "ships"
-    );
+    const getInitialTab = () => {
+        if (!isBattle) {
+            return "ships";
+        }
+
+        const isEnemyShip =
+            gameState.run.battle.teams.B.some(
+                ship => ship.id === shipId
+            );
+
+        return isEnemyShip ? "enemy" : "team";
+    };
+
+    const [activeTab, setActiveTab] = useState(getInitialTab);
+
+    useEffect(() => {
+        if (!isBattle) {
+            setActiveTab("ships");
+            return;
+        }
+
+        if (!shipId) {
+            return;
+        }
+
+        const isPlayerShip =
+            gameState.run.battle.teams.A.some(
+                ship => ship.id === shipId
+            );
+
+        setActiveTab(isPlayerShip ? "team" : "enemy");
+    }, [shipId, isBattle, gameState.run?.battle?.teams]);
 
     const tabs = isBattle
         ? [
@@ -90,7 +118,6 @@ export default function MenuPanel() {
                     })}
                 </div>
 
-
                 {/* Normal menu */}
                 {!isBattle && activeTab === "ships" && (
                     <ShipSelection
@@ -99,13 +126,13 @@ export default function MenuPanel() {
                         maxSelections={0}
                         allowModuleChange={true}
                         allowAbilityChange={true}
+                        openShipId={shipId}
                     />
                 )}
 
                 {!isBattle && activeTab === "inventory" && (
-                   <InventoryScreen />
+                    <InventoryScreen />
                 )}
-
 
                 {/* Battle menu */}
                 {isBattle && activeTab === "team" && (
@@ -113,6 +140,7 @@ export default function MenuPanel() {
                         ships={gameState.run.battle.teams.A}
                         title="Your Team"
                         maxSelections={0}
+                        openShipId={shipId}
                     />
                 )}
 
@@ -121,6 +149,7 @@ export default function MenuPanel() {
                         ships={gameState.run.battle.teams.B}
                         title="Enemy Team"
                         maxSelections={0}
+                        openShipId={shipId}
                     />
                 )}
             </div>

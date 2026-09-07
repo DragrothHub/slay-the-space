@@ -5,6 +5,7 @@ import { selectTarget } from "../engine/turnEngine";
 function TeamFleet({
     team,
     reverse = false,
+    onShipLongPress,
 }) {
 
     const {gameState, updateBattle } = useGameState();
@@ -67,6 +68,7 @@ function TeamFleet({
                         isDead={unit.destroyed}
                         reverse={reverse}
                         onClick={() => handleSelectTarget(unit)}
+                        onLongPress={onShipLongPress}
                     />
                 </div>
             ))}
@@ -101,7 +103,7 @@ function TeamFleet({
     );
 }
 
-export default function BattleField() {
+export default function BattleField({onShipLongPress}) {
 
     const { gameState } = useGameState();
     if(!gameState.run?.battle) return null;
@@ -119,13 +121,13 @@ export default function BattleField() {
             }}
         >
             {/* ENEMY FLEET */}
-            <TeamFleet
+            <TeamFleet onShipLongPress={onShipLongPress}
                 team={enemyFleet}
                 reverse={true}
             />
 
             {/* PLAYER FLEET */}
-            <TeamFleet
+            <TeamFleet onShipLongPress={onShipLongPress}
                 team={playerFleet}
                 reverse={false}
             />

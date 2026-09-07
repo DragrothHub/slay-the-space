@@ -9,7 +9,7 @@ import { detonatorAbilityCollection, primerAbilityCollection } from "../data/abi
 import { moduleCollection } from "../data/modules";
 import { applyDebuff } from "../engine/debuffs";
 
-export default function BattleScreen()
+export default function BattleScreen({ onShipLongPress })
 {
     const {
         gameState,
@@ -191,7 +191,7 @@ export default function BattleScreen()
                 height: "100%",
             }}
         >
-            <BattleField />
+            <BattleField onShipLongPress={onShipLongPress} />
 
             <ActionPanel />
 

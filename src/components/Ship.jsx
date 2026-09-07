@@ -1,4 +1,5 @@
 import "./Ship.css";
+import { useRef } from "react";
 import { debuffs } from "../engine/debuffs";
 import StatusEffect from "./StatusEffect";
 import StatBarSmall from "./StatBarSmall";
@@ -14,6 +15,7 @@ export default function Ship({
     isDead,
     onClick,
     reverse = false,
+    onLongPress,
 }) {
 
     const {damageFlash, detonationFlash, mechanicFlash,} = useShipAnimations({
@@ -32,6 +34,27 @@ export default function Ship({
 
     const activeDebuffs = unit.stats?.debuffs ?? [];
 
+    const longPressTimer = useRef(null);
+
+    const handlePointerDown = () => {
+        longPressTimer.current = setTimeout(() => {
+            onLongPress?.(unit);
+            longPressTimer.current = null;
+        }, 500);
+    };
+
+    const handlePointerUp = () => {
+        clearTimeout(longPressTimer.current);
+    };
+
+    const handlePointerLeave = () => {
+        clearTimeout(longPressTimer.current);
+    };
+
+    const handlePointerCancel = () => {
+        clearTimeout(longPressTimer.current);
+    };
+
     return (
         <div
             style={{
@@ -45,6 +68,10 @@ export default function Ship({
                 position: "relative",
             }}
             onClick={onClick}
+            onPointerDown={handlePointerDown}
+            onPointerUp={handlePointerUp}
+            onPointerLeave={handlePointerLeave}
+            onPointerCancel={handlePointerCancel}
         >
             <div>
                 <StatBarSmall

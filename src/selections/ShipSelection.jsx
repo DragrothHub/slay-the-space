@@ -2,7 +2,7 @@ import ShipCard from "../components/ShipCard";
 import Selection from "./Selection";
 import MiniShipCard from "../components/MiniShipCard";
 
-export default function ShipSelection({ ships, markedShips, preselectedShips, maxSelections, onConfirm, title, allowModuleChange, allowAbilityChange })
+export default function ShipSelection({ ships, markedShips, preselectedShips, maxSelections, onConfirm, title, allowModuleChange, allowAbilityChange, openShipId })
 {
     return (
         <Selection
@@ -11,6 +11,7 @@ export default function ShipSelection({ ships, markedShips, preselectedShips, ma
             preselectedItems={preselectedShips ?? []}
             maxSelections={maxSelections}
             title={title}
+            openDetailId={openShipId}
 
             renderMini={({
                 key,

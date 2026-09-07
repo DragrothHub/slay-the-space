@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 export default function Selection({
     items,
@@ -11,17 +11,25 @@ export default function Selection({
     renderDetail,
     renderConfirm,
     onConfirm,
+    openDetailId,
 }) {
 
     const [selectedItems, setSelectedItems] = useState(
         preselectedItems ?? []
     );
 
-    const [openedItemId, setOpenedItemId] = useState(null);
+    const [openedItemId, setOpenedItemId] = useState(items.some(i => i.id === openDetailId) ? openDetailId : null);
+
+    useEffect(() => {
+        if (items.some(i => i.id === openDetailId)) {
+            setOpenedItemId(openDetailId);
+        } else {
+            setOpenedItemId(null);
+        }
+    }, [openDetailId, items]);
 
     // Referenzen auf die einzelnen Item-Container
     const itemRefs = useRef({});
-
 
     function isSelected(item) {
         return selectedItems.some(

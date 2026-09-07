@@ -23,6 +23,7 @@ function App() {
   } = useGameState();
 
   const [showMenuPanel, setShowMenuPanel] = useState(false);
+  const [selectedShipId, setSelectedShipId] = useState(null);
   const [showSplash, setShowSplash] = useState(true);
   const [ships] = useState(() => [
     createShip(),
@@ -32,6 +33,11 @@ function App() {
     createShip(),
   ]);
   const [dockShips, setDockShips] = useState([]);
+
+  const openShipMenu = (ship) => {
+    setSelectedShipId(ship.id);
+    setShowMenuPanel(true);
+  };
 
   useEffect(() => {
     if (gameState.screen === "dock") {
@@ -144,7 +150,7 @@ function App() {
       )}
 
       {gameState.screen === "battle" && (
-        <BattleScreen />
+        <BattleScreen onShipLongPress={openShipMenu} />
       )}
 
       {gameState.screen === "repair" && (
@@ -157,7 +163,11 @@ function App() {
 
       {/* Ship-Management Button */}
       {gameState?.run && <button
-        onClick={() => {setShowMenuPanel(prev => !prev); console.log(gameState);}}
+        onClick={() => {
+          setSelectedShipId(null);
+          setShowMenuPanel(prev => !prev);
+          console.log(gameState);
+        }}
         style={{
           position: "fixed",
           bottom: "20px",
@@ -181,9 +191,10 @@ function App() {
         {showMenuPanel ? "▼" : "▲"}
       </button>}
 
-      {/* Ship Selection Overlay */}
       {showMenuPanel && (
-        <MenuPanel/>
+        <MenuPanel
+          shipId={selectedShipId}
+        />
       )}
     </>
   );
