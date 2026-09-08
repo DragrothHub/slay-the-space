@@ -5,8 +5,6 @@ export default function DebuffCard({ debuffId, duration }) {
 
     const debuff = debuffs[debuffId];
 
-    console.log(debuff, debuffId, duration);
-
     return (
         <div
             style={{
@@ -36,24 +34,6 @@ export default function DebuffCard({ debuffId, duration }) {
                 >
                     {debuff.displayName}
                 </div>
-
-                {/* <div
-                    style={{
-                        width: 10,
-                        height: 10,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        fontSize: "0.8em",
-                        borderRadius: "50%",
-                        color: "#b4b4b4",
-                        boxShadow: `0 0 6px ${debuff.color ?? "#fff"}`,
-                        background: "conic-gradient(transparent 0deg " + 120 * (3 - duration) + "deg, " + debuff.color + " 0deg 360deg)",
-                        border: "1px solid" + debuff.color,
-                    }}
-                >
-                    <div style={{ position: "relative", top: "12px", left: "0px" }}>{duration}</div>
-                </div> */}
 
                 <StatusEffect
                     effect={debuff}
