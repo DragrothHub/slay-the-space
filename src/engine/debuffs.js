@@ -64,7 +64,7 @@ export const debuffs = {
         description: "Triggers an explosion dealing damage equal to current shield value.",
         color: mechanicColor,
         category: "mechanic",
-        icon: null,
+        icon: "explosion_icon",
         baseDuration: 10,
     },
 
@@ -74,7 +74,7 @@ export const debuffs = {
         description: "When timer reaches zero the shields will be restored if not destroyed.",
         color: mechanicColor,
         category: "mechanic",
-        icon: null,
+        icon: "shield_icon",
         baseDuration: 10,
     },
 
@@ -84,7 +84,7 @@ export const debuffs = {
         description: "When timer reaches zero the ship will summon a copy of itself.",
         color: mechanicColor,
         category: "mechanic",
-        icon: null,
+        icon: "ship_icon",
         baseDuration: 10,
     },
 

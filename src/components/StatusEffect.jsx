@@ -1,3 +1,17 @@
+import shield_icon from "../images/shield_icon.png";
+import armor_icon from "../images/armor_icon.png";
+import hull_icon from "../images/hull_icon.png";
+import ship_icon from "../images/interceptor.png";
+import explosion_icon from "../images/explosion_icon.png";
+
+const icons = {
+    shield_icon: shield_icon,
+    armor_icon: armor_icon,
+    hull_icon: hull_icon,
+    ship_icon: ship_icon,
+    explosion_icon: explosion_icon,
+}
+
 const mechanicStyles = {
     mechanic: {
         color: "#facc15",
@@ -62,31 +76,18 @@ export default function StatusEffect({
                 overflow: "visible",
             }}
         >
-            {/* Optionales Hintergrund-Icon */}
-            {effect.icon && (
-                <div
-                    style={{
-                        position: "absolute",
-                        inset: "-2px",
 
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-
-                        fontSize: size * 0.9,
-
-                        opacity: 0.18,
-
-                        color: color,
-
-                        pointerEvents: "none",
-
-                        zIndex: 0,
-                    }}
-                >
-                    {effect.icon}
-                </div>
-            )}
+            {icons[effect.icon] && <img 
+                src={icons[effect.icon]} 
+                style={{
+                    width: size + 2, 
+                    position: "absolute", 
+                    top: - size - 2 - 2,
+                    filter: "brightness(0) saturate(100%) invert(72%) sepia(90%) saturate(1000%) hue-rotate(5deg)",
+                    pointerEvents: "none",
+                    verticalAlign: "center",
+                }}
+            />}
 
             {/* Countdown */}
             <div
@@ -99,7 +100,7 @@ export default function StatusEffect({
 
                     fontSize: "0.8em",
 
-                    color: "#b4b4b4",
+                    color: color, //"#b4b4b4",
 
                     zIndex: 1,
 
