@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { debuffs } from "../engine/debuffs";
 import { detonatorAbilityCollection } from "../data/abilities";
+import { scheduleAnimation } from "./animationScheduler";
 
 export default function useShipAnimations({
     unitId,
@@ -14,96 +15,131 @@ export default function useShipAnimations({
     const lastEventTime = useRef(null);
     const lastAnimationTime = useRef(null);
 
+    // ------------------------------------------------------------
     // Damage
+    // ------------------------------------------------------------
+
     useEffect(() => {
-        const event = damageEvents.find(
+        const events = damageEvents.filter(
             e =>
                 e.targetId === unitId &&
                 e.timestamp > (lastEventTime.current ?? 0)
         );
 
-        if (!event) return;
+        if (events.length === 0) return;
 
-        lastEventTime.current = event.timestamp;
+        // Alle neuen Events als verarbeitet markieren.
+        lastEventTime.current = Math.max(
+            ...events.map(e => e.timestamp)
+        );
 
-        const id = crypto.randomUUID();
+        events.forEach(event => {
+            scheduleAnimation(() => {
+                const id = crypto.randomUUID();
 
-        setDamageFlashes(prev => [
-            ...prev,
-            {
-                id,
-                amount: event.amount,
-            },
-        ]);
+                setDamageFlashes(prev => [
+                    ...prev,
+                    {
+                        id,
+                        amount: event.amount,
+                    },
+                ]);
 
-        setTimeout(() => {
-            setDamageFlashes(prev =>
-                prev.filter(flash => flash.id !== id)
-            );
-        }, 1000);
+                setTimeout(() => {
+                    setDamageFlashes(prev =>
+                        prev.filter(flash => flash.id !== id)
+                    );
+                }, 1000);
+            });
+        });
     }, [damageEvents, unitId]);
 
+    // ------------------------------------------------------------
     // Other animations
+    // ------------------------------------------------------------
+
     useEffect(() => {
-        const event = animationEvents.find(
+        const events = animationEvents.filter(
             e =>
                 e.targetId === unitId &&
                 e.timestamp > (lastAnimationTime.current ?? 0)
         );
 
-        if (!event) return;
+        if (events.length === 0) return;
 
-        lastAnimationTime.current = event.timestamp;
+        // Alle neuen Events als verarbeitet markieren.
+        lastAnimationTime.current = Math.max(
+            ...events.map(e => e.timestamp)
+        );
 
-        // Detonation
-        if (
-            event.detonatorId &&
-            detonatorAbilityCollection[event.detonatorId]
-        ) {
-            const detonator =
-                detonatorAbilityCollection[event.detonatorId];
+        events.forEach(event => {
+            scheduleAnimation(() => {
+                // ------------------------------------------------
+                // Detonation
+                // ------------------------------------------------
 
-            const debuff = debuffs[detonator.detonatesDebuff];
+                if (
+                    event.detonatorId &&
+                    detonatorAbilityCollection[event.detonatorId]
+                ) {
+                    const detonator =
+                        detonatorAbilityCollection[event.detonatorId];
 
-            if (debuff) {
-                const id = crypto.randomUUID();
+                    const debuff =
+                        debuffs[detonator.detonatesDebuff];
 
-                setDetonationFlashes(prev => [
-                    ...prev,
-                    {
-                        id,
-                        color: debuff.color,
-                    },
-                ]);
+                    if (debuff) {
+                        const id = crypto.randomUUID();
 
-                setTimeout(() => {
-                    setDetonationFlashes(prev =>
-                        prev.filter(flash => flash.id !== id)
-                    );
-                }, 500);
-            }
-        }
+                        setDetonationFlashes(prev => [
+                            ...prev,
+                            {
+                                id,
+                                color: debuff.color,
+                            },
+                        ]);
 
-        // Mechanic
-        if (event.mechanicId && debuffs[event.mechanicId]) {
-            const mechanicEffect = debuffs[event.mechanicId];
+                        setTimeout(() => {
+                            setDetonationFlashes(prev =>
+                                prev.filter(
+                                    flash => flash.id !== id
+                                )
+                            );
+                        }, 500);
+                    }
+                }
 
-            const id = crypto.randomUUID();
+                // ------------------------------------------------
+                // Mechanic
+                // ------------------------------------------------
 
-            setMechanicFlashes(prev => [
-                ...prev,
-                {
-                    id,
-                    color: mechanicEffect.color,
-                },
-            ]);
+                if (
+                    event.mechanicId &&
+                    debuffs[event.mechanicId]
+                ) {
+                    const mechanicEffect =
+                        debuffs[event.mechanicId];
 
-            setTimeout(() => {
-                setMechanicFlashes(prev =>
-                    prev.filter(flash => flash.id !== id)
-                );
-            }, 500);
-        }
+                    const id = crypto.randomUUID();
+
+                    setMechanicFlashes(prev => [
+                        ...prev,
+                        {
+                            id,
+                            color: mechanicEffect.color,
+                        },
+                    ]);
+
+                    setTimeout(() => {
+                        setMechanicFlashes(prev =>
+                            prev.filter(
+                                flash => flash.id !== id
+                            )
+                        );
+                    }, 500);
+                }
+            });
+        });
     }, [animationEvents, unitId]);
 
     return {
