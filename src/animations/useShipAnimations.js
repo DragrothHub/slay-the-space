@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { debuffs } from "../engine/debuffs";
 import { detonatorAbilityCollection } from "../data/abilities";
 
@@ -7,82 +7,108 @@ export default function useShipAnimations({
     damageEvents = [],
     animationEvents = [],
 }) {
-    const [damageFlash, setDamageFlash] = useState(null);
-    const [detonationFlash, setDetonationFlash] = useState(null);
-    const [mechanicFlash, setMechanicFlash] = useState(null);
+    const [damageFlashes, setDamageFlashes] = useState([]);
+    const [detonationFlashes, setDetonationFlashes] = useState([]);
+    const [mechanicFlashes, setMechanicFlashes] = useState([]);
 
-    const [lastEventTime, setLastEventTime] = useState(null);
-    const [lastAnimationTime, setLastAnimationTime] = useState(null);
+    const lastEventTime = useRef(null);
+    const lastAnimationTime = useRef(null);
 
     // Damage
     useEffect(() => {
         const event = damageEvents.find(
-            e => e.targetId === unitId && e.timestamp > (lastEventTime ?? 0)
+            e =>
+                e.targetId === unitId &&
+                e.timestamp > (lastEventTime.current ?? 0)
         );
 
         if (!event) return;
 
-        setDamageFlash(event.amount);
-        setLastEventTime(event.timestamp);
-    }, [damageEvents]);
+        lastEventTime.current = event.timestamp;
 
-    useEffect(() => {
-        if (damageFlash === null) return;
+        const id = crypto.randomUUID();
 
-        const timeout = setTimeout(() => {
-            setDamageFlash(null);
+        setDamageFlashes(prev => [
+            ...prev,
+            {
+                id,
+                amount: event.amount,
+            },
+        ]);
+
+        setTimeout(() => {
+            setDamageFlashes(prev =>
+                prev.filter(flash => flash.id !== id)
+            );
         }, 1000);
-
-        return () => clearTimeout(timeout);
-    }, [damageFlash]);
+    }, [damageEvents, unitId]);
 
     // Other animations
     useEffect(() => {
         const event = animationEvents.find(
-            e => e.targetId === unitId && e.timestamp > (lastAnimationTime ?? 0)
+            e =>
+                e.targetId === unitId &&
+                e.timestamp > (lastAnimationTime.current ?? 0)
         );
 
         if (!event) return;
 
-        setLastAnimationTime(event.timestamp);
+        lastAnimationTime.current = event.timestamp;
 
-        if (event.detonatorId && detonatorAbilityCollection[event.detonatorId]) {
-            const detonator = detonatorAbilityCollection[event.detonatorId];
+        // Detonation
+        if (
+            event.detonatorId &&
+            detonatorAbilityCollection[event.detonatorId]
+        ) {
+            const detonator =
+                detonatorAbilityCollection[event.detonatorId];
+
             const debuff = debuffs[detonator.detonatesDebuff];
 
-            setDetonationFlash(debuff.color);
+            if (debuff) {
+                const id = crypto.randomUUID();
+
+                setDetonationFlashes(prev => [
+                    ...prev,
+                    {
+                        id,
+                        color: debuff.color,
+                    },
+                ]);
+
+                setTimeout(() => {
+                    setDetonationFlashes(prev =>
+                        prev.filter(flash => flash.id !== id)
+                    );
+                }, 500);
+            }
         }
 
+        // Mechanic
         if (event.mechanicId && debuffs[event.mechanicId]) {
             const mechanicEffect = debuffs[event.mechanicId];
 
-            setMechanicFlash(mechanicEffect.color);
+            const id = crypto.randomUUID();
+
+            setMechanicFlashes(prev => [
+                ...prev,
+                {
+                    id,
+                    color: mechanicEffect.color,
+                },
+            ]);
+
+            setTimeout(() => {
+                setMechanicFlashes(prev =>
+                    prev.filter(flash => flash.id !== id)
+                );
+            }, 500);
         }
-    }, [animationEvents]);
-
-    useEffect(() => {
-        if (detonationFlash === null) return;
-
-        const timeout = setTimeout(() => {
-            setDetonationFlash(null);
-        }, 500);
-
-        return () => clearTimeout(timeout);
-    }, [detonationFlash]);
-
-    useEffect(() => {
-        if (mechanicFlash === null) return;
-
-        const timeout = setTimeout(() => {
-            setMechanicFlash(null);
-        }, 500);
-
-        return () => clearTimeout(timeout);
-    }, [mechanicFlash]);
+    }, [animationEvents, unitId]);
 
     return {
-        damageFlash,
-        detonationFlash,
-        mechanicFlash,
+        damageFlashes,
+        detonationFlashes,
+        mechanicFlashes,
     };
 }

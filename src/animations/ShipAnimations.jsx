@@ -2,38 +2,39 @@ import Detonation from "../components/Detonation";
 import MechanicAura from "../components/MechanicAura";
 
 export default function ShipAnimations({
-    detonationFlash,
-    mechanicFlash,
-    damageFlash,
+    detonationFlashes,
+    mechanicFlashes,
+    damageFlashes,
 }) {
     return (
         <>
-            {detonationFlash && (
-                <Detonation color={detonationFlash} />
-            )}
+            {detonationFlashes.map(flash => (
+                <Detonation key={flash.id} color={flash.color} />
+            ))}
 
-            {mechanicFlash && (
-                <MechanicAura color={mechanicFlash} />
-            )}
+            {mechanicFlashes.map(flash => (
+                <MechanicAura key={flash.id} color={flash.color} />
+            ))}
 
-            {damageFlash && (
-                    <div
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            position: "absolute",
-                            left: -30,
-                            color: "#ef4444",
-                            fontWeight: "bold",
-                            fontSize: 24,
-                            animation: "floatUp 2.5s ease-out",
-                            pointerEvents: "none",
-                        }}
-                    >
-                        -{damageFlash}
-                    </div>
-            )}
+            {damageFlashes.map(flash => (
+                <div
+                    key={flash.id}
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        position: "absolute",
+                        left: -30,
+                        color: "#ef4444",
+                        fontWeight: "bold",
+                        fontSize: 24,
+                        animation: "floatUp 2.5s ease-out",
+                        pointerEvents: "none",
+                    }}
+                >
+                    -{flash.amount}
+                </div>
+            ))}
         </>
     );
 }

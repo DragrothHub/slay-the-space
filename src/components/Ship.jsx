@@ -18,7 +18,7 @@ export default function Ship({
     onLongPress,
 }) {
 
-    const { damageFlash, detonationFlash, mechanicFlash, } = useShipAnimations({
+    const { damageFlashes, detonationFlashes, mechanicFlashes, } = useShipAnimations({
         unitId: unit.id,
         damageEvents,
         animationEvents,
@@ -64,7 +64,7 @@ export default function Ship({
                 justifyContent: "center",
                 alignItems: "center",
                 borderRadius: 12,
-                opacity: isDead && !detonationFlash ? 0.35 : 1,
+                opacity: isDead && !detonationFlashes?.length > 0 ? 0.35 : 1,
                 position: "relative",
                 userSelect: "none",
                 WebkitUserSelect: "none",
@@ -200,9 +200,9 @@ export default function Ship({
                 />
 
                 <ShipAnimations
-                    detonationFlash={detonationFlash}
-                    mechanicFlash={mechanicFlash}
-                    damageFlash={damageFlash}
+                    detonationFlashes={detonationFlashes}
+                    mechanicFlashes={mechanicFlashes}
+                    damageFlashes={damageFlashes}
                 />
 
                 {/* Debuff Indicators */}
