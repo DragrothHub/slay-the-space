@@ -7,7 +7,7 @@ import { createEnemy, createShieldExplosionEnemy } from "../data/createEnemy";
 import TurnOrder from "./TurnOrder";
 import { detonatorAbilityCollection, primerAbilityCollection } from "../data/abilities";
 import { moduleCollection } from "../data/modules";
-import { applyDebuff } from "../engine/debuffs";
+import { applyDebuff, debuffs } from "../engine/debuffs";
 
 export default function BattleScreen({ onShipLongPress })
 {
@@ -37,9 +37,24 @@ export default function BattleScreen({ onShipLongPress })
             case "combat":
                 for (let i = 1; i <= Math.min(currentNode.layer, 4); i++)
                 {
-                    let enemy = Math.random() < 0.5 ? createShieldExplosionEnemy() : createEnemy(0,1);
+                    let enemy = createEnemy(0,1);
 
-                    applyDebuff(enemy, "laserResistance");
+                    if (Math.random() > 0.5) {
+                        let random = Math.random();
+
+                        if (random < 0.25) {
+                            enemy = createShieldExplosionEnemy();
+                        }
+                        else if (random < 0.5) {
+                            applyDebuff(enemy, debuffs.laserResistance.id);
+                        }
+                        else if (random < 0.75) {
+                            applyDebuff(enemy, debuffs.cleanseDebuffs.id);
+                        }
+                        else {
+                            applyDebuff(enemy, debuffs.summonCopy.id);
+                        }
+                    }
 
                     enemyFleet.push(enemy);
                 }
