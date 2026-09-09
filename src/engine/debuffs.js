@@ -1,6 +1,13 @@
 import { applyDamage } from "./damage";
 import { getEnemyUnits } from "./helpers";
 
+import shield_icon from "../images/shield_icon.png";
+import armor_icon from "../images/armor_icon.png";
+import hull_icon from "../images/hull_icon.png";
+import ship_icon from "../images/interceptor.png";
+import explosion_icon from "../images/explosion_icon.png";
+import cleanse_icon from "../images/cleanse_icon.png";
+
 // ========================================
 // DEBUFF SYSTEM
 // ========================================
@@ -64,7 +71,7 @@ export const debuffs = {
         description: "Triggers an explosion dealing damage equal to current shield value.",
         color: mechanicColor,
         category: "mechanic",
-        icon: "explosion_icon",
+        icon: explosion_icon,
         baseDuration: 10,
     },
 
@@ -74,7 +81,7 @@ export const debuffs = {
         description: "When timer reaches zero the shields will be restored if not destroyed.",
         color: mechanicColor,
         category: "mechanic",
-        icon: "shield_icon",
+        icon: shield_icon,
         baseDuration: 10,
     },
 
@@ -84,7 +91,7 @@ export const debuffs = {
         description: "When timer reaches zero the ship will summon a copy of itself.",
         color: mechanicColor,
         category: "mechanic",
-        icon: "ship_icon",
+        icon: ship_icon,
         baseDuration: 10,
     },
 
@@ -94,7 +101,27 @@ export const debuffs = {
         description: "Removes all debuffs from all ships.",
         color: mechanicColor,
         category: "mechanic",
-        icon: null, //"✦",
+        icon: cleanse_icon,
+        baseDuration: 3,
+    },
+
+    laserResistance: {
+        id: "laserResistance",
+        displayName: "Laser Immunity",
+        description: "Incoming laser damage greatly reduced.",
+        color: mechanicColor,
+        category: "mechanic",
+        icon: shield_icon,
+        baseDuration: 3,
+    },
+
+    kineticResistance: {
+        id: "kineticResistance",
+        displayName: "Kinetic Immunity",
+        description: "Incoming kinetic damage greatly reduced.",
+        color: mechanicColor,
+        category: "mechanic",
+        icon: armor_icon,
         baseDuration: 3,
     },
 };
@@ -302,6 +329,26 @@ export function processTurnStartDebuffs(unit, state) {
 
             // Restart mechanic
             restartMechanic(cleanseEffects);
+        }
+    }
+
+    if (hasDebuff(unit, "laserResistance")) {
+        const laserResistanceEffects = unit.stats.debuffs.filter(
+            d => d.id === "laserResistance" && d.duration === 1
+        );
+
+        if(laserResistanceEffects.length > 0){
+            applyDebuff(unit, "kineticResistance", 4);
+        }
+    }
+
+    if (hasDebuff(unit, "kineticResistance")) {
+        const kineticResistanceEffects = unit.stats.debuffs.filter(
+            d => d.id === "kineticResistance" && d.duration === 1
+        );
+
+        if(kineticResistanceEffects.length > 0){
+            applyDebuff(unit, "laserResistance", 4);
         }
     }
 }

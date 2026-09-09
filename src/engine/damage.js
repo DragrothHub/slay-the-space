@@ -46,6 +46,11 @@ export function applyDamage(target, actor, ability, state) {
         damage += Math.round(damage * (0.2 * actor.attributes.kineticAtk / 100));
     }
 
+    if ((hasDebuff(target, "laserResistance") && ability.type === "laser")
+        || (hasDebuff(target, "kineticResistance") && ability.type === "kinetic")){
+        damage *= 0.4;
+    }
+
     const before = {
         shield: target.stats.currentShield,
         armor: target.stats.currentArmor,
