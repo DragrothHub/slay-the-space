@@ -60,7 +60,7 @@ export default function BattleScreen({ onShipLongPress })
                     applyDebuff(boss, "shieldRegeneration", 5);
                 }
                 else{
-                    applyDebuff(boss, "summonClone", 3);
+                    applyDebuff(boss, "summonCopy", 3);
                 }
 
                 enemyFleet.push(boss);

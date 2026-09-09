@@ -110,6 +110,8 @@ export function applyDebuff(target, debuffId, duration) {
         target.stats.debuffs = [];
     }
 
+    if(!debuffs[debuffId]) return;
+
     const debuff = debuffs[debuffId];
 
     const actualDuration =
