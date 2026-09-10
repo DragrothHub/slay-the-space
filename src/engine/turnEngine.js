@@ -75,7 +75,6 @@ export function setNextActor(state) {
 
     // check death after DOT
     if (actor.destroyed) {
-        state.log.push(`${actor.name} was destroyed by effects.`);
         advanceTurn(state);
         return setNextActor(state);
     }
