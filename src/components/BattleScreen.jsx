@@ -46,7 +46,7 @@ export default function BattleScreen({ onShipLongPress })
                             enemy = createShieldExplosionEnemy();
                         }
                         else if (random < 0.5) {
-                            applyDebuff(enemy, debuffs.laserResistance.id);
+                            applyDebuff(enemy, Math.random() > 0.5 ? debuffs.laserResistance.id : debuffs.kineticResistance.id);
                         }
                         else if (random < 0.75) {
                             applyDebuff(enemy, debuffs.cleanseDebuffs.id);
