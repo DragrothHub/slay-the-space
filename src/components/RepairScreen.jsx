@@ -48,6 +48,7 @@ function RepairScreen() {
                 // Heal all ships a little
                 const repairedShips = gameState.run.ships.map(ship => ({
                     ...ship,
+                    destroyed: false,
                     stats: {
                         ...ship.stats,
                         currentShield: ship.stats.currentShield > ship.stats.maxShield ? ship.stats.currentShield : Math.ceil(Math.min(ship.stats.currentShield + ship.stats.maxShield * 0.3, ship.stats.maxShield)),
@@ -83,6 +84,7 @@ function RepairScreen() {
 
             return {
                 ...ship,
+                destroyed: false,
                 stats: {
                     ...ship.stats,
                     currentShield: Math.max(ship.stats.currentShield, ship.stats.maxShield),
