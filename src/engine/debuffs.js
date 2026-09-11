@@ -126,8 +126,8 @@ export const debuffs = {
     },
 };
 
-function restartMechanic(effects){
-    for (let effect of effects){
+function restartMechanic(effects) {
+    for (let effect of effects) {
         effect.duration += debuffs[effect.id].baseDuration;
     }
 }
@@ -137,7 +137,7 @@ export function applyDebuff(target, debuffId, duration) {
         target.stats.debuffs = [];
     }
 
-    if(!debuffs[debuffId]) return;
+    if (!debuffs[debuffId]) return;
 
     const debuff = debuffs[debuffId];
 
@@ -186,7 +186,7 @@ export function processTurnStartDebuffs(unit, state) {
             d => d.id === "shieldExplosion" && d.duration === 1
         );
 
-        if(shieldExplosionDebuffsExplodingThisTurn.length > 0) {
+        if (shieldExplosionDebuffsExplodingThisTurn.length > 0) {
             const damage = unit.stats.currentShield;
 
             const enemies = getEnemyUnits(state, unit).filter(enemy => !enemy.destroyed);
@@ -235,7 +235,7 @@ export function processTurnStartDebuffs(unit, state) {
                 mechanicId: "shieldRegeneration",
                 timestamp: Date.now(),
             });
-            
+
             // Restart mechanic
             restartMechanic(shieldRegenerations);
         }
@@ -262,7 +262,12 @@ export function processTurnStartDebuffs(unit, state) {
 
                 const teamUnits = state.teams[team];
 
-                if (teamUnits.length < 4) {
+                // Gibt es einen zerstörten Schiff-Slot, der ersetzt werden kann?
+                const destroyedIndex = teamUnits.findIndex(
+                    ship => ship.destroyed === true
+                );
+
+                if (teamUnits.length < 4 || destroyedIndex !== -1) {
 
                     const copiedUnit = structuredClone(unit);
 
@@ -273,7 +278,13 @@ export function processTurnStartDebuffs(unit, state) {
                         d => d.id !== "summonCopy"
                     );
 
-                    state.teams[team].push(copiedUnit);
+                    if (destroyedIndex !== -1) {
+                        // Zerstörtes Schiff ersetzen
+                        state.teams[team][destroyedIndex] = copiedUnit;
+                    } else {
+                        // Normal hinzufügen
+                        state.teams[team].push(copiedUnit);
+                    }
 
                     state.log.push(
                         `${unit.name} summons a copy of itself.`
@@ -294,7 +305,7 @@ export function processTurnStartDebuffs(unit, state) {
             });
 
             console.log(state.animationEvents);
-            
+
             // Restart mechanic
             restartMechanic(copyEffects);
         }
@@ -337,7 +348,7 @@ export function processTurnStartDebuffs(unit, state) {
             d => d.id === "laserResistance" && d.duration === 1
         );
 
-        if(laserResistanceEffects.length > 0){
+        if (laserResistanceEffects.length > 0) {
             applyDebuff(unit, "kineticResistance", 4);
         }
     }
@@ -347,7 +358,7 @@ export function processTurnStartDebuffs(unit, state) {
             d => d.id === "kineticResistance" && d.duration === 1
         );
 
-        if(kineticResistanceEffects.length > 0){
+        if (kineticResistanceEffects.length > 0) {
             applyDebuff(unit, "laserResistance", 4);
         }
     }
@@ -363,7 +374,7 @@ export function tickDebuffs(unit) {
 }
 
 export function hasDebuff(unit, id) {
-    if(unit == null)
+    if (unit == null)
         return false;
 
     return unit.stats.debuffs.some(d => d.id === id);
