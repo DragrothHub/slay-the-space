@@ -21,6 +21,8 @@ export default function Selection({
     const [openedItemId, setOpenedItemId] = useState(items.some(i => i.id === openDetailId) ? openDetailId : null);
 
     useEffect(() => {
+        if (!openDetailId) return;
+
         if (items.some(i => i.id === openDetailId)) {
             setOpenedItemId(openDetailId);
         } else {
