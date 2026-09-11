@@ -85,7 +85,7 @@ export function processOutgoingDamageModules(
 
     if (getModuleCount(activeShip, "formation") > 0) {
         const formationCount = getFriendlyUnits(battleState, activeShip).filter(
-            ship => getModuleCount(ship, "formation") > 0
+            ship => !ship.destroyed && getModuleCount(ship, "formation") > 0
         ).length - 1;
 
         damage *= 1 + (0.10 * formationCount);
@@ -120,7 +120,7 @@ export function processIncomingDamageModules(
 
     if (getModuleCount(target, "formation") > 0) {
         const formationCount = getFriendlyUnits(battleState, target).filter(
-            ship => getModuleCount(ship, "formation") > 0
+            ship => !ship.destroyed && getModuleCount(ship, "formation") > 0
         ).length - 1;
 
         damage *= 1 - (0.05 * formationCount);
