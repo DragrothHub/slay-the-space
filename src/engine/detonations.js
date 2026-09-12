@@ -1,4 +1,3 @@
-import { use } from "react";
 import { applyDamage } from "./damage";
 import { applyDebuff, debuffs } from "./debuffs";
 import { getFriendlyUnits, repairShip } from "./helpers";
@@ -211,6 +210,31 @@ export function detonate(target, actor, ability, state) {
             );
 
             break;
+
+        case "bomber_elite": {
+            // ==============================
+            // SPLASH DAMAGE WITH DEBUFF SPREAD
+            // ==============================
+            const splashTargets = enemies.filter(enemy => enemy.id !== target.id && !enemy.destroyed);
+
+            const splashDamage = explosionDamage * 0.4;
+
+            for (const enemy of splashTargets) {
+                applyDamage(enemy, actor, {
+                    ...ability,
+                    value: splashDamage,
+                }, state);
+
+                applyDebuff(enemy, debuffId);
+            }
+
+            if (splashTargets.length > 0) {
+                state.log.push(
+                    `Explosion deals ${splashDamage} splash damage to ${splashTargets.length} targets`
+                );
+            }
+            break;
+        }
 
         default:
             break;

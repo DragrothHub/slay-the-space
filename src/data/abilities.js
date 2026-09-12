@@ -39,12 +39,6 @@ const primerTemplates = [
         type: "laser",
         appliesDebuff: debuffs.weakened.id,
     },
-    // {
-    //     id: "primer_offensive_kinetic_stunned",
-    //     displayName: "Primer_4",
-    //     type: "kinetic",
-    //     appliesDebuff: debuffs.stunned.id,
-    // },
     {
         id: "primer_offensive_laser_shocked",
         displayName: "Primer_5",
@@ -83,13 +77,6 @@ const detonatorTemplates = [
         detonatorEffect: "vampire",
         detonatesDebuff: debuffs.weakened.id,
     },
-    // {
-    //     id: "detonator_offensive_kinetic_stunned_vampire",
-    //     displayName: "Detonator_4_vampire",
-    //     type: "kinetic",
-    //     detonatorEffect: "vampire",
-    //     detonatesDebuff: debuffs.stunned.id,
-    // },
     {
         id: "detonator_offensive_laser_shocked_vampire",
         displayName: "Detonator_5_vampire",
@@ -97,6 +84,7 @@ const detonatorTemplates = [
         detonatorEffect: "vampire",
         detonatesDebuff: debuffs.shocked.id,
     },
+
     // BOMBER
     {
         id: "detonator_offensive_kinetic_exhausted_bomber",
@@ -126,13 +114,6 @@ const detonatorTemplates = [
         detonatorEffect: "bomber",
         detonatesDebuff: debuffs.weakened.id,
     },
-    // {
-    //     id: "detonator_offensive_kinetic_stunned_bomber",
-    //     displayName: "Detonator_4_bomber",
-    //     type: "kinetic",
-    //     detonatorEffect: "bomber",
-    //     detonatesDebuff: debuffs.stunned.id,
-    // },
     {
         id: "detonator_offensive_laser_shocked_bomber",
         displayName: "Detonator_5_bomber",
@@ -140,6 +121,7 @@ const detonatorTemplates = [
         detonatorEffect: "bomber",
         detonatesDebuff: debuffs.shocked.id,
     },
+
     // SPIKE
     {
         id: "detonator_offensive_kinetic_exhausted_spike",
@@ -169,13 +151,6 @@ const detonatorTemplates = [
         detonatorEffect: "spike",
         detonatesDebuff: debuffs.weakened.id,
     },
-    // {
-    //     id: "detonator_offensive_kinetic_stunned_spike",
-    //     displayName: "Detonator_4_spike",
-    //     type: "kinetic",
-    //     detonatorEffect: "spike",
-    //     detonatesDebuff: debuffs.stunned.id,
-    // },
     {
         id: "detonator_offensive_laser_shocked_spike",
         displayName: "Detonator_5_spike",
@@ -183,6 +158,7 @@ const detonatorTemplates = [
         detonatorEffect: "spike",
         detonatesDebuff: debuffs.shocked.id,
     },
+
     // SPREADER
     {
         id: "detonator_offensive_kinetic_exhausted_spreader",
@@ -212,13 +188,6 @@ const detonatorTemplates = [
         detonatorEffect: "spreader",
         detonatesDebuff: debuffs.weakened.id,
     },
-    // {
-    //     id: "detonator_offensive_kinetic_stunned_spreader",
-    //     displayName: "Detonator_4_spreader",
-    //     type: "kinetic",
-    //     detonatorEffect: "spreader",
-    //     detonatesDebuff: debuffs.stunned.id,
-    // },
     {
         id: "detonator_offensive_laser_shocked_spreader",
         displayName: "Detonator_5_spreader",
@@ -226,6 +195,7 @@ const detonatorTemplates = [
         detonatorEffect: "spreader",
         detonatesDebuff: debuffs.shocked.id,
     },
+
     // CASCADE
     {
         id: "detonator_offensive_kinetic_exhausted_cascade",
@@ -255,13 +225,6 @@ const detonatorTemplates = [
         detonatorEffect: "cascade",
         detonatesDebuff: debuffs.weakened.id,
     },
-    // {
-    //     id: "detonator_offensive_kinetic_stunned_cascade",
-    //     displayName: "Detonator_4_cascade",
-    //     type: "kinetic",
-    //     detonatorEffect: "cascade",
-    //     detonatesDebuff: debuffs.stunned.id,
-    // },
     {
         id: "detonator_offensive_laser_shocked_cascade",
         displayName: "Detonator_5_cascade",
@@ -269,6 +232,7 @@ const detonatorTemplates = [
         detonatorEffect: "cascade",
         detonatesDebuff: debuffs.shocked.id,
     },
+
     // STUNNER
     {
         id: "detonator_offensive_kinetic_exhausted_stunner",
@@ -298,19 +262,54 @@ const detonatorTemplates = [
         detonatorEffect: "stunner",
         detonatesDebuff: debuffs.weakened.id,
     },
-    // {
-    //     id: "detonator_offensive_kinetic_stunned_stunner",
-    //     displayName: "Detonator_4_stunner",
-    //     type: "kinetic",
-    //     detonatorEffect: "stunner",
-    //     detonatesDebuff: debuffs.stunned.id,
-    // },
     {
         id: "detonator_offensive_laser_shocked_stunner",
         displayName: "Detonator_5_stunner",
         type: "laser",
         detonatorEffect: "stunner",
         detonatesDebuff: debuffs.shocked.id,
+    },
+
+    // ELITE BOMBER
+    {
+        id: "detonator_offensive_kinetic_exhausted_bomber_elite",
+        displayName: "Detonator_1_bomber_elite",
+        type: "kinetic",
+        detonatorEffect: "bomber_elite",
+        detonatesDebuff: debuffs.exhausted.id,
+        rarity: "elite",
+    },
+    {
+        id: "detonator_offensive_laser_marked_bomber_elite",
+        displayName: "Detonator_2_bomber_elite",
+        type: "laser",
+        detonatorEffect: "bomber_elite",
+        detonatesDebuff: debuffs.marked.id,
+        rarity: "elite",
+    },
+    {
+        id: "detonator_offensive_kinetic_weakened_bomber_elite",
+        displayName: "Detonator_3.1_bomber_elite",
+        type: "kinetic",
+        detonatorEffect: "bomber_elite",
+        detonatesDebuff: debuffs.weakened.id,
+        rarity: "elite",
+    },
+    {
+        id: "detonator_offensive_laser_weakened_bomber_elite",
+        displayName: "Detonator_3.2_bomber_elite",
+        type: "laser",
+        detonatorEffect: "bomber_elite",
+        detonatesDebuff: debuffs.weakened.id,
+        rarity: "elite",
+    },
+    {
+        id: "detonator_offensive_laser_shocked_bomber_elite",
+        displayName: "Detonator_5_bomber_elite",
+        type: "laser",
+        detonatorEffect: "bomber_elite",
+        detonatesDebuff: debuffs.shocked.id,
+        rarity: "elite",
     },
 ]
 
@@ -319,6 +318,8 @@ function buildNeutral(template) {
         id: template.id,
         displayName: template.displayName,
         type: template.type,
+
+        rarity: template.rarity ?? "common",
 
         category: "offensive",
         primer: false,
@@ -338,6 +339,8 @@ function buildPrimer(template) {
         type: template.type,
         appliesDebuff: template.appliesDebuff,
 
+        rarity: template.rarity ?? "common",
+
         category: "offensive",
         primer: true,
         detonator: false,
@@ -355,6 +358,8 @@ function buildDetonator(template) {
         type: template.type,
         detonatorEffect: template.detonatorEffect,
         detonatesDebuff: template.detonatesDebuff,
+
+        rarity: template.rarity ?? "common",
 
         category: "offensive",
         primer: false,
@@ -391,17 +396,31 @@ function randomItem(array)
     return array[Math.floor(Math.random() * array.length)];
 }
 
+
+function getRandomAbility(collection, rarity = "common")
+{
+    const available = Object.keys(collection)
+    .filter(id => collection[id].rarity === rarity);
+    
+    return randomItem(available);
+}
+
 export function getRandomNeutralAbility()
 {
-    return randomItem(Object.keys(neutralAbilityCollection));
+    return getRandomAbility(neutralAbilityCollection);
 }
 
 export function getRandomPrimerAbility()
 {
-    return randomItem(Object.keys(primerAbilityCollection));
+    return getRandomAbility(primerAbilityCollection);
 }
 
 export function getRandomDetonatorAbility()
 {
-    return randomItem(Object.keys(detonatorAbilityCollection));
+    return getRandomAbility(detonatorAbilityCollection);
+}
+
+export function getRandomEliteDetonatorAbility()
+{
+    return getRandomAbility(detonatorAbilityCollection, "elite");
 }

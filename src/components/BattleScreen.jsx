@@ -132,23 +132,37 @@ export default function BattleScreen({ onShipLongPress })
     {
         if (!battleWon) return;
 
-        const rewardTypes = [
+        let rewardTypes = [
             {
                 type: "ability",
-                collection: detonatorAbilityCollection,
+                collection: Object.values(detonatorAbilityCollection)
+                    .filter(ability => ability.rarity === "common"),
                 amount: 3,
             },
             {
                 type: "ability",
-                collection: primerAbilityCollection,
+                collection: Object.values(primerAbilityCollection)
+                    .filter(ability => ability.rarity === "common"),
                 amount: 3,
             },
             {
                 type: "module",
-                collection: moduleCollection,
+                collection: Object.values(moduleCollection)
+                    .filter(module => module.rarity === "common"),
                 amount: 3,
             }
         ];
+
+        if (currentNode.type === "elite") {
+            rewardTypes = [
+                {
+                    type: "ability",
+                    collection: Object.values(detonatorAbilityCollection)
+                        .filter(ability => ability.rarity === "elite"),
+                    amount: 3,
+                }
+            ];
+        }
 
         const reward = rewardTypes[
             Math.floor(Math.random() * rewardTypes.length)
