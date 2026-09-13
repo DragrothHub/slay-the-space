@@ -130,7 +130,7 @@ function getRandomAbilities(){
 
     let counter = 0;
 
-    while(primerAbilityCollection[randomPrimer].appliesDebuff == detonatorAbilityCollection[randomDetonator].detonatesDebuff && counter < 10){
+    while(primerAbilityCollection[randomPrimer].appliesDebuff[0] == detonatorAbilityCollection[randomDetonator].detonatesDebuff[0] && counter < 10){
         randomDetonator = getRandomDetonatorAbility();
         counter++;
     }

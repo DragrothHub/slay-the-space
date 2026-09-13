@@ -124,9 +124,9 @@ export default function MiniShipCard({ ship, borderColor, backgroundColor, onCli
                                 }}
                             >
                                 {<span style={{ color: `${moduleCollection[id].color}` }}>{moduleCollection[id].displayName}</span>}
-                                {moduleCollection[id].defenceType === "armor" && <img src={armor_icon_colored} style={{width: 10, height: 10, verticalAlign: "center"}}/>}
-                                {moduleCollection[id].defenceType === "shield" && <img src={shield_icon_colored} style={{width: 10, height: 10, verticalAlign: "center"}}/>}
-                                {moduleCollection[id].defenceType === "mixed" && <div><img src={shield_icon_colored} style={{width: 10, height: 10, verticalAlign: "center"}}/><img src={armor_icon_colored} style={{width: 10, height: 10, verticalAlign: "center"}}/></div>}
+                                {moduleCollection[id].defenceType === "armor" && <img src={armor_icon_colored} style={{ width: 10, height: 10, verticalAlign: "center" }} />}
+                                {moduleCollection[id].defenceType === "shield" && <img src={shield_icon_colored} style={{ width: 10, height: 10, verticalAlign: "center" }} />}
+                                {moduleCollection[id].defenceType === "mixed" && <div><img src={shield_icon_colored} style={{ width: 10, height: 10, verticalAlign: "center" }} /><img src={armor_icon_colored} style={{ width: 10, height: 10, verticalAlign: "center" }} /></div>}
                             </span>
                         ))}
                     </div>
@@ -152,8 +152,28 @@ export default function MiniShipCard({ ship, borderColor, backgroundColor, onCli
                                 }}
                             >
                                 {abilityCollection[id].primer || abilityCollection[id].detonator ? "" : abilityCollection[id].displayName}
-                                {abilityCollection[id].primer && <span style={{ color: `${debuffs[abilityCollection[id].appliesDebuff].color}` }}>{abilityCollection[id].displayName}</span>}
-                                {abilityCollection[id].detonator && <span style={{ color: `${debuffs[abilityCollection[id].detonatesDebuff].color}` }}>{abilityCollection[id].displayName}</span>}
+                                {abilityCollection[id].primer &&
+                                    <span style={{
+                                        backgroundImage: gradientFromDebuffList(abilityCollection[id]?.appliesDebuff),
+                                        backgroundClip: "text",
+                                        WebkitBackgroundClip: "text",
+                                        color: "transparent",
+                                        WebkitTextFillColor: "transparent",
+                                    }}>
+                                        {abilityCollection[id].displayName}
+                                    </span>
+                                }
+                                {abilityCollection[id].detonator && 
+                                    <span style={{ 
+                                        backgroundImage: gradientFromDebuffList(abilityCollection[id]?.detonatesDebuff),
+                                        backgroundClip: "text",
+                                        WebkitBackgroundClip: "text",
+                                        color: "transparent",
+                                        WebkitTextFillColor: "transparent", 
+                                    }}>
+                                        {abilityCollection[id].displayName}
+                                    </span>
+                                }
                             </span>
                         ))}
                     </div>
@@ -161,4 +181,47 @@ export default function MiniShipCard({ ship, borderColor, backgroundColor, onCli
             </div>
         </div>
     );
+}
+
+
+
+
+function gradientFromDebuffList(debuffIds) {
+
+    if (!debuffIds?.length)
+        return null;
+
+    const colors = debuffIds.map(
+        debuffId => debuffs[debuffId].color
+    );
+    const gradient = `linear-gradient(90deg, ${colors.join(", ")})`;
+
+    // ======================
+    // const colors = debuffIds.map(
+    //     debuffId => debuffs[debuffId].color
+    // );
+
+    // const gradient = colors?.length
+    //     ? `linear-gradient(90deg, ${colors.map((color, i) => {
+    //         const start = (i / colors.length) * 100;
+    //         const end = ((i + 1) / colors.length) * 100;
+    //         return `${color} ${start}%, ${color} ${end}%`;
+    //     }).join(", ")})`
+    //     : undefined;
+
+    // ======================
+    // const colors = debuffIds.map(
+    //     debuffId => debuffs[debuffId].color
+    // );
+
+    // const gradient = colors?.length
+    //     ? `linear-gradient(90deg, ${colors.map((color, i) => {
+    //         const center = ((i + 0.5) / colors.length) * 100;
+    //         const spread = 3;
+
+    //         return `${color} ${center - spread}%, ${color} ${center + spread}%`;
+    //     }).join(", ")})`
+    //     : undefined;
+
+    return gradient;
 }

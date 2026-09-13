@@ -86,7 +86,7 @@ export default function useShipAnimations({
                         detonatorAbilityCollection[event.detonatorId];
 
                     const debuff =
-                        debuffs[detonator.detonatesDebuff];
+                        debuffs[detonator.detonatesDebuff[0]];
 
                     if (debuff) {
                         const id = crypto.randomUUID();

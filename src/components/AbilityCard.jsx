@@ -1,5 +1,5 @@
-import { debuffs, hasDebuff } from "../engine/debuffs";
-import { getTargetUnit } from "../engine/helpers";
+import React from "react";
+import { debuffs, hasDebuffOfList } from "../engine/debuffs";
 import { getRemainingCooldown, isAbilityOnCooldown } from "../engine/cooldowns";
 import { abilityCollection } from "../data/abilities";
 
@@ -19,7 +19,7 @@ export default function AbilityCard({ abilityId, actor, target, handleSelectAbil
                 position: "relative",
                 overflow: "hidden",
                 cursor: disabled ? "not-allowed" : "default",
-                border: hasDebuff(target, ability.detonatesDebuff)
+                border: hasDebuffOfList(target, ability.detonatesDebuff)
                     ? "2px solid #fcff4c"
                     : "2px solid #243342",
                 background: "#0a1118",
@@ -65,23 +65,6 @@ export default function AbilityCard({ abilityId, actor, target, handleSelectAbil
                 >
                     {ability.displayName}
                 </div>
-
-                {/* <div
-                    onClick={e => {
-                        e.stopPropagation();
-                        setSelectedAbilityInfo(ability);
-                    }}
-                    style={{
-                        all: "unset",
-                        cursor: "pointer",
-                        color: "#8aa9c6",
-                        fontWeight: "bold",
-                        fontSize: 20,
-                        padding: "0 4px",
-                    }}
-                >
-                    ⓘ
-                </div> */}
             </div>
 
             <div
@@ -115,17 +98,28 @@ export default function AbilityCard({ abilityId, actor, target, handleSelectAbil
                 )}
             </div>
 
-            {ability.appliesDebuff && (
-                <span style={{ color: `${debuffs[ability.appliesDebuff].color}` }}>
-                    Applies {debuffs[ability.appliesDebuff].displayName}
+            {ability.appliesDebuff?.length > 0 && (
+                <span>
+                    Applies {formatDebuffList(ability.appliesDebuff)}
                 </span>
             )}
 
-            {ability.detonatesDebuff && (
-                <span style={{ color: `${debuffs[ability.detonatesDebuff].color}` }}>
-                    Detonates {debuffs[ability.detonatesDebuff].displayName}
+            {ability.detonatesDebuff?.length > 0 && (
+                <span>
+                    Detonates {formatDebuffList(ability.detonatesDebuff)}
                 </span>
             )}
         </div>
     );
+}
+
+function formatDebuffList(ids) {
+    return ids.map((debuffId, index) => (
+        <React.Fragment key={debuffId}>
+            {index > 0 && (index === ids.length - 1 ? " and " : ", ")}
+            <span style={{ color: debuffs[debuffId].color }}>
+                {debuffs[debuffId].displayName}
+            </span>
+        </React.Fragment>
+    ));
 }

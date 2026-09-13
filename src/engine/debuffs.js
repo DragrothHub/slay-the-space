@@ -380,6 +380,13 @@ export function hasDebuff(unit, id) {
     return unit.stats.debuffs.some(d => d.id === id);
 }
 
+export function hasDebuffOfList(unit, idArray) {
+    if (unit == null || idArray == null)
+        return false;
+
+    return idArray.some(debuffId => hasDebuff(unit, debuffId));
+}
+
 export function removeDebuff(unit, id) {
     unit.stats.debuffs = unit.stats.debuffs.filter(
         d => d.id !== id

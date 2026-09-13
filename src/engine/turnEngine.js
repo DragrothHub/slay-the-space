@@ -1,6 +1,6 @@
 import { detonate } from "./detonations";
 import { applyDamage } from "./damage";
-import { applyDebuff, processTurnStartDebuffs, tickDebuffs, hasDebuff } from "./debuffs";
+import { applyDebuff, processTurnStartDebuffs, tickDebuffs, hasDebuff, hasDebuffOfList } from "./debuffs";
 import { startCooldown, reduceCooldowns, isAbilityOnCooldown } from "./cooldowns";
 import { getAllUnits, getActiveUnit, getEnemyUnits } from "./helpers";
 import { abilityCollection } from "../data/abilities";
@@ -250,14 +250,16 @@ function resolveAbility(actor, abilityId, target, state) {
     let ability = abilityCollection[abilityId];
     applyDamage(target, actor, ability, state);
 
-    if (ability.appliesDebuff) {
-        applyDebuff(target, ability.appliesDebuff);
+    if (ability.appliesDebuff?.length > 0) {
+        ability.appliesDebuff.forEach(debuffId => {
+            applyDebuff(target, debuffId);
+        });
     }
 
     if (
         ability.detonator &&
         ability.detonatesDebuff &&
-        hasDebuff(target, ability.detonatesDebuff)
+        hasDebuffOfList(target, ability.detonatesDebuff)
     ) {
         detonate(target, actor, ability, state);
     }

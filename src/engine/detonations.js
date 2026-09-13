@@ -3,23 +3,31 @@ import { applyDebuff, debuffs } from "./debuffs";
 import { getFriendlyUnits, repairShip } from "./helpers";
 import { moduleCollection } from "../data/modules";
 
-function removeDebuffsExcept(target, debuffId, amountToPreserve) {
+function removeDebuffsExcept(target, debuffIds, amountToPreserve) {
 
-    let preserved = 0;
+    let removedCount = 0;
 
-    target.stats.debuffs = target.stats.debuffs.filter(debuff => {
+    for (const debuffId of debuffIds) {
 
-        if (debuff.id !== debuffId) {
-            return true;
-        }
+        let preserved = 0;
 
-        if (preserved < amountToPreserve) {
-            preserved++;
-            return true;
-        }
+        target.stats.debuffs = target.stats.debuffs.filter(debuff => {
 
-        return false;
-    });
+            if (debuff.id !== debuffId) {
+                return true;
+            }
+
+            if (preserved < amountToPreserve) {
+                preserved++;
+                return true;
+            }
+
+            removedCount++;
+            return false;
+        });
+    }
+
+    return removedCount;
 }
 
 // ========================================
@@ -27,31 +35,38 @@ function removeDebuffsExcept(target, debuffId, amountToPreserve) {
 // ========================================
 
 export function detonate(target, actor, ability, state) {
-    const debuffId = ability.detonatesDebuff;
+
+    const detonateDebuffIds = ability.detonatesDebuff;
     const enemies = getFriendlyUnits(state, target);
 
     // ==============================
     // 1. COUNT + REMOVE DEBUFFS
     // ==============================
-    const before = target.stats.debuffs.length;
 
-    const removedDebuffs = target.stats.debuffs.filter(
-        d => d.id === debuffId
+    const matchingDebuffs = target.stats.debuffs.filter(
+        debuff => detonateDebuffIds.includes(debuff.id)
     );
 
-    const countPreservers = actor.modules.filter(moduleId => moduleCollection[moduleId]?.effect === "preserver").length;
+    const countPreservers = actor.modules.filter(
+        moduleId => moduleCollection[moduleId]?.effect === "preserver"
+    ).length;
 
-    if (ability.detonatorEffect != "spreader") {
-        removeDebuffsExcept(target, debuffId, countPreservers);
+    let removedCount = matchingDebuffs.length;
+
+    if (ability.detonatorEffect !== "spreader") {
+        removedCount = removeDebuffsExcept(
+            target,
+            detonateDebuffIds,
+            countPreservers
+        );
     }
-
-    const removedCount = removedDebuffs.length;
 
     if (removedCount === 0) return;
 
     // ==============================
     // 2. MAIN EXPLOSION DAMAGE
     // ==============================
+
     const baseDamage = ability.value;
 
     const detonationMultiplier = 1 + removedCount * 0.75;
@@ -64,13 +79,13 @@ export function detonate(target, actor, ability, state) {
     }, state);
 
     state.log.push(
-        `${removedCount} stack(s) of ${debuffId} detonated on ${target.name} for ${damageDone} damage`
+        `${removedCount} stack(s) of ${detonateDebuffIds.join(", ")} detonated on ${target.name} for ${damageDone} damage`
     );
 
     state.animationEvents.push({
-            targetId: target.id,
-            detonatorId: ability.id,
-            timestamp: Date.now(),
+        targetId: target.id,
+        detonatorId: ability.id,
+        timestamp: Date.now(),
     });
 
     // ==============================
@@ -78,11 +93,15 @@ export function detonate(target, actor, ability, state) {
     // ==============================
 
     switch (ability.detonatorEffect) {
-        case "bomber":
+
+        case "bomber": {
             // ==============================
             // SPLASH DAMAGE
             // ==============================
-            const splashTargets = enemies.filter(enemy => enemy.id !== target.id && !enemy.destroyed);
+
+            const splashTargets = enemies.filter(
+                enemy => enemy.id !== target.id && !enemy.destroyed
+            );
 
             const splashDamage = explosionDamage * 0.4;
 
@@ -98,12 +117,15 @@ export function detonate(target, actor, ability, state) {
                     `Explosion deals ${splashDamage} splash damage to ${splashTargets.length} targets`
                 );
             }
-            break;
 
-        case "spike":
+            break;
+        }
+
+        case "spike": {
             // ==============================
             // SINGLE TARGET DAMAGE
             // ==============================
+
             const spikeDamage = applyDamage(target, actor, {
                 ...ability,
                 value: explosionDamage,
@@ -114,10 +136,11 @@ export function detonate(target, actor, ability, state) {
             );
 
             break;
+        }
 
-        case "vampire":
+        case "vampire": {
             // ==============================
-            // HEAL FROM DAMAGE (MAX SHIELD * 2)
+            // HEAL FROM DAMAGE
             // ==============================
 
             const { shieldRestored } = repairShip({
@@ -130,32 +153,48 @@ export function detonate(target, actor, ability, state) {
             );
 
             break;
-    
-        case "spreader":
+        }
+
+        case "spreader": {
             // ==============================
-            // SPREAD THE DEBUFF TO THE FLEET
+            // SPREAD THE DEBUFFS TO THE FLEET
             // ==============================
-            const spreadTargets = enemies.filter(enemy => enemy.id !== target.id && !enemy.destroyed);
+
+            const spreadTargets = enemies.filter(
+                enemy => enemy.id !== target.id && !enemy.destroyed
+            );
 
             for (const enemy of spreadTargets) {
-                for(let i = 0; i < removedCount; i++){
-                    applyDebuff(enemy, debuffId);
+
+                // Spread every detonated debuff with its
+                // original number of stacks.
+                for (const debuffId of detonateDebuffIds) {
+
+                    const stackCount = matchingDebuffs.filter(
+                        debuff => debuff.id === debuffId
+                    ).length;
+
+                    for (let i = 0; i < stackCount; i++) {
+                        applyDebuff(enemy, debuffId);
+                    }
                 }
             }
 
             if (spreadTargets.length > 0) {
                 state.log.push(
-                    `Spreading ${debuffId} to ${spreadTargets.length} targets`
+                    `Spreading ${detonateDebuffIds.join(", ")} to ${spreadTargets.length} targets`
                 );
             }
-            break;
 
-        case "cascade":
+            break;
+        }
+
+        case "cascade": {
             // ==============================
             // CASCADE EXPLOSIONS
             // ==============================
-            let cascadeDamage = explosionDamage;
 
+            let cascadeDamage = explosionDamage;
             let cascadeTarget = target;
 
             while (cascadeDamage > 1) {
@@ -163,7 +202,11 @@ export function detonate(target, actor, ability, state) {
                 // Explosion like bomber but only factor 0.3
                 cascadeDamage *= 0.3;
 
-                const splashTargets = enemies.filter(enemy => enemy.id !== cascadeTarget.id && !enemy.destroyed);
+                const splashTargets = enemies.filter(
+                    enemy =>
+                        enemy.id !== cascadeTarget.id &&
+                        !enemy.destroyed
+                );
 
                 for (const enemy of splashTargets) {
                     applyDamage(enemy, actor, {
@@ -178,10 +221,13 @@ export function detonate(target, actor, ability, state) {
                     );
                 }
 
-                // Find next enemy with same debuff
+                // Find next enemy with at least one
+                // of the detonated debuffs.
                 cascadeTarget = enemies.find(enemy =>
                     !enemy.destroyed &&
-                    enemy.stats.debuffs.some(d => d.id === debuffId)
+                    enemy.stats.debuffs.some(
+                        debuff => detonateDebuffIds.includes(debuff.id)
+                    )
                 );
 
                 if (!cascadeTarget) break;
@@ -192,40 +238,64 @@ export function detonate(target, actor, ability, state) {
                     timestamp: Date.now(),
                 });
 
-                // Remove debuff
-                const removed = cascadeTarget.stats.debuffs.filter(d => d.id === debuffId);
-                cascadeTarget.stats.debuffs = cascadeTarget.stats.debuffs.filter(d => d.id !== debuffId);
+                // Remove all matching debuffs from the
+                // cascade target.
+                const removedDebuffs = cascadeTarget.stats.debuffs.filter(
+                    debuff => detonateDebuffIds.includes(debuff.id)
+                );
 
-                cascadeDamage = cascadeDamage * (1 + removed.length * 0.75)
+                cascadeTarget.stats.debuffs =
+                    cascadeTarget.stats.debuffs.filter(
+                        debuff => !detonateDebuffIds.includes(debuff.id)
+                    );
+
+                // The number of stacks of ALL matching
+                // debuffs contributes to the next explosion.
+                cascadeDamage *= (
+                    1 + removedDebuffs.length * 0.75
+                );
             }
 
             break;
-        
-        case "stunner":
+        }
 
-            applyDebuff(target, debuffs.stunned.id, removedCount);
+        case "stunner": {
+
+            applyDebuff(
+                target,
+                debuffs.stunned.id,
+                removedCount
+            );
 
             state.log.push(
                 `Stunned ${target.name} for ${removedCount} rounds`
             );
 
             break;
+        }
 
         case "bomber_elite": {
             // ==============================
-            // SPLASH DAMAGE WITH DEBUFF SPREAD
+            // SPLASH DAMAGE + DEBUFF SPREAD
             // ==============================
-            const splashTargets = enemies.filter(enemy => enemy.id !== target.id && !enemy.destroyed);
+
+            const splashTargets = enemies.filter(
+                enemy => enemy.id !== target.id && !enemy.destroyed
+            );
 
             const splashDamage = explosionDamage * 0.4;
 
             for (const enemy of splashTargets) {
+
                 applyDamage(enemy, actor, {
                     ...ability,
                     value: splashDamage,
                 }, state);
 
-                applyDebuff(enemy, debuffId);
+                // Apply every detonated debuff.
+                for (const debuffId of detonateDebuffIds) {
+                    applyDebuff(enemy, debuffId);
+                }
             }
 
             if (splashTargets.length > 0) {
@@ -233,12 +303,11 @@ export function detonate(target, actor, ability, state) {
                     `Explosion deals ${splashDamage} splash damage to ${splashTargets.length} targets`
                 );
             }
+
             break;
         }
 
         default:
             break;
     }
-
-
 }
