@@ -3,6 +3,8 @@ const colorMixed = "#22c55e";
 const colorArmor = "#f59e0b";
 const colorWhite = "#fff";
 
+const rarityCommon = "common";
+
 export const moduleCollection = {
     module_shield_booster : { 
         id: "module_shield_booster",
@@ -14,6 +16,7 @@ export const moduleCollection = {
         shield: 200,
         armor: 0,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_armor_booster : { 
         id: "module_armor_booster",
@@ -25,6 +28,7 @@ export const moduleCollection = {
         shield: 0,
         armor: 200,
         color: colorWhite,
+        rarity: rarityCommon,
     },
 
     module_repairbot_shield : {
@@ -37,6 +41,7 @@ export const moduleCollection = {
         shield: 100,
         armor: 0,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_repairbot_armor : {
         id: "module_repairbot_armor",
@@ -48,6 +53,7 @@ export const moduleCollection = {
         shield: 0,
         armor: 100,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_repairbot_mixed : {
         id: "module_repairbot_mixed",
@@ -59,6 +65,7 @@ export const moduleCollection = {
         shield: 50,
         armor: 50,
         color: colorWhite,
+        rarity: rarityCommon,
     },
 
     module_kineticboost_shield : { 
@@ -71,6 +78,7 @@ export const moduleCollection = {
         shield: 100,
         armor: 0,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_kineticboost_armor : { 
         id: "module_kineticboost_armor",
@@ -82,6 +90,7 @@ export const moduleCollection = {
         shield: 0,
         armor: 100,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_kineticboost_mixed : { 
         id: "module_kineticboost_mixed",
@@ -93,6 +102,7 @@ export const moduleCollection = {
         shield: 50,
         armor: 50,
         color: colorWhite,
+        rarity: rarityCommon,
     },
 
     module_laserboost_shield : { 
@@ -105,6 +115,7 @@ export const moduleCollection = {
         shield: 100,
         armor: 0,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_laserboost_armor : { 
         id: "module_laserboost_armor",
@@ -116,6 +127,7 @@ export const moduleCollection = {
         shield: 0,
         armor: 100,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_laserboost_mixed : { 
         id: "module_laserboost_mixed",
@@ -127,6 +139,7 @@ export const moduleCollection = {
         shield: 50,
         armor: 50,
         color: colorWhite,
+        rarity: rarityCommon,
     },
 
     module_formation_shield : { 
@@ -139,6 +152,7 @@ export const moduleCollection = {
         shield: 100,
         armor: 0,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_formation_armor : { 
         id: "module_formation_armor",
@@ -150,6 +164,7 @@ export const moduleCollection = {
         shield: 0,
         armor: 100,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_formation_mixed : { 
         id: "module_formation_mixed",
@@ -161,6 +176,7 @@ export const moduleCollection = {
         shield: 50,
         armor: 50,
         color: colorWhite,
+        rarity: rarityCommon,
     },
 
     module_preserver_shield : {
@@ -173,6 +189,7 @@ export const moduleCollection = {
         shield: 100,
         armor: 0,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_preserver_armor : {
         id: "module_preserver_armor",
@@ -184,6 +201,7 @@ export const moduleCollection = {
         shield: 0,
         armor: 100,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_preserver_mixed : {
         id: "module_preserver_mixed",
@@ -195,6 +213,7 @@ export const moduleCollection = {
         shield: 50,
         armor: 50,
         color: colorWhite,
+        rarity: rarityCommon,
     },
 
     module_vampyr_shield : {
@@ -207,6 +226,7 @@ export const moduleCollection = {
         shield: 100,
         armor: 0,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_vampyr_armor : {
         id: "module_vampyr_armor",
@@ -218,6 +238,7 @@ export const moduleCollection = {
         shield: 0,
         armor: 100,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_vampyr_mixed : {
         id: "module_vampyr_mixed",
@@ -229,6 +250,7 @@ export const moduleCollection = {
         shield: 50,
         armor: 50,
         color: colorWhite,
+        rarity: rarityCommon,
     },
 
     module_rainbow_shield : {
@@ -241,6 +263,7 @@ export const moduleCollection = {
         shield: 100,
         armor: 0,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_rainbow_armor : {
         id: "module_rainbow_armor",
@@ -252,6 +275,7 @@ export const moduleCollection = {
         shield: 0,
         armor: 100,
         color: colorWhite,
+        rarity: rarityCommon,
     },
     module_rainbow_mixed : {
         id: "module_rainbow_mixed",
@@ -263,6 +287,7 @@ export const moduleCollection = {
         shield: 50,
         armor: 50,
         color: colorWhite,
+        rarity: rarityCommon,
     },
 };
 
