@@ -51,17 +51,17 @@ export function detonate(target, actor, ability, state) {
         moduleId => moduleCollection[moduleId]?.effect === "preserver"
     ).length;
 
-    let removedCount = matchingDebuffs.length;
+    let detonatedDebuffCount = matchingDebuffs.length;
 
     if (ability.detonatorEffect !== "spreader") {
-        removedCount = removeDebuffsExcept(
+        removeDebuffsExcept(
             target,
             detonateDebuffIds,
             countPreservers
         );
     }
 
-    if (removedCount === 0) return;
+    if (detonatedDebuffCount === 0) return;
 
     // ==============================
     // 2. MAIN EXPLOSION DAMAGE
@@ -69,7 +69,7 @@ export function detonate(target, actor, ability, state) {
 
     const baseDamage = ability.value;
 
-    const detonationMultiplier = 1 + removedCount * 0.75;
+    const detonationMultiplier = 1 + detonatedDebuffCount * 0.75;
 
     const explosionDamage = baseDamage * detonationMultiplier;
 
@@ -79,7 +79,7 @@ export function detonate(target, actor, ability, state) {
     }, state);
 
     state.log.push(
-        `${removedCount} stack(s) of ${detonateDebuffIds.join(", ")} detonated on ${target.name} for ${damageDone} damage`
+        `${detonatedDebuffCount} stack(s) of ${detonateDebuffIds.join(", ")} detonated on ${target.name} for ${damageDone} damage`
     );
 
     state.animationEvents.push({
@@ -264,11 +264,11 @@ export function detonate(target, actor, ability, state) {
             applyDebuff(
                 target,
                 debuffs.stunned.id,
-                removedCount
+                detonatedDebuffCount
             );
 
             state.log.push(
-                `Stunned ${target.name} for ${removedCount} rounds`
+                `Stunned ${target.name} for ${detonatedDebuffCount} rounds`
             );
 
             break;
