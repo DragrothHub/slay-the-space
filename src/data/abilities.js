@@ -224,7 +224,7 @@ const detonatorTemplates = [
         detonatesDebuff: [debuffs.shocked.id],
     },
 
-    // ELITE BOMBER
+    // ELITE BOMBER SPREAD
     {
         id: "detonator_offensive_kinetic_exhausted_bomber_elite",
         displayName: "Detonator_1_bomber_elite",
@@ -258,7 +258,7 @@ const detonatorTemplates = [
         rarity: "elite",
     },
 
-    // ELITE BOMBER 2
+    // ELITE BOMBER ALL
     {
         id: "detonator_offensive_kinetic_bomber_all_elite",
         displayName: "Detonator_bomber_all_elite",
