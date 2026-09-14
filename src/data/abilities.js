@@ -313,6 +313,42 @@ const detonatorTemplates = [
         detonatesDebuff: [debuffs.shocked.id],
         rarity: "elite",
     },
+
+    // ELITE BOMBER 2
+    {
+        id: "detonator_offensive_kinetic_bomber_all_elite",
+        displayName: "Detonator_bomber_all_elite",
+        type: "kinetic",
+        detonatorEffect: "bomber",
+        detonatesDebuff: [debuffs.marked.id, debuffs.exhausted.id,  debuffs.weakened.id, debuffs.shocked.id],
+        rarity: "elite",
+    },
+    {
+        id: "detonator_offensive_laser_bomber_all_elite",
+        displayName: "Detonator_bomber_all_elite",
+        type: "laser",
+        detonatorEffect: "bomber",
+        detonatesDebuff: [debuffs.marked.id, debuffs.exhausted.id,  debuffs.weakened.id, debuffs.shocked.id],
+        rarity: "elite",
+    },
+
+    // ELITE SPREADER
+    {
+        id: "detonator_offensive_laser_spreader_elite",
+        displayName: "Detonator_5_spreader_elite",
+        type: "laser",
+        detonatorEffect: "spreader",
+        detonatesDebuff: [debuffs.marked.id, debuffs.exhausted.id,  debuffs.weakened.id, debuffs.shocked.id],
+        rarity: "elite",
+    },
+    {
+        id: "detonator_offensive_kinetic_spreader_elite",
+        displayName: "Detonator_5_spreader_elite",
+        type: "kinetic",
+        detonatorEffect: "spreader",
+        detonatesDebuff: [debuffs.marked.id, debuffs.exhausted.id,  debuffs.weakened.id, debuffs.shocked.id],
+        rarity: "elite",
+    },
 ]
 
 function buildNeutral(template) {
