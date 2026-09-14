@@ -31,14 +31,8 @@ const primerTemplates = [
     },
     {
         id: "primer_offensive_kinetic_weakened",
-        displayName: "Primer_3.1",
+        displayName: "Primer_3",
         type: "kinetic",
-        appliesDebuff: [debuffs.weakened.id],
-    },
-    {
-        id: "primer_offensive_laser_weakened",
-        displayName: "Primer_3.2",
-        type: "laser",
         appliesDebuff: [debuffs.weakened.id],
     },
     {
