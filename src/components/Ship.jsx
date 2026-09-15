@@ -5,6 +5,8 @@ import StatusEffect from "./StatusEffect";
 import StatBarSmall from "./StatBarSmall";
 import ShipAnimations from "../animations/ShipAnimations";
 import useShipAnimations from "../animations/useShipAnimations";
+import detonatorIcon from "../images/detonator_icon.png";
+import primerIcon from "../images/primer_icon.png";
 
 export default function Ship({
     unit,
@@ -111,6 +113,31 @@ export default function Ship({
                     zIndex: 1,
                     fontSize: isTargeted || isActive ? "1em" : "0.0em",
                 }}>{unit.name}</div>
+
+                {!unit.destroyed && unit.aiIntent?.type === "detonator" && <img 
+                    style={{
+                        width: isTargeted || isActive ? "16px" : "10px",
+                        height: isTargeted || isActive ? "16px" : "10px",
+                        position: "absolute",
+                        left: isTargeted || isActive ? 0 : 24,
+                        top: isTargeted || isActive ? 50 : 55,
+                        zIndex: 1,
+                        transition: "width 0.2s, left 0.2s, top 0.2s, height 0.2s",
+                    }}
+                    src={detonatorIcon}
+                />}
+                {!unit.destroyed && unit.aiIntent?.type === "primer" && <img 
+                    style={{
+                        width: isTargeted || isActive ? "16px" : "10px",
+                        height: isTargeted || isActive ? "16px" : "10px",
+                        position: "absolute",
+                        left: isTargeted || isActive ? 0 : 24,
+                        top: isTargeted || isActive ? 50 : 55,
+                        zIndex: 1,
+                        transition: "width 0.2s, left 0.2s, top 0.2s, height 0.2s",
+                    }}
+                    src={primerIcon}
+                />}
             </div>
 
             <div

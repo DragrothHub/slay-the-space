@@ -8,6 +8,8 @@ import ComboBox from "../selections/ComboBox";
 import { useGameState } from "../state/GameStateProvider";
 import StatBar from "./StatBar";
 import DebuffCard from "./DebuffCard";
+import detonatorIcon from "../images/detonator_icon.png";
+import primerIcon from "../images/primer_icon.png";
 
 function ShipCard({
     ship,
@@ -269,6 +271,36 @@ function ShipCard({
                             duration={debuff.duration}
                         />
                     ))}
+                </div>}
+
+                {ship.aiIntent && ship.aiIntent.type != "neutral" && <span
+                    style={{
+                        margin: "10px auto 4px auto",
+                    }}
+                >
+                    Intent
+                </span>}
+
+                {ship.aiIntent && ship.aiIntent.type != "neutral" && 
+                <div style={{
+                    background: "#0a1118",
+                    borderRadius: 10,
+                    padding: 12,
+                    display: "flex",
+                    flexDirection: "column",
+                    border: "2px solid #243342",
+                    textAlign: "center",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 8,
+                }}>
+                    <img 
+                        src={ship.aiIntent.type === "detonator" ? detonatorIcon : ship.aiIntent.type === "primer" ? primerIcon : ""} 
+                        style={{ width: 14 }} />
+                    <span>
+                        Ship intends to use a {ship.aiIntent.type} next round
+                    </span> 
                 </div>}
 
 

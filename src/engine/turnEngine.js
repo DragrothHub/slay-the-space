@@ -46,6 +46,10 @@ export function initBattle(state) {
     state.turnOrder = calculateTurnOrder(state);
     state.turnIndex = 0;
 
+    state.teams.B.forEach(enemy => {
+        enemy.aiIntent = calculateNextAIIntent(state, enemy);
+    });
+
     return setNextActor(state);
 }
 
@@ -116,9 +120,11 @@ function aiTurn(state, actor) {
 
     const intent = actor.aiIntent;
 
-    if (!intent) {
-        // Fallback, falls aus irgendeinem Grund 
-        // noch kein Intent berechnet wurde. 
+    const targetStillAlive = getEnemyUnits(state, actor).some(
+        ship => ship.id === intent.targetId && !ship.destroyed
+    );
+
+    if (!intent || !targetStillAlive) {
         actor.aiIntent = calculateNextAIIntent(state, actor);
     }
 
@@ -134,7 +140,7 @@ function aiTurn(state, actor) {
     state.selectedTargetId = currentIntent.targetId;
 
     // Intent wurde verbraucht. 
-    // // Nach dem Zug wird ein neuer berechnet. 
+    // Nach dem Zug wird ein neuer berechnet. 
     actor.aiIntent = null;
 
     // hier wird im battle screen ein timeout ausgelöst 
