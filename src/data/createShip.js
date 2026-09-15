@@ -37,6 +37,8 @@ export function createShip(numberOfModules = 2, numberOfAttributePoints = 360) {
         attributes: attributes,
 
         manufacturer: determineManufacturer(attributes),
+
+        aiIntent: null,
     };
 
     for(let i = 0; i < numberOfModules; i++){
@@ -98,6 +100,8 @@ export function createEnemyTest(config = {}) {
         attributes,
 
         manufacturer: "Enemy",
+        
+        aiIntent: null,
     };
 
     ship.stats = {

@@ -5,6 +5,7 @@ import { startCooldown, reduceCooldowns, isAbilityOnCooldown } from "./cooldowns
 import { getAllUnits, getActiveUnit, getEnemyUnits } from "./helpers";
 import { abilityCollection } from "../data/abilities";
 import { processTurnEndModules, processTurnStartModules } from "./processModules";
+import { calculateNextAIIntent } from "./ai";
 
 // ========================================
 // INIT
@@ -111,31 +112,33 @@ export function setNextActor(state) {
     return state;
 }
 
-function aiTurn(state, actor){
+function aiTurn(state, actor) {
 
-    const enemies = getEnemyUnits(state, actor).filter(enemy => !enemy.destroyed);
+    const intent = actor.aiIntent;
 
-    if (enemies?.length < 1) {
-        resolveDeaths(state);
+    if (!intent) {
+        // Fallback, falls aus irgendeinem Grund 
+        // noch kein Intent berechnet wurde. 
+        actor.aiIntent = calculateNextAIIntent(state, actor);
+    }
 
-        if (state.winner) return state;
+    const currentIntent = actor.aiIntent;
 
+    if (!currentIntent) {
         advanceTurn(state);
         return setNextActor(state);
     }
 
-    state.selectedTargetId = enemies[Math.floor(Math.random() * enemies.length)].id;
+    state.selectedAbilityId = currentIntent.abilityId;
 
-    const usableAbilities = actor.abilities.filter(
-        a => !isAbilityOnCooldown(actor, a)
-    );
+    state.selectedTargetId = currentIntent.targetId;
 
-    state.selectedAbilityId = usableAbilities[Math.floor(Math.random() * usableAbilities.length)];
+    // Intent wurde verbraucht. 
+    // // Nach dem Zug wird ein neuer berechnet. 
+    actor.aiIntent = null;
 
-    // hier wird im battle screen ein timeout ausgelöst
-    state.phase = "enemy-confirm";
-
-    return state;
+    // hier wird im battle screen ein timeout ausgelöst 
+    state.phase = "enemy-confirm"; return state;
 }
 
 // ========================================
@@ -224,6 +227,13 @@ export function resolveAction(state) {
     resolveAbility(actor, abilityId, target, state);
 
     processTurnEndModules(actor, state);
+
+    // Enemy plant seinen nächsten Zug
+    if (state.teams.B.some(u => u.id === actor.id) && !actor.destroyed) { 
+        actor.aiIntent = calculateNextAIIntent(state, actor); 
+
+        console.log(actor.aiIntent);
+    }
 
     state.selectedAbilityId = null;
     state.selectedTargetId = null;
