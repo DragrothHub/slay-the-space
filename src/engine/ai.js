@@ -133,7 +133,7 @@ function findDetonation(abilities, targets) {
                         ability.detonatesDebuff.includes(debuff.id)
                 );
 
-            if (hasDetonatableDebuff) {
+            if (hasDetonatableDebuff && Math.random() > 0.5) {
                 return {
                     abilityId,
                     targetId: target.id,
