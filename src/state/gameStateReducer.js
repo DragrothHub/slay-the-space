@@ -1,6 +1,6 @@
 import { detonatorAbilityCollection, neutralAbilityCollection, primerAbilityCollection } from "../data/abilities";
 import { confirmAction, resolveAction } from "../engine/turnEngine";
-import generateWorldMap from "../worldmap/generator/generateWorldMap";
+import { recalculateShipDefenses } from "../engine/helpers";
 
 export function gameStateReducer(state, action) {
 
@@ -37,7 +37,7 @@ export function gameStateReducer(state, action) {
                 },
 
                 inventory: {
-                    modules: [],
+                    modules: ["module_rainbow_armor", "module_rainbow_mixed", "module_rainbow_shield"],
 
                     neutralAbilities: [],
                     primerAbilities: [],
@@ -283,9 +283,7 @@ export function gameStateReducer(state, action) {
             const newModuleId =
                 action.newModuleId;
 
-            const updatedShips = [...state.run.ships];
-
-            updatedShips[shipIndex] = {
+            const updatedShip = {
                 ...ship,
 
                 modules: ship.modules.map(
@@ -295,6 +293,19 @@ export function gameStateReducer(state, action) {
                             : moduleId
                 ),
             };
+
+            const defenses = recalculateShipDefenses(updatedShip);
+
+            console.log(defenses);
+
+            updatedShip.stats.maxShield = defenses.maxShield;
+            updatedShip.stats.currentShield = defenses.currentShield;
+
+            updatedShip.stats.maxArmor = defenses.maxArmor;
+            updatedShip.stats.currentArmor = defenses.currentArmor;
+
+            const updatedShips = [...state.run.ships];
+            updatedShips[shipIndex] = updatedShip;
 
             const modules = [
                 ...(state.inventory.modules ?? []),

@@ -3,6 +3,7 @@ import { gameStateReducer } from "./gameStateReducer";
 import generateWorldMap from "../worldmap/generator/generateWorldMap";
 import { getConnectedNodes } from "../worldmap/utils/mapHelpers";
 import { createBattleState, initBattle } from "../engine/turnEngine";
+import { recalculateShipDefenses } from "../engine/helpers";
 
 const initialGameState = {
     screen: "initialshipselection",
@@ -179,7 +180,33 @@ export default function GameStateProvider({ children }) {
 
     }
 
-    function changeModule({ship, index, newModuleId}){
+    function changeModule({ ship, index, newModuleId }) {
+        const updatedShip = {
+            ...ship,
+
+            modules: ship.modules.map(
+                (moduleId, moduleIndex) =>
+                    moduleIndex === index
+                        ? newModuleId
+                        : moduleId
+            ),
+        };
+
+        const defenses = recalculateShipDefenses(updatedShip);
+
+        const shieldWillDecrease = defenses.currentShield < ship.stats.currentShield;
+
+        const armorWillDecrease = defenses.currentArmor < ship.stats.currentArmor;
+
+        if (shieldWillDecrease || armorWillDecrease) {
+            const confirmed = window.confirm(
+                "Changing the module will reduce your current shield or armor. Do you want to continue?"
+            );
+
+            if (!confirmed) {
+                return;
+            }
+        }
 
         dispatch({
             type: "CHANGE_MODULE",
@@ -187,7 +214,6 @@ export default function GameStateProvider({ children }) {
             index: index,
             newModuleId: newModuleId,
         });
-
     }
 
     function changeAbility({ship, index, newAbilityId}){

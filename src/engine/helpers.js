@@ -1,3 +1,5 @@
+import { moduleCollection } from "../data/modules";
+
 export function getAllUnits(state) {
     return [...state.teams.A, ...state.teams.B];
 }
@@ -64,5 +66,39 @@ export function repairShip({ship, shield = 0, armor = 0, hull = 0, full = false}
         shieldRestored,
         armorRestored,
         hullRestored,
+    };
+}
+
+export function recalculateShipDefenses(ship) {
+    let maxShield = 0;
+    let maxArmor = 0;
+
+    for (const module of ship.modules) {
+        maxShield += moduleCollection[module].shield;
+        maxArmor += moduleCollection[module].armor;
+    }
+
+    // Attribute influence
+    maxShield += Math.round(
+        maxShield * (0.2 * ship.attributes.shieldDef / 100)
+    );
+
+    maxArmor += Math.round(
+        maxArmor * (0.2 * ship.attributes.armorDef / 100)
+    );
+
+    return {
+        maxShield,
+        maxArmor,
+
+        currentShield: Math.min(
+            ship.stats.currentShield,
+            maxShield * 2
+        ),
+
+        currentArmor: Math.min(
+            ship.stats.currentArmor,
+            maxArmor * 2
+        ),
     };
 }
