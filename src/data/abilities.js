@@ -1,5 +1,7 @@
 import { neutralBaseDamage, primerBaseDamage, detonatorBaseDamage, baseCooldown } from "./constants";
 import { debuffs } from "../engine/debuffs";
+import detonator_icon from "../images/detonator_icon.png";
+import primer_icon from "../images/primer_icon.png";
 
 const neutralTemplates = [
     {
@@ -311,15 +313,31 @@ function buildNeutral(template) {
         remainingCooldown: 0,
         appliesDebuff: [],
         detonatesDebuff: [],
+        icon: null,
     };
 }
 
 function buildPrimer(template) {
+    const debuffDescriptions = template.appliesDebuff
+        .map(debuffId => {
+            const debuff = debuffs[debuffId];
+
+            if (!debuff) return null;
+
+            return `${debuff.displayName} (${debuff.description})`;
+        })
+        .filter(Boolean)
+        .join(" ");
+
     return {
         id: template.id,
         displayName: template.displayName,
         type: template.type,
         appliesDebuff: template.appliesDebuff,
+
+        description: debuffDescriptions
+            ? `Applies ${debuffDescriptions}`
+            : "",
 
         rarity: template.rarity ?? "common",
 
@@ -330,6 +348,7 @@ function buildPrimer(template) {
         cooldown: baseCooldown,
         remainingCooldown: 0,
         detonatesDebuff: [],
+        icon: primer_icon,
     };
 }
 
@@ -350,6 +369,7 @@ function buildDetonator(template) {
         cooldown: baseCooldown,
         remainingCooldown: 0,
         appliesDebuff: [],
+        icon: detonator_icon,
     };
 }
 

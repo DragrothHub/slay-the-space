@@ -65,6 +65,34 @@ export default function AbilityCard({ abilityId, actor, target, handleSelectAbil
                 >
                     {ability.displayName}
                 </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+
+                    {!ability.primer && !ability.detonator && (
+                        <span>
+                            Neutral
+                        </span>
+                    )}
+
+                    {ability.primer && (
+                        <span style={{ color: "#63d8ff" }}>
+                            Primer
+                        </span>
+                    )}
+
+                    {ability.detonator && (
+                        <span style={{ color: "#ffd45c" }}>
+                            Detonator
+                        </span>
+                    )}
+
+                    <img
+                        src={ability.icon}
+                        style={{
+                            width: 18,
+                            height: 18,
+                        }} />
+                </div>
             </div>
 
             <div
@@ -77,19 +105,6 @@ export default function AbilityCard({ abilityId, actor, target, handleSelectAbil
                 }}
             >
                 <span>{ability.type}</span>
-                {/* <img alt={ability.type} width={"10px"} height={"10px"} src="" /> */}
-
-                {ability.primer && (
-                    <span style={{ color: "#63d8ff" }}>
-                        Primer
-                    </span>
-                )}
-
-                {ability.detonator && (
-                    <span style={{ color: "#ffd45c" }}>
-                        Detonator
-                    </span>
-                )}
 
                 {ability.cooldown > 0 && (
                     <span>
