@@ -18,7 +18,7 @@ export const debuffs = {
     weakened: {
         id: "weakened",
         displayName: "Weakened",
-        description: "Takes increased damage from all sources.",
+        description: "Takes increased damage from all sources",
         color: "#ef4444",
         category: "debuff",
         icon: null,
@@ -28,7 +28,7 @@ export const debuffs = {
     exhausted: {
         id: "exhausted",
         displayName: "Exhausted",
-        description: "Deals reduced damage.",
+        description: "Deals reduced damage",
         color: "#f59e0b",
         category: "debuff",
         icon: null,
@@ -38,7 +38,7 @@ export const debuffs = {
     marked: {
         id: "marked",
         displayName: "Marked",
-        description: "Attacking marked targets reduces all cooldowns.",
+        description: "Attacking marked targets reduces all cooldowns",
         color: "#22c55e",
         category: "debuff",
         icon: null,
@@ -48,7 +48,7 @@ export const debuffs = {
     stunned: {
         id: "stunned",
         displayName: "Stunned",
-        description: "Target skips its next turn.",
+        description: "Target skips its next turn",
         color: "#a855f7",
         category: "debuff",
         icon: null,
@@ -58,7 +58,7 @@ export const debuffs = {
     shocked: {
         id: "shocked",
         displayName: "Shocked",
-        description: "Takes damage over time.",
+        description: "Takes damage over time",
         color: "#3b82f6",
         category: "debuff",
         icon: null,
@@ -68,7 +68,7 @@ export const debuffs = {
     shieldExplosion: {
         id: "shieldExplosion",
         displayName: "Shield Explosion",
-        description: "Triggers an explosion dealing damage equal to current shield value.",
+        description: "Triggers an explosion dealing damage equal to current shield value",
         color: mechanicColor,
         category: "mechanic",
         icon: explosion_icon,
@@ -78,7 +78,7 @@ export const debuffs = {
     shieldRegeneration: {
         id: "shieldRegeneration",
         displayName: "Shield Regeneration",
-        description: "When timer reaches zero the shields will be restored if not destroyed.",
+        description: "When timer reaches zero the shields will be restored if not destroyed",
         color: mechanicColor,
         category: "mechanic",
         icon: shield_icon,
@@ -88,7 +88,7 @@ export const debuffs = {
     summonCopy: {
         id: "summonCopy",
         displayName: "Summon Copy",
-        description: "When timer reaches zero the ship will summon a copy of itself.",
+        description: "When timer reaches zero the ship will summon a copy of itself",
         color: mechanicColor,
         category: "mechanic",
         icon: ship_icon,
@@ -98,7 +98,7 @@ export const debuffs = {
     cleanseDebuffs: {
         id: "cleanseDebuffs",
         displayName: "Cleanse Debuffs",
-        description: "Removes all debuffs from all ships.",
+        description: "Removes all debuffs from all ships",
         color: mechanicColor,
         category: "mechanic",
         icon: cleanse_icon,
@@ -108,7 +108,7 @@ export const debuffs = {
     laserResistance: {
         id: "laserResistance",
         displayName: "Laser Immunity",
-        description: "Incoming laser damage greatly reduced.",
+        description: "Incoming laser damage greatly reduced",
         color: mechanicColor,
         category: "mechanic",
         icon: shield_icon,
@@ -118,7 +118,7 @@ export const debuffs = {
     kineticResistance: {
         id: "kineticResistance",
         displayName: "Kinetic Immunity",
-        description: "Incoming kinetic damage greatly reduced.",
+        description: "Incoming kinetic damage greatly reduced",
         color: mechanicColor,
         category: "mechanic",
         icon: armor_icon,
