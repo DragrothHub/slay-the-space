@@ -228,18 +228,6 @@ export const moduleCollection = {
         color: colorWhite,
         rarity: rarityCommon,
     },
-    module_vampyr_armor : {
-        id: "module_vampyr_armor",
-        displayName: "Vampyr", 
-        description: "Refill some shield by dealing damage",
-        effect: "vampyr",
-        defenceType: "armor",
-        defenceTypeColor: colorWhite,
-        shield: 0,
-        armor: 100,
-        color: colorWhite,
-        rarity: rarityCommon,
-    },
     module_vampyr_mixed : {
         id: "module_vampyr_mixed",
         displayName: "Vampyr", 
