@@ -37,7 +37,7 @@ export function gameStateReducer(state, action) {
                 },
 
                 inventory: {
-                    modules: ["module_rainbow_armor", "module_rainbow_mixed", "module_rainbow_shield"],
+                    modules: [],
 
                     neutralAbilities: [],
                     primerAbilities: [],
