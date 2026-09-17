@@ -86,12 +86,12 @@ export default function AbilityCard({ abilityId, actor, target, handleSelectAbil
                         </span>
                     )}
 
-                    <img
+                    {(ability.primer || ability.detonator) && <img
                         src={ability.icon}
                         style={{
                             width: 18,
                             height: 18,
-                        }} />
+                        }} />}
                 </div>
             </div>
 
