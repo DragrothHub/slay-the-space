@@ -1,5 +1,6 @@
 import { getFriendlyUnits, repairShip } from "./helpers";
 import { moduleCollection } from "../data/modules";
+import { debuffs } from "./debuffs";
 
 function getModuleCount(ship, effect) {
     if(ship == null) return 0;
@@ -98,7 +99,13 @@ export function processOutgoingDamageModules(
 
     const rainbowCount = getModuleCount(activeShip, "rainbow");
     if (rainbowCount > 0) {
-        const distinctDebuffs = [...new Set(target.stats.debuffs.map(debuff => debuff.id))];
+        const distinctDebuffs = [
+            ...new Set(
+                target.stats.debuffs
+                    .filter(debuff => debuffs[debuff.id].category !== "mechanic")
+                    .map(debuff => debuff.id)
+            )
+        ];
 
         if (distinctDebuffs.length > 1) {
             damage *= 1 + (0.1 * (distinctDebuffs.length - 1) * rainbowCount);
