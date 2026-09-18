@@ -1,7 +1,8 @@
 import { getFriendlyUnits, repairShip } from "./helpers";
-import { getRandomModule, moduleCollection } from "../data/modules";
+import { moduleCollection } from "../data/modules";
 
 function getModuleCount(ship, effect) {
+    if(ship == null) return 0;
     return ship.modules.filter(
         moduleId => moduleCollection[moduleId]?.effect === effect
     ).length;

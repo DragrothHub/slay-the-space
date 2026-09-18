@@ -264,6 +264,11 @@ export function resolveAction(state) {
 
 function resolveAbility(actor, abilityId, target, state) {
     let ability = abilityCollection[abilityId];
+
+    state.log.push(
+        `${actor.name} uses ${ability.displayName} on ${target.name}`
+    );
+
     applyDamage(target, actor, ability, state);
 
     if (ability.appliesDebuff?.length > 0) {
@@ -281,10 +286,6 @@ function resolveAbility(actor, abilityId, target, state) {
     }
 
     startCooldown(actor, abilityId);
-
-    state.log.push(
-        `${actor.name} used ${ability.displayName} on ${target.name}`
-    );
 }
 
 // ========================================

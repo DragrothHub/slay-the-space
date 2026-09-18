@@ -39,10 +39,10 @@ function damageLayer(currentValue, incomingDamage, multiplier) {
 export function applyDamage(target, actor, ability, state) {
     let damage = ability.value;
 
-    if (ability.type === "laser"){
+    if (ability.type === "laser" && actor != null){
         damage += Math.round(damage * (0.2 * actor.attributes.laserAtk / 100));
     }
-    else if (ability.type === "kinetic"){
+    else if (ability.type === "kinetic" && actor != null){
         damage += Math.round(damage * (0.2 * actor.attributes.kineticAtk / 100));
     }
 
@@ -141,6 +141,10 @@ export function applyDamage(target, actor, ability, state) {
         ability,
         totalDamage,
         state
+    );
+
+    state.log.push(
+        `${target.name} takes ${totalDamage} damage from ${ability.displayName}`
     );
 
     return totalDamage;

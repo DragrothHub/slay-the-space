@@ -75,6 +75,7 @@ export function detonate(target, actor, ability, state) {
 
     const damageDone = applyDamage(target, actor, {
         ...ability,
+        displayName: "Detonaton",
         value: explosionDamage,
     }, state);
 
@@ -108,14 +109,9 @@ export function detonate(target, actor, ability, state) {
             for (const enemy of splashTargets) {
                 applyDamage(enemy, actor, {
                     ...ability,
+                    displayName: "Bomber Explosion",
                     value: splashDamage,
                 }, state);
-            }
-
-            if (splashTargets.length > 0) {
-                state.log.push(
-                    `Explosion deals ${splashDamage} splash damage to ${splashTargets.length} targets`
-                );
             }
 
             break;
@@ -126,14 +122,11 @@ export function detonate(target, actor, ability, state) {
             // SINGLE TARGET DAMAGE
             // ==============================
 
-            const spikeDamage = applyDamage(target, actor, {
+            applyDamage(target, actor, {
                 ...ability,
+                displayName: "Spike",
                 value: explosionDamage,
             }, state);
-
-            state.log.push(
-                `Spike deals another ${spikeDamage} damage to ${target.name}`
-            );
 
             break;
         }
@@ -211,14 +204,9 @@ export function detonate(target, actor, ability, state) {
                 for (const enemy of splashTargets) {
                     applyDamage(enemy, actor, {
                         ...ability,
+                        displayName: "Cascade Explosion",
                         value: cascadeDamage,
                     }, state);
-                }
-
-                if (splashTargets.length > 0) {
-                    state.log.push(
-                        `Cascade explosion deals ${cascadeDamage} splash damage to ${splashTargets.length} targets`
-                    );
                 }
 
                 // Find next enemy with at least one
@@ -296,12 +284,6 @@ export function detonate(target, actor, ability, state) {
                 for (const debuffId of detonateDebuffIds) {
                     applyDebuff(enemy, debuffId);
                 }
-            }
-
-            if (splashTargets.length > 0) {
-                state.log.push(
-                    `Explosion deals ${splashDamage} splash damage to ${splashTargets.length} targets`
-                );
             }
 
             break;

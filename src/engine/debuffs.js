@@ -161,23 +161,15 @@ export function processTurnStartDebuffs(unit, state) {
             d => d.id === "shocked"
         ).length;
 
-        const damage = (2 * shockDebuffCount);
+        const damage = (3 * shockDebuffCount);
 
-        unit.stats.currentHull = Math.max(
-            0,
-            unit.stats.currentHull - damage
-        );
-
-        state.damageEvents.push({
-            targetId: unit.id,
-            shieldDmg: 0,
-            armorDmg: 0,
-            hullDmg: damage,
-            amount: damage,
-            timestamp: Date.now(),
-        });
-
-        state.log.push(`${unit.name} takes ${damage} shock damage.`);
+        applyDamage(unit, null,
+            {
+                id: "shocked",
+                displayName: "Shocked",
+                type: "laser",
+                value: damage,
+            }, state);
     }
 
     if (hasDebuff(unit, "shieldExplosion")) {
@@ -189,20 +181,21 @@ export function processTurnStartDebuffs(unit, state) {
         if (shieldExplosionDebuffsExplodingThisTurn.length > 0) {
             const damage = unit.stats.currentShield;
 
+            if(damage <= 0) return;
+
+            state.log.push(
+                `Shield Explosion triggered!`
+            );
+
             const enemies = getEnemyUnits(state, unit).filter(enemy => !enemy.destroyed);
 
             for (const enemy of enemies) {
                 applyDamage(enemy, unit, {
                     id: "shieldExplosion",
+                    displayName: "Shield Explosion",
                     type: "none",
                     value: damage,
                 }, state);
-            }
-
-            if (enemies.length > 0) {
-                state.log.push(
-                    `Shield Explosion deals ${damage} damage to ${enemies.length} targets`
-                );
             }
 
             unit.stats.currentShield = 0;
