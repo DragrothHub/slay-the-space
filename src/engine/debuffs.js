@@ -148,6 +148,17 @@ export function applyDebuff(target, debuffId, duration) {
         id: debuffId,
         duration: actualDuration,
     });
+
+    target.stats.debuffs.sort((a, b) => {
+        const categoryA = debuffs[a.id]?.category === "mechanic" ? 0 : 1;
+        const categoryB = debuffs[b.id]?.category === "mechanic" ? 0 : 1;
+
+        if (categoryA !== categoryB) {
+            return categoryA - categoryB;
+        }
+
+        return a.id.localeCompare(b.id);
+    });
 }
 
 /**
