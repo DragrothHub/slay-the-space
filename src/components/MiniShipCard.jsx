@@ -138,44 +138,50 @@ export default function MiniShipCard({ ship, borderColor, backgroundColor, onCli
                             gap: 4,
                         }}
                     >
-                        {ship.abilities.map(id => (
-                            <span
-                                key={id}
-                                style={{
-                                    flex: "1 1 60px",
-                                    textAlign: "center",
-                                    fontSize: 10,
-                                    padding: "2px 6px",
-                                    borderRadius: 999,
-                                    background: "#1f2937",
-                                    border: "1px solid #374151",
-                                }}
-                            >
-                                {abilityCollection[id].primer || abilityCollection[id].detonator ? "" : abilityCollection[id].displayName}
-                                {abilityCollection[id].primer &&
-                                    <span style={{
-                                        backgroundImage: gradientFromDebuffList(abilityCollection[id]?.appliesDebuff),
-                                        backgroundClip: "text",
-                                        WebkitBackgroundClip: "text",
-                                        color: "transparent",
-                                        WebkitTextFillColor: "transparent",
-                                    }}>
-                                        {abilityCollection[id].displayName}
-                                    </span>
-                                }
-                                {abilityCollection[id].detonator && 
-                                    <span style={{ 
-                                        backgroundImage: gradientFromDebuffList(abilityCollection[id]?.detonatesDebuff),
-                                        backgroundClip: "text",
-                                        WebkitBackgroundClip: "text",
-                                        color: "transparent",
-                                        WebkitTextFillColor: "transparent", 
-                                    }}>
-                                        {abilityCollection[id].displayName}
-                                    </span>
-                                }
-                            </span>
-                        ))}
+                        {ship.abilities.map(id => {
+
+                            if(!abilityCollection[id].primer && !abilityCollection[id].detonator) return null;
+
+                            return (
+                                <span
+                                    key={id}
+                                    style={{
+                                        flex: "1 1 60px",
+                                        whiteSpace: "nowrap",
+                                        textAlign: "center",
+                                        fontSize: 10,
+                                        padding: "2px 6px",
+                                        borderRadius: 999,
+                                        background: "#1f2937",
+                                        border: "1px solid #374151",
+                                    }}
+                                >
+                                    {abilityCollection[id].primer || abilityCollection[id].detonator ? "" : abilityCollection[id].displayName}
+                                    {abilityCollection[id].primer &&
+                                        <span style={{
+                                            backgroundImage: gradientFromDebuffList(abilityCollection[id]?.appliesDebuff),
+                                            backgroundClip: "text",
+                                            WebkitBackgroundClip: "text",
+                                            color: "transparent",
+                                            WebkitTextFillColor: "transparent",
+                                        }}>
+                                            {abilityCollection[id].displayName}
+                                        </span>
+                                    }
+                                    {abilityCollection[id].detonator &&
+                                        <span style={{
+                                            backgroundImage: gradientFromDebuffList(abilityCollection[id]?.detonatesDebuff),
+                                            backgroundClip: "text",
+                                            WebkitBackgroundClip: "text",
+                                            color: "transparent",
+                                            WebkitTextFillColor: "transparent",
+                                        }}>
+                                            {abilityCollection[id].displayName}
+                                        </span>
+                                    }
+                                </span>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

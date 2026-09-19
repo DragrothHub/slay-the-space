@@ -3,7 +3,7 @@ import { debuffs, hasDebuffOfList } from "../engine/debuffs";
 import { getRemainingCooldown, isAbilityOnCooldown } from "../engine/cooldowns";
 import { abilityCollection } from "../data/abilities";
 
-export default function AbilityCard({ abilityId, actor, target, handleSelectAbility = () => { } }) {
+export default function AbilityCard({ abilityId, actor, target, withDescription = true, handleSelectAbility = () => { } }) {
     const ability = abilityCollection[abilityId];
     const disabled = actor != undefined ? isAbilityOnCooldown(actor, abilityId) : false;
 
@@ -122,6 +122,12 @@ export default function AbilityCard({ abilityId, actor, target, handleSelectAbil
             {ability.detonatesDebuff?.length > 0 && (
                 <span>
                     Detonates {formatDebuffList(ability.detonatesDebuff)}
+                </span>
+            )}
+
+            {ability.description && withDescription && (
+                <span style={{fontSize: 12, color: "#9cb7ca",}}>
+                    {ability.description}
                 </span>
             )}
         </div>

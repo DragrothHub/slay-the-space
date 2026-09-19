@@ -297,10 +297,77 @@ const detonatorTemplates = [
     },
 ]
 
+const detonatorInfo = {
+    vampire: {
+        displayName: "Shield Vampyr",
+        description: "Restores Shields when a detonated target takes damage",
+    },
+
+    bomber: {
+        displayName: "Blast Charge",
+        description: "Deals additional area damage around the target",
+    },
+
+    spike: {
+        displayName: "Impaler",
+        description: "Deals a powerful burst of additional damage to the target",
+    },
+
+    spreader: {
+        displayName: "Contagion",
+        description: "Spreads the detonated effect to nearby enemies",
+    },
+
+    cascade: {
+        displayName: "Cascade",
+        description: "Triggers additional detonations on nearby targets",
+    },
+
+    stunner: {
+        displayName: "System Shock",
+        description: "Stuns the target after the detonation",
+    },
+
+    bomber_elite: {
+        displayName: "Contagion Blast Charge (Elite)",
+        description: "Deals additional area damage around the target and spreads the debuff",
+    }
+};
+
+function getEliteDetonatorName(effect) {
+    const eliteNames = {
+        bomber: "Blast Charge (Elite)",
+        spreader: "Contagion (Elite)",
+        bomber_elite: "Contagion Blast Charge (Elite)",
+    };
+
+    return eliteNames[effect] ?? "Elite Detonator";
+}
+
+function getDetonatorInfo(template) {
+    const info = detonatorInfo[template.detonatorEffect];
+
+    if (!info) {
+        return {
+            displayName: "Detonator",
+            description: "",
+        };
+    }
+
+    if (template.rarity === "elite") {
+        return {
+            displayName: getEliteDetonatorName(template.detonatorEffect),
+            description: info.description,
+        };
+    }
+
+    return info;
+}
+
 function buildNeutral(template) {
     return {
         id: template.id,
-        displayName: template.displayName,
+        displayName: template.type === "laser" ? "Laser Battery" : "Cannon Broadside",
         type: template.type,
 
         rarity: template.rarity ?? "common",
@@ -331,7 +398,7 @@ function buildPrimer(template) {
 
     return {
         id: template.id,
-        displayName: template.displayName,
+        displayName: "Primer",
         type: template.type,
         appliesDebuff: template.appliesDebuff,
 
@@ -353,9 +420,13 @@ function buildPrimer(template) {
 }
 
 function buildDetonator(template) {
+    const info = getDetonatorInfo(template);
+
     return {
         id: template.id,
-        displayName: template.displayName,
+        displayName: info.displayName,
+        description: info.description,
+
         type: template.type,
         detonatorEffect: template.detonatorEffect,
         detonatesDebuff: template.detonatesDebuff,
