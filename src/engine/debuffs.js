@@ -1,5 +1,5 @@
 import { applyDamage } from "./damage";
-import { getEnemyUnits } from "./helpers";
+import { getEnemyUnits, getFriendlyUnits } from "./helpers";
 
 import shield_icon from "../images/shield_icon.png";
 import armor_icon from "../images/armor_icon.png";
@@ -98,7 +98,7 @@ export const debuffs = {
     cleanseDebuffs: {
         id: "cleanseDebuffs",
         displayName: "Cleanse Debuffs",
-        description: "Removes all debuffs from all ships",
+        description: "Removes all debuffs from all enemy ships",
         color: mechanicColor,
         category: "mechanic",
         icon: cleanse_icon,
@@ -323,17 +323,17 @@ export function processTurnStartDebuffs(unit, state) {
 
         if (cleanseEffects.length > 0) {
 
-            for (const team of Object.values(state.teams)) {
-                for (const ship of team) {
+            const team = getFriendlyUnits(state, unit);
 
-                    ship.stats.debuffs = ship.stats.debuffs.filter(
-                        d => debuffs[d.id]?.category === "mechanic"
-                    );
-                }
+            for (const ship of team) {
+
+                ship.stats.debuffs = ship.stats.debuffs.filter(
+                    d => debuffs[d.id]?.category === "mechanic"
+                );
             }
 
             state.log.push(
-                `<enemy>${unit.name}</enemy> cleanses all debuffs from all ships.`
+                `<enemy>${unit.name}</enemy> cleanses all debuffs from all enemy ships.`
             );
 
             state.animationEvents.push({
