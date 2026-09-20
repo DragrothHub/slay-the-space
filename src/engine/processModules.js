@@ -134,7 +134,7 @@ export function processIncomingDamageModules(
         damage *= 1 - (0.05 * formationCount);
 
         if (formationCount > 0) {
-            battleState.log.push(`<${isPlayerShip(battleState, target) ? "player" : "enemy"}>${activeShip.name}</${isPlayerShip(battleState, target) ? "player" : "enemy"}>: Formation is reducing incoming damage (-${5 * formationCount}%).`);
+            battleState.log.push(`<${isPlayerShip(battleState, target) ? "player" : "enemy"}>${target.name}</${isPlayerShip(battleState, target) ? "player" : "enemy"}>: Formation is reducing incoming damage (-${5 * formationCount}%).`);
         }
     }
 
