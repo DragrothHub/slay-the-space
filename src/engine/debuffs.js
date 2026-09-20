@@ -384,6 +384,13 @@ export function hasDebuff(unit, id) {
     return unit.stats.debuffs.some(d => d.id === id);
 }
 
+export function getDebuffStacks(unit, id) {
+    if (unit == null)
+        return 0;
+
+    return unit.stats.debuffs.filter(d => d.id === id).length;
+}
+
 export function hasDebuffOfList(unit, idArray) {
     if (unit == null || idArray == null)
         return false;
