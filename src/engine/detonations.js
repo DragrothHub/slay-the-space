@@ -167,7 +167,11 @@ export function detonate(target, actor, ability, state) {
                         debuff => debuff.id === debuffId
                     ).length;
 
-                    for (let i = 0; i < stackCount; i++) {
+                    // for (let i = 0; i < stackCount; i++) {
+                    //     applyDebuff(enemy, debuffId);
+                    // }
+
+                    if(stackCount > 0){
                         applyDebuff(enemy, debuffId);
                     }
                 }
