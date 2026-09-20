@@ -117,6 +117,34 @@ export function detonate(target, actor, ability, state) {
             break;
         }
 
+        case "cleanse": {
+            // ==============================
+            // CLEANSE DEBUFFS
+            // ==============================
+
+            const team = getFriendlyUnits(state, actor);
+
+            for (const ship of team) {
+
+                ship.stats.debuffs = ship.stats.debuffs.filter(
+                    d => debuffs[d.id]?.category === "mechanic"
+                );
+            }
+
+            state.log.push(
+                `<${isPlayerShip(state, actor) ? "player" : "enemy"}>${actor.name}</${isPlayerShip(state, actor) ? "player" : "enemy"}> cleanses all debuffs from all team ships.`
+            );
+
+            state.animationEvents.push({
+                targetId: actor.id,
+                mechanicId: "cleanseDebuffs",
+                color: debuffs[ability.detonatesDebuff[0]].color,
+                timestamp: Date.now(),
+            });
+
+            break;
+        }
+
         case "spike": {
             // ==============================
             // SINGLE TARGET DAMAGE

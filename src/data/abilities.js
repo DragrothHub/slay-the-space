@@ -226,6 +226,40 @@ const detonatorTemplates = [
         detonatesDebuff: [debuffs.shocked.id],
     },
 
+    // CLEANSE
+    {
+        id: "detonator_offensive_laser_exhausted_cleanse",
+        displayName: "Detonator_cleanse",
+        type: "laser",
+        detonatorEffect: "cleanse",
+        detonatesDebuff: [debuffs.exhausted.id],
+        rarity: "common",
+    },
+    {
+        id: "detonator_offensive_laser_marked_cleanse",
+        displayName: "Detonator_cleanse",
+        type: "laser",
+        detonatorEffect: "cleanse",
+        detonatesDebuff: [debuffs.marked.id],
+        rarity: "common",
+    },
+    {
+        id: "detonator_offensive_laser_weakened_cleanse",
+        displayName: "Detonator_cleanse",
+        type: "laser",
+        detonatorEffect: "cleanse",
+        detonatesDebuff: [debuffs.weakened.id],
+        rarity: "common",
+    },
+    {
+        id: "detonator_offensive_laser_shocked_cleanse",
+        displayName: "Detonator_cleanse",
+        type: "laser",
+        detonatorEffect: "cleanse",
+        detonatesDebuff: [debuffs.shocked.id],
+        rarity: "common",
+    },
+
     // ELITE BOMBER SPREAD
     {
         id: "detonator_offensive_kinetic_exhausted_bomber_elite",
@@ -328,6 +362,11 @@ const detonatorInfo = {
         description: "Stuns the target after the detonation",
     },
 
+    cleanse: {
+        displayName: "Cleanse",
+        description: "Cleanse all debuffs from all friendly ships",
+    },
+
     bomber_elite: {
         displayName: "Contagion Blast Charge (Elite)",
         description: "Deals additional area damage around the target and spreads the debuff",
@@ -425,7 +464,7 @@ function buildDetonator(template) {
     return {
         id: template.id,
         displayName: info.displayName,
-        description: info.description,
+        description:  "Detonation: " + info.description,
 
         type: template.type,
         detonatorEffect: template.detonatorEffect,

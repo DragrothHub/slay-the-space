@@ -126,7 +126,7 @@ export default function useShipAnimations({
                         ...prev,
                         {
                             id,
-                            color: mechanicEffect.color,
+                            color: event.color ?? mechanicEffect.color,
                         },
                     ]);
 
