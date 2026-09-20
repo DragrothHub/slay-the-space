@@ -367,7 +367,7 @@ function getDetonatorInfo(template) {
 function buildNeutral(template) {
     return {
         id: template.id,
-        displayName: template.type === "laser" ? "Laser Battery" : "Cannon Broadside",
+        displayName: template.type === "laser" ? "Laser Battery" : "Cannon Barrage",
         type: template.type,
 
         rarity: template.rarity ?? "common",

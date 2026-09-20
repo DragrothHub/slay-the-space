@@ -32,6 +32,12 @@ export function getFriendlyUnits(state, actor) {
     return isInTeamA ? state.teams.A : state.teams.B;
 }
 
+export function isPlayerShip(state, actor){
+    return state.teams.A.some(
+        u => u.id === actor.id
+    );
+}
+
 export function repairShip({ship, shield = 0, armor = 0, hull = 0, full = false}) {
     if (!ship) return;
 

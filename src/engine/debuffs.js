@@ -231,7 +231,7 @@ export function processTurnStartDebuffs(unit, state) {
         if (shieldRegenerations.length > 0 && unit.stats.currentShield) {
             unit.stats.currentShield = unit.stats.maxShield;
             state.log.push(
-                `${unit.name}'s shields are fully regenerated.`
+                `<enemy>${unit.name}</enemy>'s shields are fully regenerated.`
             );
 
             state.animationEvents.push({
@@ -291,13 +291,13 @@ export function processTurnStartDebuffs(unit, state) {
                     }
 
                     state.log.push(
-                        `${unit.name} summons a copy of itself.`
+                        `<enemy>${unit.name}</enemy> summons a copy of itself.`
                     );
 
                 } else {
 
                     state.log.push(
-                        `${unit.name} cannot summon a copy. The team is full.`
+                        `<enemy>${unit.name}</enemy> cannot summon a copy. The team is full.`
                     );
                 }
             }
@@ -333,7 +333,7 @@ export function processTurnStartDebuffs(unit, state) {
             }
 
             state.log.push(
-                `${unit.name} cleanses all debuffs from all ships.`
+                `<enemy>${unit.name}</enemy> cleanses all debuffs from all ships.`
             );
 
             state.animationEvents.push({

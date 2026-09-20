@@ -1,6 +1,6 @@
 import { applyDamage } from "./damage";
 import { applyDebuff, debuffs } from "./debuffs";
-import { getFriendlyUnits, repairShip } from "./helpers";
+import { getFriendlyUnits, isPlayerShip, repairShip } from "./helpers";
 import { moduleCollection } from "../data/modules";
 
 function removeDebuffsExcept(target, debuffIds, amountToPreserve) {
@@ -80,7 +80,7 @@ export function detonate(target, actor, ability, state) {
     }, state);
 
     state.log.push(
-        `${detonatedDebuffCount} stack(s) of ${detonateDebuffIds.join(", ")} detonated on ${target.name} for ${damageDone} damage`
+        `${detonatedDebuffCount} stack(s) of ${detonateDebuffIds.join(", ")} detonated on <${isPlayerShip(state, target) ? "player" : "enemy"}>${target.name}</${isPlayerShip(state, target) ? "player" : "enemy"}> for <damage>${damageDone}</damage> damage`
     );
 
     state.animationEvents.push({
@@ -124,7 +124,7 @@ export function detonate(target, actor, ability, state) {
 
             applyDamage(target, actor, {
                 ...ability,
-                displayName: "Spike",
+                displayName: "Impale",
                 value: explosionDamage,
             }, state);
 
@@ -142,7 +142,7 @@ export function detonate(target, actor, ability, state) {
             });
 
             state.log.push(
-                `${actor.name}: Gained ${shieldRestored} shield by Vampyr Detonator.`
+                `<${isPlayerShip(state, actor) ? "player" : "enemy"}>${actor.name}</${isPlayerShip(state, actor) ? "player" : "enemy"}>: Gained <shield>${shieldRestored}</shield> shield by Vampyr Detonator.`
             );
 
             break;
@@ -256,7 +256,7 @@ export function detonate(target, actor, ability, state) {
             );
 
             state.log.push(
-                `Stunned ${target.name} for ${detonatedDebuffCount} rounds`
+                `Stunned <${isPlayerShip(state, target) ? "player" : "enemy"}>${target.name}</${isPlayerShip(state, target) ? "player" : "enemy"}> for ${detonatedDebuffCount} rounds`
             );
 
             break;

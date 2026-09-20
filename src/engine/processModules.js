@@ -1,4 +1,4 @@
-import { getFriendlyUnits, repairShip } from "./helpers";
+import { getFriendlyUnits, isPlayerShip, repairShip } from "./helpers";
 import { moduleCollection } from "../data/modules";
 import { debuffs } from "./debuffs";
 
@@ -46,8 +46,8 @@ export function processTurnEndModules(activeShip, battleState) {
             ship: activeShip,
             shield: 5 * repairbotShieldCount,
         });
-
-        battleState.log.push(`${activeShip.name} was repaired by repair bot (+${shieldRestored} Shield).`);
+        
+        battleState.log.push(`<${isPlayerShip(battleState, activeShip) ? "player" : "enemy"}>${activeShip.name}</${isPlayerShip(battleState, activeShip) ? "player" : "enemy"}> was repaired by repair bot (<shield>+${shieldRestored}</shield> Shield).`);
     }
 
     //repairbot_armor
@@ -59,7 +59,7 @@ export function processTurnEndModules(activeShip, battleState) {
             armor: 5 * repairbotArmorCount,
         });
 
-        battleState.log.push(`${activeShip.name} was repaired by repair bot (+${armorRestored} Armor).`);
+        battleState.log.push(`<${isPlayerShip(battleState, activeShip) ? "player" : "enemy"}>${activeShip.name}</${isPlayerShip(battleState, activeShip) ? "player" : "enemy"}> was repaired by repair bot (<armor>+${armorRestored}</armor> Armor).`);
     }
 
     //repairbot_mixed
@@ -72,7 +72,7 @@ export function processTurnEndModules(activeShip, battleState) {
             armor: 2 * repairbotMixedCount,
         });
 
-        battleState.log.push(`${activeShip.name} was repaired by repair bot (+${shieldRestored} Shield / +${armorRestored} Armor).`);
+        battleState.log.push(`<${isPlayerShip(battleState, activeShip) ? "player" : "enemy"}>${activeShip.name}</${isPlayerShip(battleState, activeShip) ? "player" : "enemy"}> was repaired by repair bot (<shield>+${shieldRestored}</shield> Shield / <armor>+${armorRestored}</armor> Armor).`);
     }
 
 }
@@ -93,7 +93,7 @@ export function processOutgoingDamageModules(
         damage *= 1 + (0.10 * formationCount);
 
         if (formationCount > 0) {
-            battleState.log.push(`${activeShip.name}: Formation is boosting damage (+${10 * formationCount}%).`);
+            battleState.log.push(`<${isPlayerShip(battleState, activeShip) ? "player" : "enemy"}>${activeShip.name}</${isPlayerShip(battleState, activeShip) ? "player" : "enemy"}>: Formation is boosting damage (+${10 * formationCount}%).`);
         }
     }
 
@@ -110,7 +110,7 @@ export function processOutgoingDamageModules(
         if (distinctDebuffs.length > 1) {
             damage *= 1 + (0.1 * (distinctDebuffs.length - 1) * rainbowCount);
 
-            battleState.log.push(`${activeShip.name}: Rainbow is boosting damage (+${10 * (distinctDebuffs.length - 1) * rainbowCount}%).`);
+            battleState.log.push(`<${isPlayerShip(battleState, activeShip) ? "player" : "enemy"}>${activeShip.name}</${isPlayerShip(battleState, activeShip) ? "player" : "enemy"}>: Rainbow is boosting damage (+${10 * (distinctDebuffs.length - 1) * rainbowCount}%).`);
         }
     }
 
@@ -134,7 +134,7 @@ export function processIncomingDamageModules(
         damage *= 1 - (0.05 * formationCount);
 
         if (formationCount > 0) {
-            battleState.log.push(`${target.name}: Formation is reducing incoming damage (-${5 * formationCount}%).`);
+            battleState.log.push(`<${isPlayerShip(battleState, target) ? "player" : "enemy"}>${activeShip.name}</${isPlayerShip(battleState, target) ? "player" : "enemy"}>: Formation is reducing incoming damage (-${5 * formationCount}%).`);
         }
     }
 
@@ -158,6 +158,6 @@ export function processDamageDealtModules(
             shield: shieldRegen,
         });
 
-        battleState.log.push(`${activeShip.name}: Gained ${shieldRestored} shield by Vampyr.`);
+        battleState.log.push(`<${isPlayerShip(battleState, activeShip) ? "player" : "enemy"}>${activeShip.name}</${isPlayerShip(battleState, activeShip) ? "player" : "enemy"}>: Gained <shield>${shieldRestored}</shield> shield by Vampyr.`);
     }
 }

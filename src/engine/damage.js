@@ -1,4 +1,5 @@
 import { hasDebuff } from "./debuffs";
+import { isPlayerShip } from "./helpers";
 import { processIncomingDamageModules, processOutgoingDamageModules, processDamageDealtModules } from "./processModules";
 
 // ========================================
@@ -144,7 +145,7 @@ export function applyDamage(target, actor, ability, state) {
     );
 
     state.log.push(
-        `${target.name} takes ${totalDamage} damage from ${ability.displayName}`
+        `<${isPlayerShip(state, target) ? "player" : "enemy"}>${target.name}</${isPlayerShip(state, target) ? "player" : "enemy"}> takes <damage>${totalDamage}</damage> damage from ${ability.displayName}`
     );
 
     return totalDamage;

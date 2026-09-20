@@ -1,8 +1,8 @@
 import { detonate } from "./detonations";
 import { applyDamage } from "./damage";
 import { applyDebuff, processTurnStartDebuffs, tickDebuffs, hasDebuff, hasDebuffOfList } from "./debuffs";
-import { startCooldown, reduceCooldowns, isAbilityOnCooldown } from "./cooldowns";
-import { getAllUnits, getActiveUnit, getEnemyUnits } from "./helpers";
+import { startCooldown, reduceCooldowns } from "./cooldowns";
+import { getAllUnits, getActiveUnit, getEnemyUnits, isPlayerShip } from "./helpers";
 import { abilityCollection } from "../data/abilities";
 import { processTurnEndModules, processTurnStartModules } from "./processModules";
 import { calculateNextAIIntent } from "./ai";
@@ -91,7 +91,7 @@ export function setNextActor(state) {
 
     // stunned
     if (hasDebuff(actor, "stunned")) {
-        state.log.push(`${actor.name} is stunned and skips turn.`);
+        state.log.push(`<${isPlayerShip(state, actor) ? "player" : "enemy"}>${actor.name}</${isPlayerShip(state, actor) ? "player" : "enemy"}> is stunned and skips turn.`);
 
         tickDebuffs(actor);
 
@@ -266,7 +266,7 @@ function resolveAbility(actor, abilityId, target, state) {
     let ability = abilityCollection[abilityId];
 
     state.log.push(
-        `${actor.name} uses ${ability.displayName} on ${target.name}`
+        `<${isPlayerShip(state, actor) ? "player" : "enemy"}>${actor.name}</${isPlayerShip(state, actor) ? "player" : "enemy"}> uses ${ability.displayName} on <${isPlayerShip(state, target) ? "player" : "enemy"}>${target.name}</${isPlayerShip(state, target) ? "player" : "enemy"}>`
     );
 
     applyDamage(target, actor, ability, state);
@@ -348,7 +348,7 @@ function resolveDeaths(state) {
         unit.destroyed = true;
         unit.stats.debuffs = [];
 
-        state.log.push(`${unit.name} was destroyed.`);
+        state.log.push(`<${isPlayerShip(state, unit) ? "player" : "enemy"}>${unit.name}</${isPlayerShip(state, unit) ? "player" : "enemy"}> was destroyed.`);
     });
 
     checkVictory(state);
