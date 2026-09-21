@@ -133,7 +133,18 @@ export const debuffs = {
         color: mechanicColor,
         category: "mechanic",
         icon: scatter_icon,
-        baseDuration: 100,
+        baseDuration: 10,
+        counterBased: true,
+    },
+
+    scatterII: {
+        id: "scatterII",
+        displayName: "Scatter II",
+        description: "Each damage tick reduces the counter. When the ship is destroyed, it explodes dealing damage based on the remaining counters",
+        color: mechanicColor,
+        category: "mechanic",
+        icon: scatter_icon,
+        baseDuration: 15,
         counterBased: true,
     },
 };

@@ -42,17 +42,20 @@ export default function BattleScreen({ onShipLongPress })
                     if (Math.random() > 0.5) {
                         let random = Math.random();
 
-                        if (random < 0.25) {
+                        if (random < 0.20) {
                             enemy = createShieldExplosionEnemy();
                         }
-                        else if (random < 0.5) {
+                        else if (random < 0.4) {
                             applyDebuff(enemy, Math.random() > 0.5 ? debuffs.laserResistance.id : debuffs.kineticResistance.id);
                         }
-                        else if (random < 0.75) {
+                        else if (random < 0.6) {
                             applyDebuff(enemy, debuffs.cleanseDebuffs.id);
                         }
-                        else {
+                        else if (random < 0.8) {
                             applyDebuff(enemy, debuffs.summonCopy.id);
+                        }
+                        else{
+                            applyDebuff(enemy, debuffs.scatter.id);
                         }
                     }
 
