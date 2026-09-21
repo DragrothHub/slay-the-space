@@ -194,6 +194,8 @@ export function processTurnStartDebuffs(unit, state) {
 
             if(damage <= 0) return;
 
+            unit.stats.currentShield = 0;
+
             state.log.push(
                 `Shield Explosion triggered!`
             );
@@ -208,8 +210,6 @@ export function processTurnStartDebuffs(unit, state) {
                     value: damage,
                 }, state);
             }
-
-            unit.stats.currentShield = 0;
 
             state.animationEvents.push({
                 targetId: unit.id,
