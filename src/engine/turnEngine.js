@@ -269,20 +269,17 @@ function resolveAbility(actor, abilityId, target, state) {
         `<${isPlayerShip(state, actor) ? "player" : "enemy"}>${actor.name}</${isPlayerShip(state, actor) ? "player" : "enemy"}> uses ${ability.displayName} on <${isPlayerShip(state, target) ? "player" : "enemy"}>${target.name}</${isPlayerShip(state, target) ? "player" : "enemy"}>`
     );
 
-    applyDamage(target, actor, ability, state);
-
     if (ability.appliesDebuff?.length > 0) {
         ability.appliesDebuff.forEach(debuffId => {
             applyDebuff(target, debuffId);
         });
     }
 
-    if (
-        ability.detonator &&
-        ability.detonatesDebuff &&
-        hasDebuffOfList(target, ability.detonatesDebuff)
-    ) {
+    if (ability.detonator && ability.detonatesDebuff && hasDebuffOfList(target, ability.detonatesDebuff)) {
         detonate(target, actor, ability, state);
+    }
+    else{
+        applyDamage(target, actor, ability, state);
     }
 
     startCooldown(actor, abilityId);
