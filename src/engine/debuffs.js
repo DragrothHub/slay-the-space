@@ -7,6 +7,7 @@ import hull_icon from "../images/hull_icon.png";
 import ship_icon from "../images/interceptor.png";
 import explosion_icon from "../images/explosion_icon.png";
 import cleanse_icon from "../images/cleanse_icon.png";
+import scatter_icon from "../images/scatter_icon.png";
 
 // ========================================
 // DEBUFF SYSTEM
@@ -124,6 +125,17 @@ export const debuffs = {
         icon: armor_icon,
         baseDuration: 3,
     },
+
+    scatter: {
+        id: "scatter",
+        displayName: "Scatter",
+        description: "Each damage tick reduces the counter. When the ship is destroyed, it explodes dealing damage based on the remaining counters",
+        color: mechanicColor,
+        category: "mechanic",
+        icon: scatter_icon,
+        baseDuration: 100,
+        counterBased: true,
+    },
 };
 
 function restartMechanic(effects) {
@@ -192,7 +204,7 @@ export function processTurnStartDebuffs(unit, state) {
         if (shieldExplosionDebuffsExplodingThisTurn.length > 0) {
             const damage = unit.stats.currentShield;
 
-            if(damage <= 0) return;
+            if (damage <= 0) return;
 
             unit.stats.currentShield = 0;
 
@@ -368,12 +380,94 @@ export function processTurnStartDebuffs(unit, state) {
     }
 }
 
+export function processOnDamageDebuffs(actor, target, ability, damage, state) {
+
+    const weakenedStacks = getDebuffStacks(target, "weakened");
+    if (weakenedStacks > 0) {
+        const increase = 0.20 * (1 - Math.pow(0.5, weakenedStacks));
+        damage *= 1 + increase;
+    }
+
+    const exhaustedStacks = getDebuffStacks(actor, "exhausted");
+    if (exhaustedStacks > 0) {
+        const reduction = 0.20 * (1 - Math.pow(0.5, exhaustedStacks));
+        damage *= 1 - reduction;
+    }
+
+    if (damage > 0) {
+        reduceScatter(target);
+    }
+
+    return damage;
+}
+
+export function reduceScatter(target) {
+    if (!target.stats.debuffs) return;
+
+    for (const effect of target.stats.debuffs) {
+        if (effect.id !== "scatter") continue;
+
+        effect.duration = Math.max(0, effect.duration - 1);
+    }
+
+    target.stats.debuffs = target.stats.debuffs.filter(
+        d => d.duration > 0
+    );
+}
+
+export function processOnDestroyedDebuffs(actor, state) {
+
+    console.log("processOnDestroyedDebuffs", actor, state);
+
+    const scatter = actor.stats.debuffs.find(
+        d => d.id === "scatter"
+    );
+
+    if (scatter) {
+
+        state.log.push(
+            `<enemy>${actor.name}</enemy> explodes on destruction!`
+        );
+
+        const damage = scatter.duration * 10;
+
+        const enemyTeam = getEnemyUnits(state, actor);
+
+        for (const ship of enemyTeam) {
+            applyDamage(ship, actor,
+                {
+                    id: "scatter",
+                    displayName: "Scatter",
+                    type: "kinetic",
+                    value: damage,
+                }, state);
+        }
+
+        state.animationEvents.push({
+            targetId: actor.id,
+            mechanicId: "scatter",
+            timestamp: Date.now(),
+        });
+    }
+}
+
 /**
  * Duration ticking (after effects resolved)
  */
 export function tickDebuffs(unit) {
     unit.stats.debuffs = unit.stats.debuffs
-        .map(d => ({ ...d, duration: d.duration - 1 }))
+        .map(d => {
+            const debuff = debuffs[d.id];
+
+            if (debuff?.counterBased) {
+                return d;
+            }
+
+            return {
+                ...d,
+                duration: d.duration - 1
+            };
+        })
         .filter(d => d.duration > 0);
 }
 

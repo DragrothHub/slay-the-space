@@ -1,6 +1,6 @@
 import { detonate } from "./detonations";
 import { applyDamage } from "./damage";
-import { applyDebuff, processTurnStartDebuffs, tickDebuffs, hasDebuff, hasDebuffOfList } from "./debuffs";
+import { applyDebuff, processTurnStartDebuffs, tickDebuffs, hasDebuff, hasDebuffOfList, processOnDestroyedDebuffs } from "./debuffs";
 import { startCooldown, reduceCooldowns } from "./cooldowns";
 import { getAllUnits, getActiveUnit, getEnemyUnits, isPlayerShip } from "./helpers";
 import { abilityCollection } from "../data/abilities";
@@ -342,10 +342,12 @@ function resolveDeaths(state) {
 
         if (!isDead) return;
 
+        state.log.push(`<${isPlayerShip(state, unit) ? "player" : "enemy"}>${unit.name}</${isPlayerShip(state, unit) ? "player" : "enemy"}> was destroyed.`);
+
+        processOnDestroyedDebuffs(unit, state);
+    
         unit.destroyed = true;
         unit.stats.debuffs = [];
-
-        state.log.push(`<${isPlayerShip(state, unit) ? "player" : "enemy"}>${unit.name}</${isPlayerShip(state, unit) ? "player" : "enemy"}> was destroyed.`);
     });
 
     checkVictory(state);

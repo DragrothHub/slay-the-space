@@ -1,4 +1,4 @@
-import { getDebuffStacks, hasDebuff } from "./debuffs";
+import { hasDebuff, processOnDamageDebuffs } from "./debuffs";
 import { isPlayerShip } from "./helpers";
 import { processIncomingDamageModules, processOutgoingDamageModules, processDamageDealtModules } from "./processModules";
 
@@ -66,21 +66,17 @@ export function applyDamage(target, actor, ability, state) {
         state
     );
 
-    const weakenedStacks = getDebuffStacks(target, "weakened");
-    if (weakenedStacks > 0) {
-        const increase = 0.20 * (1 - Math.pow(0.5, weakenedStacks));
-        damage *= 1 + increase;
-    }
-
-    const exhaustedStacks = getDebuffStacks(actor, "exhausted");
-    if (exhaustedStacks > 0) {
-        const reduction = 0.20 * (1 - Math.pow(0.5, exhaustedStacks));
-        damage *= 1 - reduction;
-    }
-
     damage = processIncomingDamageModules(
         target,
         actor,
+        ability,
+        damage,
+        state
+    );
+
+    damage = processOnDamageDebuffs(
+        actor,
+        target,
         ability,
         damage,
         state
