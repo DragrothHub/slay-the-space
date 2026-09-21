@@ -9,7 +9,12 @@ function removeDebuffsExcept(target, debuffIds, amountToPreserve) {
 
     for (const debuffId of debuffIds) {
 
-        let preserved = 0;
+        const matchingDebuffs = target.stats.debuffs
+            .filter(debuff => debuff.id === debuffId)
+            .sort((a, b) => b.duration - a.duration);
+
+        const preservedDebuffs = matchingDebuffs.slice(0, amountToPreserve);
+        const preservedSet = new Set(preservedDebuffs);
 
         target.stats.debuffs = target.stats.debuffs.filter(debuff => {
 
@@ -17,8 +22,7 @@ function removeDebuffsExcept(target, debuffIds, amountToPreserve) {
                 return true;
             }
 
-            if (preserved < amountToPreserve) {
-                preserved++;
+            if (preservedSet.has(debuff)) {
                 return true;
             }
 
