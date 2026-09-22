@@ -17,37 +17,52 @@ import { baseValue } from "./constants";
 // SHIP FACTORY
 // ========================================
 
-export function createShip(numberOfModules = 2, numberOfAttributePoints = 360) {
-    const shipClass = getRandomShipClass();
+export function createShip(
+    numberOfModules = 2,
+    numberOfAttributePoints = 360,
+    options = {}
+) {
+    const shipClass = options.class ?? getRandomShipClass();
 
-    const attributes = distributePoints(shipClassAttributeDistributions[shipClass], numberOfAttributePoints);
+    const attributes =
+        options.attributes ??
+        distributePoints(
+            shipClassAttributeDistributions[shipClass],
+            numberOfAttributePoints
+        );
 
     const ship = {
         id: crypto.randomUUID(),
-        typeId: "",
-        name: "",
+        typeId: options.typeId ?? "",
+        name: options.name ?? "",
         class: shipClass,
         color: "",
-        image: randomItem(shipImages),
+        image: options.image ?? randomItem(shipImages),
 
-        modules: [],
+        modules: options.modules ?? [],
 
-        abilities: getRandomAbilities(),
+        abilities: options.abilities ?? getRandomAbilities(),
 
-        attributes: attributes,
+        attributes,
 
         manufacturer: determineManufacturer(attributes),
 
         aiIntent: null,
     };
 
-    for(let i = 0; i < numberOfModules; i++){
-        ship.modules.push(getRandomModule());
+    if (!options.modules) {
+        for (let i = 0; i < numberOfModules; i++) {
+            ship.modules.push(getRandomModule());
+        }
     }
 
     ship.stats = calculateShipStats(ship);
 
-    ship.name = (shipClasses[ship.class].displayName || "Unknown") + '_' + Math.floor(Math.random() * 1000);
+    ship.name =
+        options.name ??
+        (shipClasses[ship.class].displayName || "Unknown") +
+        "_" +
+        Math.floor(Math.random() * 1000);
 
     ship.destroyed = false;
 

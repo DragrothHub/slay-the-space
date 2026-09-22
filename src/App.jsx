@@ -12,6 +12,7 @@ import ShopScreen from "./components/ShopScreen";
 import SplashScreen from "./components/SplashScreen";
 import MenuPanel from "./components/MenuPanel";
 import RevealCard from "./components/RevealCard";
+import { createStandardEnemy, simulateBattle } from "./engine/simulator";
 
 function App() {
   const {
@@ -167,6 +168,22 @@ function App() {
           setSelectedShipId(null);
           setShowMenuPanel(prev => !prev);
           console.log(gameState);
+
+          const teamA = [
+              createShip(2, 360, {
+                  id: "test",
+                  abilities: [
+                      "neutral_offensive_laser"
+                  ],
+              }),
+          ]
+
+          const teamB = [
+              createStandardEnemy(),
+          ]
+          
+          const result = simulateBattle(teamA, teamB);
+          console.log(result);
         }}
         style={{
           position: "fixed",

@@ -6,10 +6,12 @@ import {
 
 import {
     getActiveUnit,
+    getAllUnits,
     isPlayerShip
 } from "./helpers";
 
 import { calculateNextAIIntent } from "./ai";
+import { createEnemyTest, createShip } from "../data/createShip";
 
 
 // ========================================
@@ -17,24 +19,64 @@ import { calculateNextAIIntent } from "./ai";
 // ========================================
 
 /*
-USAGE:
-          const teamA = [
-              createShip(),
-              createShip(),
-          ];
+Testdurchlauf:
 
-          const teamB = [
-              createShip(),
-              createShip(),
-          ];
+const teamA = [createShip(),createShip(),];
+const teamB = [createShip(),createShip(),];
+const result = simulateBattle(teamA, teamB);
+console.log(result);
 
-          const result = simulateBattle(teamA, teamB);
+Anlegen von Testschiffen:
 
-          console.log("Winner:", result.winner);
-          console.log("Rounds:", result.rounds);
-          console.log("Actions:", result.actions);
-          console.log(result);
+createShip(2, 360, {
+    class: "frigate",
+    abilities: [
+        "neutral_offensive_laser",
+        "primer_x",
+        "detonator_y"
+    ]
+});
+
+
+Oder so:
+
+const teamA = [
+    createShip(2, 360, {
+        abilities: [
+            "neutral_offensive_laser"
+        ],
+    }),
+]
+
+const teamB = [
+    createStandardEnemy(),
+]
+
+const result = simulateBattle(teamA, teamB);
+console.log(result);
 */
+
+export function createStandardEnemy() {
+    return createEnemyTest({
+        typeId: "standardEnemy",
+        name: "Training Dummy",
+
+        shield: 100,
+        armor: 100,
+        hull: 100,
+
+        attributes: {
+            initiative: 1,
+            kineticAtk: 0,
+            laserAtk: 0,
+            hull: 0,
+            shieldDef: 0,
+            armorDef: 0,
+        },
+
+        abilities: []
+    });
+}
 
 export function simulateBattle(teamA, teamB, options = {}) {
 
@@ -107,33 +149,49 @@ export function aggregateDamageEvents(state) {
 
     state.damageEvents.forEach(event => {
 
-        // DamageEvent enthält aktuell nur targetId.
-        // Den Angreifer müssen wir daher aus den Events kennen.
-        // Falls actorId noch nicht vorhanden ist, siehe Hinweis unten.
-        const actorId = event.actorId;
+        const actor = getAllUnits(state).find(
+            unit => unit.id === event.actorId
+        );
 
-        if (!actorId) return;
+        if (!actor) return;
 
-        // Schiff anlegen
-        if (!result[actorId]) {
-            result[actorId] = {
+        // Nicht nach zufälliger ID gruppieren,
+        // sondern nach der ID des konkreten Schiffs.
+        if (!result[actor.id]) {
+
+            result[actor.id] = {
+                id: actor.id,
+                name: actor.name,
+                typeId: actor.typeId,
+                class: actor.class,
+
+                abilities: actor.abilities,
+                modules: actor.modules,
+
                 totalDamage: 0,
                 attacks: 0,
                 averageDamagePerAttack: 0,
 
-                abilities: {}
+                abilityStats: {}
             };
         }
 
-        const ship = result[actorId];
+        const ship = result[actor.id];
 
-        // Schiffswerte
+        // ========================================
+        // SHIP TOTALS
+        // ========================================
+
         ship.totalDamage += event.amount;
         ship.attacks++;
 
-        // Ability anlegen
-        if (!ship.abilities[event.abilityId]) {
-            ship.abilities[event.abilityId] = {
+        // ========================================
+        // ABILITY
+        // ========================================
+
+        if (!ship.abilityStats[event.abilityId]) {
+
+            ship.abilityStats[event.abilityId] = {
                 attacks: 0,
 
                 totalDamage: 0,
@@ -141,23 +199,25 @@ export function aggregateDamageEvents(state) {
                 armorDamage: 0,
                 hullDamage: 0,
 
-                averageDamage: 0
+                averageDamagePerAttack: 0
             };
         }
 
-        const ability = ship.abilities[event.abilityId];
+        const ability =
+            ship.abilityStats[event.abilityId];
 
-        // Ability-Werte
         ability.attacks++;
 
         ability.totalDamage += event.amount;
         ability.shieldDamage += event.shieldDmg;
         ability.armorDamage += event.armorDmg;
         ability.hullDamage += event.hullDmg;
-
     });
 
-    // Durchschnittswerte berechnen
+    // ========================================
+    // AVERAGES
+    // ========================================
+
     Object.values(result).forEach(ship => {
 
         if (ship.attacks > 0) {
@@ -165,13 +225,12 @@ export function aggregateDamageEvents(state) {
                 ship.totalDamage / ship.attacks;
         }
 
-        Object.values(ship.abilities).forEach(ability => {
+        Object.values(ship.abilityStats).forEach(ability => {
 
             if (ability.attacks > 0) {
-                ability.averageDamage =
+                ability.averageDamagePerAttack =
                     ability.totalDamage / ability.attacks;
             }
-
         });
     });
 
