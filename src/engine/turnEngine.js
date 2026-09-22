@@ -120,7 +120,7 @@ function aiTurn(state, actor) {
 
     const intent = actor.aiIntent;
 
-    const targetStillAlive = getEnemyUnits(state, actor).some(
+    const targetStillAlive = intent && getEnemyUnits(state, actor).some(
         ship => ship.id === intent.targetId && !ship.destroyed
     );
 
@@ -236,9 +236,7 @@ export function resolveAction(state) {
 
     // Enemy plant seinen nächsten Zug
     if (state.teams.B.some(u => u.id === actor.id) && !actor.destroyed) { 
-        actor.aiIntent = calculateNextAIIntent(state, actor); 
-
-        console.log(actor.aiIntent);
+        actor.aiIntent = calculateNextAIIntent(state, actor);
     }
 
     state.selectedAbilityId = null;

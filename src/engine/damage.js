@@ -126,6 +126,7 @@ export function applyDamage(target, actor, ability, state) {
 
     if (totalDamage > 0) {
         state.damageEvents.push({
+            actorId: actor?.id ?? "NoId",
             targetId: target.id,
             abilityId: ability.id,
             shieldDmg: (before.shield - after.shield),
