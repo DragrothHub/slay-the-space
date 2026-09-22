@@ -41,3 +41,32 @@ export function createShieldExplosionEnemy() {
         ],
     });
 }
+
+export function createFragmenterEnemy() {
+    return createEnemyTest({
+        typeId: "fragmenterEnemy",
+        name: "Fragmenter",
+
+        shield: 0,
+        armor: 100,
+        hull: 0,
+
+        attributes: {
+            initiative: 18,
+            kineticAtk: 0,
+            laserAtk: 0,
+            hull: 0,
+            shieldDef: 0,
+            armorDef: 0,
+        },
+
+        abilities: ["neutral_offensive_laser"],
+
+        debuffs: [
+            {
+                id: "scatter",
+                duration: 8,
+            },
+        ],
+    });
+}

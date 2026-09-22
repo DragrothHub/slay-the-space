@@ -3,7 +3,7 @@ import BattleField from "./BattleField";
 import ActionPanel from "./ActionPanel";
 import BattleLog from "./BattleLog";
 import { useGameState } from "../state/GameStateProvider";
-import { createEnemy, createShieldExplosionEnemy } from "../data/createEnemy";
+import { createEnemy, createFragmenterEnemy, createShieldExplosionEnemy } from "../data/createEnemy";
 import TurnOrder from "./TurnOrder";
 import { detonatorAbilityCollection, primerAbilityCollection } from "../data/abilities";
 import { moduleCollection } from "../data/modules";
@@ -55,7 +55,7 @@ export default function BattleScreen({ onShipLongPress })
                             applyDebuff(enemy, debuffs.summonCopy.id);
                         }
                         else{
-                            applyDebuff(enemy, debuffs.scatter.id);
+                            enemy = createFragmenterEnemy();
                         }
                     }
 
