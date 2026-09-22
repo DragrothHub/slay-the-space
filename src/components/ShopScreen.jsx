@@ -43,8 +43,6 @@ function ShopScreen() {
 
     function onBuy(item) {
 
-        console.log("onBuy:", item);
-
         if (purchasedItems.includes(item.id))
             return;
 

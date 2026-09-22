@@ -74,8 +74,6 @@ export default function GameStateProvider({ children }) {
 
     function buyShopItem({itemId, price, type}) {
 
-        console.log("buyShopItem:", itemId, price, type);
-
         dispatch({
             type: "BUY_SHOP_ITEM",
             itemId,

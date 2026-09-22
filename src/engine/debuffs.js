@@ -331,8 +331,6 @@ export function processTurnStartDebuffs(unit, state) {
                 timestamp: Date.now(),
             });
 
-            console.log(state.animationEvents);
-
             // Restart mechanic
             restartMechanic(copyEffects);
         }
@@ -427,8 +425,6 @@ export function reduceScatter(target) {
 }
 
 export function processOnDestroyedDebuffs(actor, state) {
-
-    console.log("processOnDestroyedDebuffs", actor, state);
 
     const scatter = actor.stats.debuffs.find(
         d => d.id === "scatter"

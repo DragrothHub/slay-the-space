@@ -161,7 +161,6 @@ function assignRule(nodes, rule, random) {
 
     for (let i = 0; i < minCount; i++) {
         candidates[i].type = rule.type;
-        console.log("Set:", candidates[i], rule.type);
     }
 
     /*
@@ -190,7 +189,6 @@ function assignRule(nodes, rule, random) {
          */
         if (random.next() < 0.5) {
             remainingCandidates[i].type = rule.type;
-            console.log("Set:", remainingCandidates[i], rule.type);
         }
     }
 }

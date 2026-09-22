@@ -296,8 +296,6 @@ export function gameStateReducer(state, action) {
 
             const defenses = recalculateShipDefenses(updatedShip);
 
-            console.log(defenses);
-
             updatedShip.stats.maxShield = defenses.maxShield;
             updatedShip.stats.currentShield = defenses.currentShield;
 
@@ -458,8 +456,6 @@ export function gameStateReducer(state, action) {
 
 
         case "BUY_SHOP_ITEM": {
-
-            console.log("BUY_SHOP_ITEM:", action);
 
             if (state.run.credits < action.price)
                 return state;
