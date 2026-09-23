@@ -438,7 +438,7 @@ export function processOnDestroyedDebuffs(actor, state) {
 
         const damage = scatter.duration * 10;
 
-        const enemyTeam = getEnemyUnits(state, actor);
+        const enemyTeam = getEnemyUnits(state, actor).filter(enemy => !enemy.destroyed);
 
         for (const ship of enemyTeam) {
             applyDamage(ship, actor,
