@@ -41,10 +41,10 @@ export function applyDamage(target, actor, ability, state) {
     let damage = ability.value;
 
     if (ability.type === "laser" && actor != null){
-        damage += Math.round(damage * (0.2 * actor.attributes.laserAtk / 100));
+        damage += Math.round(damage * (0.3 * actor.attributes.laserAtk / 100));
     }
     else if (ability.type === "kinetic" && actor != null){
-        damage += Math.round(damage * (0.2 * actor.attributes.kineticAtk / 100));
+        damage += Math.round(damage * (0.3 * actor.attributes.kineticAtk / 100));
     }
 
     if ((hasDebuff(target, "laserResistance") && ability.type === "laser")

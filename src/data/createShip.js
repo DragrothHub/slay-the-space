@@ -182,10 +182,10 @@ export function calculateShipStats(ship) {
     maxHull += shipClasses[ship.class].hullBonus;
 
     // Attribute influence
-    maxShield += Math.round(maxShield * (0.2 * ship.attributes.shieldDef / 100));
-    maxArmor  += Math.round(maxArmor  * (0.2 * ship.attributes.armorDef  / 100));
-    maxHull   += Math.round(maxHull   * (0.2 * ship.attributes.hull      / 100));
-    let initiative = shipClasses[ship.class].speed + Math.round(shipClasses[ship.class].speed * (0.2 * ship.attributes.initiative / 100));
+    maxShield += Math.round(maxShield * (0.3 * ship.attributes.shieldDef / 100));
+    maxArmor  += Math.round(maxArmor  * (0.3 * ship.attributes.armorDef  / 100));
+    maxHull   += Math.round(maxHull   * (0.3 * ship.attributes.hull      / 100));
+    let initiative = shipClasses[ship.class].speed + Math.round(shipClasses[ship.class].speed * (0.3 * ship.attributes.initiative / 100));
 
     return {
         maxShield,
