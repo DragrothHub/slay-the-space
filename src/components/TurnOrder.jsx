@@ -3,7 +3,7 @@ import { useGameState } from "../state/GameStateProvider";
 import interceptor from "../images/interceptor.png";
 import corvette from "../images/corvette.png";
 import frigate from "../images/frigate.png";
-import dreadnaught from "../images/dreadnaught.png";
+import dreadnought from "../images/dreadnought.png";
 import { selectTarget } from "../engine/turnEngine";
 
 export default function TurnOrder() {
@@ -20,7 +20,7 @@ export default function TurnOrder() {
         interceptor,
         corvette,
         frigate,
-        dreadnaught,
+        dreadnought,
     };
 
     function canSelectTarget(target){

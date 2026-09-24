@@ -248,7 +248,7 @@ const shipClassAttributeDistributions = {
         { min: 45, max: 95 },
         { min: 30, max: 85 },
     ],
-    dreadnaught: [
+    dreadnought: [
         { min: 0, max: 30 },
         { min: 20, max: 70 },
         { min: 20, max: 70 },

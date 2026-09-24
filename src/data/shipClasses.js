@@ -22,9 +22,9 @@ export const shipClasses = {
         hullBonus: Math.floor(0.25 * baseValue),
         speed: 20,
     },
-    dreadnaught: {
-        id: "dreadnaught",
-        displayName: "Dreadnaught",
+    dreadnought: {
+        id: "dreadnought",
+        displayName: "Dreadnought",
         description: "Big slow ship.",
         hullBonus: Math.floor(0.5 * baseValue),
         speed: 18,
