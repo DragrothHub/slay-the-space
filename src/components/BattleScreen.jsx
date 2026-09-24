@@ -39,7 +39,7 @@ export default function BattleScreen({ onShipLongPress })
                 {
                     let enemy = createEnemy(0,1);
 
-                    if (Math.random() > 0.5) {
+                    if (Math.random() > 0.3) {
                         let random = Math.random();
 
                         if (random < 0.20) {
@@ -52,7 +52,7 @@ export default function BattleScreen({ onShipLongPress })
                             applyDebuff(enemy, debuffs.cleanseDebuffs.id);
                         }
                         else if (random < 0.8) {
-                            applyDebuff(enemy, debuffs.summonCopy.id);
+                            applyDebuff(enemy, debuffs.summonCopy.id, 8);
                         }
                         else{
                             enemy = createFragmenterEnemy();
