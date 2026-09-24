@@ -305,7 +305,17 @@ function advanceTurn(state) {
 function calculateTurnOrder(state) {
     return getAllUnits(state)
         .filter(u => !u.destroyed)
-        .sort((a, b) => (b.stats.initiative ?? 0) - (a.stats.initiative ?? 0));
+        .sort((a, b) => {
+            const initiativeA = a.stats.initiative ?? 0;
+            const initiativeB = b.stats.initiative ?? 0;
+
+            if (initiativeA !== initiativeB) {
+                return initiativeB - initiativeA;
+            }
+
+            // gleiche Initiative → zufällige Reihenfolge
+            return Math.random() - 0.5;
+        });
 }
 
 // ========================================
