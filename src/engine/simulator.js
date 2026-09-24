@@ -115,11 +115,11 @@ export function simulateBattle(teamA, teamB, options = {}) {
         // ========================================
         // ENEMY / TEAM B
         // ========================================
-        
+
         // Bei einem Enemy wurden selectedAbilityId
         // und selectedTargetId bereits von aiTurn()
         // gesetzt.
-        
+
         if (!state.selectedAbilityId || !state.selectedTargetId) {
             break;
         }
@@ -134,6 +134,9 @@ export function simulateBattle(teamA, teamB, options = {}) {
     }
 
     return {
+        teamA,
+        teamB,
+
         winner: state.winner,
         rounds: state.round,
         actions,
@@ -237,6 +240,26 @@ export function aggregateDamageEvents(state) {
     return result;
 }
 
+
+
+export function createTestShip({
+    name,
+    class: shipClass
+}) {
+
+    const ship = createShip(
+        2,
+        360,
+        {
+            class: shipClass
+        }
+    );
+
+    ship.name = name;
+
+    return ship;
+}
+
 export function simulateBattles(createTeams, count = 10000, options = {}) {
 
     const results = [];
@@ -263,262 +286,593 @@ export function simulateBattles(createTeams, count = 10000, options = {}) {
 
 export function aggregateSimulationResults(results) {
 
-    const result = {
+    console.log(results);
+
+    const aggregate = {
         battles: results.length,
 
-        wins: {},
-        losses: {},
-        draws: 0,
-        aborted: 0,
+        combatants: {},
 
-        ships: {}
+        matchups: {}
     };
 
-    results.forEach(battle => {
+    for (const battle of results) {
+
+        const teamA = battle.teamA;
+        const teamB = battle.teamB;
+
+        const nameA = getCombatantName(teamA);
+        const nameB = getCombatantName(teamB);
 
         // ========================================
-        // BATTLE RESULT
+        // COMBATANTS
         // ========================================
 
-        if (battle.aborted) {
-            result.aborted++;
+        ensureCombatant(aggregate, nameA);
+        ensureCombatant(aggregate, nameB);
+
+        aggregate.combatants[nameA].battles++;
+        aggregate.combatants[nameB].battles++;
+
+        // ========================================
+        // WIN / LOSS
+        // ========================================
+
+        if (battle.winner === "A") {
+
+            aggregate.combatants[nameA].wins++;
+            aggregate.combatants[nameB].losses++;
+
+        } else if (battle.winner === "B") {
+
+            aggregate.combatants[nameB].wins++;
+            aggregate.combatants[nameA].losses++;
+
+        } else {
+
+            aggregate.combatants[nameA].draws++;
+            aggregate.combatants[nameB].draws++;
+        }
+
+        // ========================================
+        // MATCHUP
+        // ========================================
+
+        ensureMatchup(
+            aggregate,
+            nameA,
+            nameB
+        );
+
+        const matchup =
+            aggregate.matchups[nameA][nameB];
+
+        matchup.battles++;
+
+        if (battle.winner === "A") {
+            matchup.winsA++;
+        }
+
+        if (battle.winner === "B") {
+            matchup.winsB++;
         }
 
         if (!battle.winner) {
-            result.draws++;
-        } else {
-
-            const winnerId = battle.winner;
-
-            if (winnerId) {
-                result.wins[winnerId] =
-                    (result.wins[winnerId] ?? 0) + 1;
-            }
+            matchup.draws++;
         }
 
         // ========================================
         // DAMAGE
         // ========================================
 
-        Object.values(battle.aggregatedDamageEvents)
-            .forEach(ship => {
+        for (const ship of Object.values(
+            battle.aggregatedDamageEvents
+        )) {
 
-                const key = ship.name;
+            const name = ship.name;
 
-                if (!result.ships[key]) {
+            ensureCombatant(
+                aggregate,
+                name
+            );
 
-                    result.ships[key] = {
-                        name: ship.name,
-                        typeId: ship.typeId,
-                        class: ship.class,
+            const combatant =
+                aggregate.combatants[name];
 
-                        battles: 0,
+            combatant.totalDamage +=
+                ship.totalDamage;
 
-                        totalDamage: 0,
-                        attacks: 0,
-                        averageDamagePerAttack: 0,
+            combatant.attacks +=
+                ship.attacks;
 
-                        abilityStats: {}
-                    };
-                }
-
-                const aggregate = result.ships[key];
-
-                aggregate.battles++;
-
-                aggregate.totalDamage += ship.totalDamage;
-                aggregate.attacks += ship.attacks;
-
-                // ========================================
-                // ABILITIES
-                // ========================================
-
-                Object.entries(ship.abilityStats)
-                    .forEach(([abilityId, ability]) => {
-
-                        if (!aggregate.abilityStats[abilityId]) {
-
-                            aggregate.abilityStats[abilityId] = {
-                                attacks: 0,
-                                totalDamage: 0,
-
-                                shieldDamage: 0,
-                                armorDamage: 0,
-                                hullDamage: 0,
-
-                                averageDamagePerAttack: 0
-                            };
-                        }
-
-                        const target =
-                            aggregate.abilityStats[abilityId];
-
-                        target.attacks += ability.attacks;
-
-                        target.totalDamage +=
-                            ability.totalDamage;
-
-                        target.shieldDamage +=
-                            ability.shieldDamage;
-
-                        target.armorDamage +=
-                            ability.armorDamage;
-
-                        target.hullDamage +=
-                            ability.hullDamage;
-                    });
-            });
-    });
-
-    // ========================================
-    // AVERAGES
-    // ========================================
-
-    Object.values(result.ships).forEach(ship => {
-
-        if (ship.attacks > 0) {
-            ship.averageDamagePerAttack =
-                ship.totalDamage / ship.attacks;
+            mergeAbilityStats(
+                combatant,
+                ship
+            );
         }
+    }
 
-        Object.values(ship.abilityStats)
-            .forEach(ability => {
+    // ========================================
+    // CALCULATE FINAL VALUES
+    // ========================================
+
+    finalizeCombatants(aggregate);
+    finalizeMatchups(aggregate);
+
+    return aggregate;
+}
+
+function mergeAbilityStats(combatant, ship) {
+
+    Object.entries(ship.abilityStats)
+        .forEach(([abilityId, ability]) => {
+
+            if (!combatant.abilityStats[abilityId]) {
+
+                combatant.abilityStats[abilityId] = {
+                    attacks: 0,
+
+                    totalDamage: 0,
+                    shieldDamage: 0,
+                    armorDamage: 0,
+                    hullDamage: 0,
+
+                    averageDamagePerAttack: 0
+                };
+            }
+
+            const target =
+                combatant.abilityStats[abilityId];
+
+            target.attacks += ability.attacks;
+
+            target.totalDamage +=
+                ability.totalDamage;
+
+            target.shieldDamage +=
+                ability.shieldDamage;
+
+            target.armorDamage +=
+                ability.armorDamage;
+
+            target.hullDamage +=
+                ability.hullDamage;
+        });
+}
+
+function ensureCombatant(aggregate, name) {
+
+    if (!aggregate.combatants[name]) {
+
+        aggregate.combatants[name] = {
+
+            name,
+
+            battles: 0,
+
+            wins: 0,
+            losses: 0,
+            draws: 0,
+
+            winRate: 0,
+
+            totalDamage: 0,
+            attacks: 0,
+            averageDamagePerAttack: 0,
+
+            abilityStats: {}
+        };
+    }
+}
+
+function ensureMatchup(
+    aggregate,
+    nameA,
+    nameB
+) {
+
+    if (!aggregate.matchups[nameA]) {
+        aggregate.matchups[nameA] = {};
+    }
+
+    if (!aggregate.matchups[nameA][nameB]) {
+
+        aggregate.matchups[nameA][nameB] = {
+
+            combatantA: nameA,
+            combatantB: nameB,
+
+            battles: 0,
+
+            winsA: 0,
+            winsB: 0,
+            draws: 0,
+
+            winRateA: 0,
+            winRateB: 0
+        };
+    }
+}
+
+function finalizeCombatants(aggregate) {
+
+    Object.values(aggregate.combatants)
+        .forEach(combatant => {
+
+            if (combatant.battles > 0) {
+
+                combatant.winRate =
+                    combatant.wins /
+                    combatant.battles;
+            }
+
+            if (combatant.attacks > 0) {
+
+                combatant.averageDamagePerAttack =
+                    combatant.totalDamage /
+                    combatant.attacks;
+            }
+
+            Object.values(
+                combatant.abilityStats
+            ).forEach(ability => {
 
                 if (ability.attacks > 0) {
+
                     ability.averageDamagePerAttack =
                         ability.totalDamage /
                         ability.attacks;
                 }
             });
-    });
-
-    // ========================================
-    // WIN RATES
-    // ========================================
-
-    Object.keys(result.wins).forEach(id => {
-
-        result.wins[id] = {
-            wins: result.wins[id],
-            winRate:
-                result.wins[id] /
-                result.battles
-        };
-    });
-
-    return result;
+        });
 }
 
+function finalizeMatchups(aggregate) {
 
-//====================================================================
+    Object.values(aggregate.matchups)
+        .forEach(row => {
 
-const TEST_CLASSES = [
-    "dreadnought",
-    "corvette",
-    "frigate",
-    "interceptor"
-];
+            Object.values(row)
+                .forEach(matchup => {
 
-export function createClassTestShip(className) {
+                    if (matchup.battles > 0) {
 
-    const ship = createShip(2, 360, {
-        class: className
-    });
+                        matchup.winRateA =
+                            matchup.winsA /
+                            matchup.battles;
 
-    ship.name = className;
-
-    return ship;
+                        matchup.winRateB =
+                            matchup.winsB /
+                            matchup.battles;
+                    }
+                });
+        });
 }
 
-export function simulateClassMatchup(
-    classA,
-    classB,
-    count = 10000,
-    options = {}
+function getCombatantName(team) {
+
+    if (team.length === 1) {
+        return team[0].name;
+    }
+
+    return team
+        .map(unit => unit.name)
+        .join(" + ");
+}
+
+export function simulationAggregateToString(
+    aggregate
 ) {
 
-    return simulateBattles(
-        () => {
+    const lines = [];
 
-            const shipA =
-                createClassTestShip(classA);
+    const formatNumber =
+        value => value.toLocaleString("en-US");
 
-            const shipB =
-                createClassTestShip(classB);
+    const formatPercent =
+        value => `${(value * 100).toFixed(2)}%`;
 
-            return {
-                teamA: [shipA],
-                teamB: [shipB]
-            };
-        },
-        count,
-        options
+    const formatDamage =
+        value => value.toFixed(2);
+
+    // ========================================
+    // HEADER
+    // ========================================
+
+    lines.push(
+        "========================================"
     );
-}
 
-export function simulateAllClassMatchups(
-    classes,
-    count = 10000,
-    options = {}
-) {
+    lines.push(
+        "BALANCE SIMULATION"
+    );
 
-    const results = {};
+    lines.push(
+        "========================================"
+    );
 
-    for (const classA of classes) {
+    lines.push("");
 
-        results[classA] = {};
+    lines.push(
+        `Battles: ${formatNumber(aggregate.battles)}`
+    );
 
-        for (const classB of classes) {
+    lines.push("");
 
-            const result =
-                simulateClassMatchup(
-                    classA,
-                    classB,
-                    count,
-                    options
+    // ========================================
+    // COMBATANTS
+    // ========================================
+
+    lines.push(
+        "----------------------------------------"
+    );
+
+    lines.push(
+        "COMBATANTS"
+    );
+
+    lines.push(
+        "----------------------------------------"
+    );
+
+    for (
+        const combatant
+        of Object.values(aggregate.combatants)
+    ) {
+
+        lines.push("");
+        lines.push(combatant.name);
+
+        lines.push(
+            `  Battles: ${formatNumber(
+                combatant.battles
+            )}`
+        );
+
+        lines.push(
+            `  Wins: ${formatNumber(
+                combatant.wins
+            )}`
+        );
+
+        lines.push(
+            `  Losses: ${formatNumber(
+                combatant.losses
+            )}`
+        );
+
+        lines.push(
+            `  Draws: ${formatNumber(
+                combatant.draws
+            )}`
+        );
+
+        lines.push(
+            `  Win rate: ${formatPercent(
+                combatant.winRate
+            )}`
+        );
+
+        lines.push("");
+
+        lines.push(
+            `  Total damage: ${formatNumber(
+                combatant.totalDamage
+            )}`
+        );
+
+        lines.push(
+            `  Attacks: ${formatNumber(
+                combatant.attacks
+            )}`
+        );
+
+        lines.push(
+            `  Average damage/attack: ${formatDamage(
+                combatant.averageDamagePerAttack
+            )
+            }`
+        );
+
+        // ====================================
+        // ABILITIES
+        // ====================================
+
+        if (
+            Object.keys(
+                combatant.abilityStats
+            ).length > 0
+        ) {
+
+            lines.push("");
+            lines.push("  Abilities:");
+
+            for (
+                const [
+                    abilityId,
+                    ability
+                ]
+                of Object.entries(
+                    combatant.abilityStats
+                )
+            ) {
+
+                lines.push(
+                    `    ${abilityId}`
                 );
 
-            results[classA][classB] =
-                result.aggregate;
+                lines.push(
+                    `      Attacks: ${formatNumber(
+                        ability.attacks
+                    )
+                    }`
+                );
+
+                lines.push(
+                    `      Total damage: ${formatNumber(
+                        ability.totalDamage
+                    )
+                    }`
+                );
+
+                lines.push(
+                    `      Shield damage: ${formatNumber(
+                        ability.shieldDamage
+                    )
+                    }`
+                );
+
+                lines.push(
+                    `      Armor damage: ${formatNumber(
+                        ability.armorDamage
+                    )
+                    }`
+                );
+
+                lines.push(
+                    `      Hull damage: ${formatNumber(
+                        ability.hullDamage
+                    )
+                    }`
+                );
+
+                lines.push(
+                    `      Average damage/attack: ${formatDamage(
+                        ability.averageDamagePerAttack
+                    )
+                    }`
+                );
+            }
         }
     }
 
-    return results;
+    // ========================================
+    // WIN RATE MATRIX
+    // ========================================
+
+    lines.push("");
+    lines.push(
+        "----------------------------------------"
+    );
+
+    lines.push(
+        "WIN RATE MATRIX"
+    );
+
+    lines.push(
+        "----------------------------------------"
+    );
+
+    lines.push(
+        createWinRateMatrixString(
+            aggregate
+        )
+    );
+
+    lines.push("");
+    lines.push(
+        "========================================"
+    );
+
+    return lines.join("\n");
 }
 
-export function getMatchupSummary(
-    result,
-    classA,
-    classB
+function createWinRateMatrixString(
+    aggregate
 ) {
 
-    const aggregate = result.aggregate;
+    const names =
+        Object.keys(
+            aggregate.combatants
+        );
 
-    const winsA =
-        aggregate.wins[
-            classA
-        ]?.wins ?? 0;
+    if (names.length === 0) {
+        return "No combatants.";
+    }
 
-    const winsB =
-        aggregate.wins[
-            classB
-        ]?.wins ?? 0;
+    // Spaltenbreite bestimmen
+    const nameWidth = Math.max(
+        12,
+        ...names.map(name => name.length)
+    );
 
-    const battles = aggregate.battles;
+    const cellWidth = 14;
 
-    return {
-        classA,
-        classB,
+    const pad =
+        (value, width) =>
+            String(value)
+                .padStart(width);
 
-        battles,
+    const lines = [];
 
-        winsA,
-        winsB,
+    // Header
+    let header =
+        " ".repeat(nameWidth + 2);
 
-        draws: aggregate.draws,
-        aborted: aggregate.aborted,
+    for (const name of names) {
 
-        winRateA: winsA / battles,
-        winRateB: winsB / battles
-    };
+        header +=
+            pad(
+                name,
+                cellWidth
+            );
+    }
+
+    lines.push(header);
+
+    // Rows
+    for (const rowName of names) {
+
+        let row =
+            rowName.padEnd(nameWidth + 2);
+
+        for (const columnName of names) {
+
+            if (rowName === columnName) {
+                row += pad("--", cellWidth);
+                continue;
+            }
+
+            // Direkte Richtung vorhanden?
+            const directMatchup =
+                aggregate.matchups[rowName]
+                ?.[columnName];
+
+            if (directMatchup) {
+
+                row += pad(
+                    `${(directMatchup.winRateA * 100).toFixed(2)}%`,
+                    cellWidth
+                );
+
+                continue;
+            }
+
+            // Gegenrichtung vorhanden?
+            const reverseMatchup =
+                aggregate.matchups[columnName]
+                ?.[rowName];
+
+            if (reverseMatchup) {
+
+                // Wenn dort columnName = A und rowName = B ist,
+                // interessiert uns hier die Gewinnrate von B.
+                const winRate =
+                    reverseMatchup.winRateB;
+
+                row += pad(
+                    `${(winRate * 100).toFixed(2)}%`,
+                    cellWidth
+                );
+
+                continue;
+            }
+
+            row += pad("n/a", cellWidth);
+        }
+
+        lines.push(row);
+    }
+
+    return lines.join("\n");
 }
