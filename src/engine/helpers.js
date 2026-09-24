@@ -1,4 +1,5 @@
 import { moduleCollection } from "../data/modules";
+import { debuffs } from "./debuffs";
 
 export function getAllUnits(state) {
     return [...state.teams.A, ...state.teams.B];
@@ -107,4 +108,44 @@ export function recalculateShipDefenses(ship) {
             maxArmor * 2
         ),
     };
+}
+
+export function gradientFromDebuffList(debuffIds) {
+
+    if (!debuffIds?.length)
+        return null;
+
+    const colors = debuffIds.map(
+        debuffId => debuffs[debuffId].color
+    );
+    const gradient = `linear-gradient(90deg, ${colors.join(", ")})`;
+
+    // ======================
+    // const colors = debuffIds.map(
+    //     debuffId => debuffs[debuffId].color
+    // );
+
+    // const gradient = colors?.length
+    //     ? `linear-gradient(90deg, ${colors.map((color, i) => {
+    //         const start = (i / colors.length) * 100;
+    //         const end = ((i + 1) / colors.length) * 100;
+    //         return `${color} ${start}%, ${color} ${end}%`;
+    //     }).join(", ")})`
+    //     : undefined;
+
+    // ======================
+    // const colors = debuffIds.map(
+    //     debuffId => debuffs[debuffId].color
+    // );
+
+    // const gradient = colors?.length
+    //     ? `linear-gradient(90deg, ${colors.map((color, i) => {
+    //         const center = ((i + 0.5) / colors.length) * 100;
+    //         const spread = 3;
+
+    //         return `${color} ${center - spread}%, ${color} ${center + spread}%`;
+    //     }).join(", ")})`
+    //     : undefined;
+
+    return gradient;
 }

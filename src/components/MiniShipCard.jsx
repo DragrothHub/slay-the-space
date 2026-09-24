@@ -2,7 +2,7 @@ import StatBar from "./StatBar";
 import { shipClasses } from "../data/shipClasses";
 import { moduleCollection } from "../data/modules";
 import { abilityCollection } from "../data/abilities";
-import { debuffs } from "../engine/debuffs";
+import { gradientFromDebuffList } from "../engine/helpers";
 import armor_icon_colored from "../images/armor_icon_colored.png";
 import shield_icon_colored from "../images/shield_icon_colored.png";
 
@@ -187,47 +187,4 @@ export default function MiniShipCard({ ship, borderColor, backgroundColor, onCli
             </div>
         </div>
     );
-}
-
-
-
-
-function gradientFromDebuffList(debuffIds) {
-
-    if (!debuffIds?.length)
-        return null;
-
-    const colors = debuffIds.map(
-        debuffId => debuffs[debuffId].color
-    );
-    const gradient = `linear-gradient(90deg, ${colors.join(", ")})`;
-
-    // ======================
-    // const colors = debuffIds.map(
-    //     debuffId => debuffs[debuffId].color
-    // );
-
-    // const gradient = colors?.length
-    //     ? `linear-gradient(90deg, ${colors.map((color, i) => {
-    //         const start = (i / colors.length) * 100;
-    //         const end = ((i + 1) / colors.length) * 100;
-    //         return `${color} ${start}%, ${color} ${end}%`;
-    //     }).join(", ")})`
-    //     : undefined;
-
-    // ======================
-    // const colors = debuffIds.map(
-    //     debuffId => debuffs[debuffId].color
-    // );
-
-    // const gradient = colors?.length
-    //     ? `linear-gradient(90deg, ${colors.map((color, i) => {
-    //         const center = ((i + 0.5) / colors.length) * 100;
-    //         const spread = 3;
-
-    //         return `${color} ${center - spread}%, ${color} ${center + spread}%`;
-    //     }).join(", ")})`
-    //     : undefined;
-
-    return gradient;
 }

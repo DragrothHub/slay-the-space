@@ -2,6 +2,7 @@ import React from "react";
 import { debuffs, hasDebuffOfList } from "../engine/debuffs";
 import { getRemainingCooldown, isAbilityOnCooldown } from "../engine/cooldowns";
 import { abilityCollection } from "../data/abilities";
+import { gradientFromDebuffList } from "../engine/helpers";
 
 export default function AbilityCard({ abilityId, actor, target, withDescription = true, handleSelectAbility = () => { } }) {
     const ability = abilityCollection[abilityId];
@@ -63,7 +64,29 @@ export default function AbilityCard({ abilityId, actor, target, withDescription 
                         fontSize: 15,
                     }}
                 >
-                    {ability.displayName}
+                    {ability.primer || ability.detonator ? "" : ability.displayName}
+                    {ability.primer &&
+                        <span style={{
+                            backgroundImage: gradientFromDebuffList(ability?.appliesDebuff),
+                            backgroundClip: "text",
+                            WebkitBackgroundClip: "text",
+                            color: "transparent",
+                            WebkitTextFillColor: "transparent",
+                        }}>
+                            {ability.displayName}
+                        </span>
+                    }
+                    {ability.detonator &&
+                        <span style={{
+                            backgroundImage: gradientFromDebuffList(ability?.detonatesDebuff),
+                            backgroundClip: "text",
+                            WebkitBackgroundClip: "text",
+                            color: "transparent",
+                            WebkitTextFillColor: "transparent",
+                        }}>
+                            {ability.displayName}
+                        </span>
+                    }
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -75,13 +98,13 @@ export default function AbilityCard({ abilityId, actor, target, withDescription 
                     )}
 
                     {ability.primer && (
-                        <span style={{ color: "#63d8ff" }}>
+                        <span style={{ color: "#9cb7ca" }}>
                             Primer
                         </span>
                     )}
 
                     {ability.detonator && (
-                        <span style={{ color: "#ffd45c" }}>
+                        <span style={{ color: "#9cb7ca" }}>
                             Detonator
                         </span>
                     )}
@@ -126,7 +149,7 @@ export default function AbilityCard({ abilityId, actor, target, withDescription 
             )}
 
             {ability.description && withDescription && (
-                <span style={{fontSize: 12, color: "#9cb7ca",}}>
+                <span style={{ fontSize: 12, color: "#9cb7ca", }}>
                     {ability.description}
                 </span>
             )}
