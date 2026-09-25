@@ -311,9 +311,7 @@ export default function TurnOrder() {
                                         ) padding-box,
                                         ${primer.color} border-box`,
 
-                                    border: primer.available
-                                        ? `1px solid ${primer.color}`
-                                        : "1px solid transparent",
+                                    border: "1px solid transparent",
 
                                     pointerEvents: "none",
                                 }}
@@ -348,9 +346,7 @@ export default function TurnOrder() {
                                         ) padding-box,
                                         ${detonator.color} border-box`,
 
-                                    border: detonator.available
-                                        ? `1px solid ${detonator.color}`
-                                        : "1px solid transparent",
+                                    border: "1px solid transparent",
 
                                     pointerEvents: "none",
                                 }}
