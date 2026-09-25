@@ -147,6 +147,27 @@ export const debuffs = {
         baseDuration: 15,
         counterBased: true,
     },
+
+    exhaustionSpread: {
+        id: "exhaustionSpread",
+        displayName: "Exhaustion Spread",
+        description: "When dealing damage, applies exhausted to all enemy ships",
+        color: mechanicColor,
+        category: "mechanic",
+        icon: null,
+        baseDuration: 1,
+        counterBased: true,
+    },
+
+    exhaustionSpreadCooldown: {
+        id: "exhaustionSpreadCooldown",
+        displayName: "Exhaustion Spread Cooldown",
+        description: "After the cooldown expires, Exhaustion Spread becomes active again",
+        color: mechanicColor,
+        category: "mechanic",
+        icon: null,
+        baseDuration: 3,
+    },
 };
 
 function restartMechanic(effects) {
@@ -387,6 +408,23 @@ export function processTurnStartDebuffs(unit, state) {
             applyDebuff(unit, "laserResistance", 4);
         }
     }
+
+    if (hasDebuff(unit, "exhaustionSpreadCooldown")) {
+
+        const cooldowns = unit.stats.debuffs.filter(
+            d => d.id === "exhaustionSpreadCooldown" && d.duration === 1
+        );
+
+        if (cooldowns.length > 0) {
+
+            removeDebuff(unit, "exhaustionSpreadCooldown");
+
+            applyDebuff(
+                unit,
+                "exhaustionSpread"
+            );
+        }
+    }
 }
 
 export function processOnDamageDebuffs(actor, target, ability, damage, state) {
@@ -403,8 +441,39 @@ export function processOnDamageDebuffs(actor, target, ability, damage, state) {
         damage *= 1 - reduction;
     }
 
+    // scatter
     if (damage > 0) {
         reduceScatter(target);
+    }
+
+    // exhaustionSpread
+    if (damage > 0 && hasDebuff(target, "exhaustionSpread")) {
+
+        const enemies = getEnemyUnits(state, target)
+            .filter(enemy => !enemy.destroyed);
+
+        for (const enemy of enemies) {
+            applyDebuff(enemy, "exhausted");
+        }
+
+        // Remove the active mechanic
+        removeDebuff(target, "exhaustionSpread");
+
+        // Start cooldown
+        applyDebuff(
+            target,
+            "exhaustionSpreadCooldown"
+        );
+
+        state.log.push(
+            `<enemy>${target.name}</enemy> spreads Exhausted to all living enemy ships.`
+        );
+
+        state.animationEvents.push({
+            targetId: target.id,
+            mechanicId: "exhaustionSpread",
+            timestamp: Date.now(),
+        });
     }
 
     return damage;
@@ -414,7 +483,7 @@ export function reduceScatter(target) {
     if (!target.stats.debuffs) return;
 
     for (const effect of target.stats.debuffs) {
-        if (effect.id !== "scatter") continue;
+        if (effect.id !== "scatter" && effect.id !== "scatterII") continue;
 
         effect.duration = Math.max(0, effect.duration - 1);
     }

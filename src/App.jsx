@@ -12,7 +12,7 @@ import ShopScreen from "./components/ShopScreen";
 import SplashScreen from "./components/SplashScreen";
 import MenuPanel from "./components/MenuPanel";
 import RevealCard from "./components/RevealCard";
-import { createStandardEnemy, simulateBattle } from "./engine/simulator";
+import { createTestShip, simulateBattles, simulationAggregateToString } from "./engine/simulator";
 
 function App() {
   const {
@@ -169,21 +169,60 @@ function App() {
           setShowMenuPanel(prev => !prev);
           console.log(gameState);
 
-          const teamA = [
-              createShip(2, 360, {
-                  id: "test",
-                  abilities: [
-                      "neutral_offensive_laser"
-                  ],
-              }),
-          ]
+          // const result = simulateBattles(
+          //   () => {
 
-          const teamB = [
-              createStandardEnemy(),
-          ]
-          
-          const result = simulateBattle(teamA, teamB);
-          console.log(result);
+          //     const shipA = createShip(2, 360, {
+          //         name: "Interceptor_1",
+          //         class: "interceptor",
+          //         abilities: [
+          //             "neutral_offensive_laser",
+          //             "primer_offensive_laser_shocked",
+          //             "detonator_offensive_laser_shocked_spreader",
+          //         ]
+          //     });
+
+          //     const shipB = createShip(2, 360, {
+          //         name: "Interceptor_2",
+          //         class: "interceptor",
+          //         abilities: [
+          //             "neutral_offensive_laser",
+          //             "primer_offensive_laser_shocked",
+          //             "detonator_offensive_laser_shocked_vampire",
+          //         ]
+          //     });
+
+          //     const shipA2 = createShip(2, 360, {
+          //         name: "Interceptor_3",
+          //         class: "interceptor",
+          //         abilities: [
+          //             "neutral_offensive_laser",
+          //             "primer_offensive_kinetic_marked",
+          //             "detonator_offensive_laser_shocked_spreader",
+          //         ]
+          //     });
+
+          //     const shipB2 = createShip(2, 360, {
+          //         name: "Interceptor_4",
+          //         class: "interceptor",
+          //         abilities: [
+          //             "neutral_offensive_laser",
+          //             "primer_offensive_laser_shocked",
+          //             "detonator_offensive_laser_shocked_vampire",
+          //         ]
+          //     });
+
+          //     return {
+          //       teamA: [shipA,shipB2],
+          //       teamB: [shipB,shipA2]
+          //     };
+          //   },
+          //   10000
+          // );
+
+          // console.log(
+          //   simulationAggregateToString(result.aggregate)
+          // );
         }}
         style={{
           position: "fixed",

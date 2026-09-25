@@ -3,7 +3,7 @@ import BattleField from "./BattleField";
 import ActionPanel from "./ActionPanel";
 import BattleLog from "./BattleLog";
 import { useGameState } from "../state/GameStateProvider";
-import { createEnemy, createFragmenterEnemy, createShieldExplosionEnemy } from "../data/createEnemy";
+import { createEnemy, createExhaustionSpreaderEnemy, createFragmenterEnemy, createShieldExplosionEnemy } from "../data/createEnemy";
 import TurnOrder from "./TurnOrder";
 import { detonatorAbilityCollection, primerAbilityCollection } from "../data/abilities";
 import { moduleCollection } from "../data/modules";
@@ -42,20 +42,23 @@ export default function BattleScreen({ onShipLongPress })
                     if (Math.random() > 0.3) {
                         let random = Math.random();
 
-                        if (random < 0.20) {
+                        if (random < 0.17) {
                             enemy = createShieldExplosionEnemy();
                         }
-                        else if (random < 0.4) {
+                        else if (random < 0.33) {
                             applyDebuff(enemy, Math.random() > 0.5 ? debuffs.laserResistance.id : debuffs.kineticResistance.id);
                         }
-                        else if (random < 0.6) {
+                        else if (random < 0.5) {
                             applyDebuff(enemy, debuffs.cleanseDebuffs.id);
                         }
-                        else if (random < 0.8) {
+                        else if (random < 0.66) {
                             applyDebuff(enemy, debuffs.summonCopy.id, 8);
                         }
-                        else{
+                        else if (random < 0.87){
                             enemy = createFragmenterEnemy();
+                        }
+                        else {
+                            enemy = createExhaustionSpreaderEnemy();
                         }
                     }
 

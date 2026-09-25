@@ -70,3 +70,35 @@ export function createFragmenterEnemy() {
         ],
     });
 }
+
+export function createExhaustionSpreaderEnemy() {
+    return createEnemyTest({
+        typeId: "exhaustionSpreaderEnemy",
+        name: "Exhaustion Spreader",
+
+        shield: 0,
+        armor: 50,
+        hull: 50,
+
+        attributes: {
+            initiative: 18,
+            kineticAtk: 0,
+            laserAtk: 0,
+            hull: 0,
+            shieldDef: 0,
+            armorDef: 0,
+        },
+
+        abilities: [
+            "neutral_offensive_laser",
+            "detonator_offensive_kinetic_exhausted_cascade",
+        ],
+
+        debuffs: [
+            {
+                id: "exhaustionSpread",
+                duration: 1,
+            },
+        ],
+    });
+}
